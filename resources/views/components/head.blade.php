@@ -7,8 +7,6 @@
 
 <!-- Site favicon -->
 <link rel="apple-touch-icon" sizes="180x180" href="{{ url('/') }}/assets/images/panvel_img/pmc_favicon.png" />
-<link rel="icon" type="image/png" sizes="32x32" href="{{ url('/') }}/assets/images/panvel_img/pmc_favicon.png" />
-<link rel="icon" type="image/png" sizes="16x16" href="{{ url('/') }}/assets/images/panvel_img/pmc_favicon.png" />
 
 <!-- Title -->
 <title>@yield('title')</title>
@@ -16,11 +14,8 @@
 <!-- CSRF Token -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<!-- jsvectormap css -->
+<!-- plugin css -->
 <link href="{{ url('/') }}/assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
-
-<!-- gridjs css -->
-<link rel="stylesheet" href="{{ url('/') }}/assets/libs/gridjs/theme/mermaid.min.css">
 
 <!-- Layout config Js -->
 <script src="{{ url('/') }}/assets/js/layout.js"></script>

@@ -4,7 +4,7 @@
             <div class="d-flex">
                 <!-- LOGO -->
                 <div class="navbar-brand-box horizontal-logo">
-                    <a href="index.html" class="logo logo-dark">
+                    <a href="{{ route('dashboard') }}" class="logo logo-dark">
                         <span class="logo-sm">
                             <img src="{{ url('/') }}/assets/images/panvel_img/pmc-logo-dark.png" alt="" height="60">
                         </span>
@@ -13,7 +13,7 @@
                         </span>
                     </a>
 
-                    <a href="index.html" class="logo logo-light">
+                    <a href="{{ route('dashboard') }}" class="logo logo-light">
                         <span class="logo-sm">
                             <img src="{{ url('/') }}/assets/images/panvel_img/pmc-logo-dark.png" alt="" height="60">
                         </span>
@@ -23,8 +23,7 @@
                     </a>
                 </div>
 
-                <button type="button" class="btn btn-sm px-3 fs-16 header-item horizontal-menu-btn topnav-hamburger"
-                    id="topnav-hamburger-icon">
+                <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger" id="topnav-hamburger-icon">
                     <span class="hamburger-icon">
                         <span></span>
                         <span></span>
@@ -57,13 +56,13 @@
                             <img class="rounded-circle header-profile-user"src="{{ url('/') }}/assets/images/panvel_img/pmc_favicon.png" alt="PMC_Logo">
                             <span class="text-start ms-xl-2">
                                 <span class="d-none d-xl-inline-block ms-1 fw-semibold user-name-text">{{ Auth::user()->name }}</span>
-                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">IT Department</span>
+                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">{{ $authDept->department?->dept_name }}</span>
                             </span>
                         </span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
-                        <h6 class="dropdown-header">Welcome {{ Auth::user()->name }}!</h6>
+                        <h6 class="dropdown-header">Welcome {{ Auth::user()->email }}!</h6>
 
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                             <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>

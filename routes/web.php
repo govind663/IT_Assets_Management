@@ -2,11 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 
+// ==== Authnication
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+
+// ==== Home
 use  App\Http\Controllers\HomeController;
+
+// ==== Masters
+use App\Http\Controllers\UsersController;
+use App\Http\Controllers\DepartmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,10 +53,31 @@ Route::group(['prefix' => 'admin'],function(){
 Route::group(['middleware' => ['auth:web', 'preventBackHistoryMiddleware']], function () {
 
     Route::group(['prefix' => 'admin'],function(){
-        // ============================Admin Dashboard
+        // =============== Admin Dashboard
         Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-    });
 
+        // ============== Department CRUD
+        Route::resource('department',DepartmentController::class)
+        ->names([
+            'index'=>'department.index',
+            'create'=>'department.create',
+            'show'=>'department.show',
+            'edit'=>'department.edit',
+            'update'=>'department.update',
+            'destroy'=>'department.destroy'
+            ]);
+
+        // ============== Users CRUD
+        Route::resource('users',UsersController::class)
+        ->names([
+            'index'=>'users.index',
+            'create'=>'users.create',
+            'show'=>'users.show',
+            'edit'=>'users.edit',
+            'update'=>'users.update',
+            'destroy'=>'users.destroy'
+            ]);
+    });
 
 });
 

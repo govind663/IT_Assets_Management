@@ -1,9 +1,15 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" lang="en" data-layout="horizontal" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-body-image="img-1" data-preloader="disable">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-layout="horizontal" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-body-image="img-1" data-preloader="disable">
 <head>
     <!-- Head Start -->
     <x-head />
 
+    <style>
+        .footer {
+            color: white;
+            background-color: #693dbb;
+        }
+    </style>
     @stack('styles')
 </head>
 
@@ -16,7 +22,7 @@
         <!-- Header End -->
 
         <!-- Notification Model Start -->
-        <x-header />
+        {{-- <x-header /> --}}
         <!-- Notification Model End -->
 
         <!-- Sidebar Start -->

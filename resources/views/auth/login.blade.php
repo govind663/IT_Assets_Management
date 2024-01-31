@@ -142,22 +142,22 @@
                                                     <input type="checkbox" class="form-check-input" name="remember_token" id="auth-remember-check" {{ old('remember') ? 'checked' : '' }} />
                                                     <label class="form-check-label" for="auth-remember-check">Remember me</label>
 
-                                                    <div class="float-end">
+                                                    {{-- <div class="float-end">
                                                         @if (Route::has('password.request'))
                                                              <a  href="{{ route('password.request') }}" class="text-muted"><b>{{ __('Forgot Password ?') }}</b></a>
                                                         @endif
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
 
                                                 <div class="mt-4">
                                                     <button class="btn btn-primary w-100" type="submit">Sign In</button>
                                                 </div>
 
-                                                <div class="mt-4 text-center">
+                                                {{-- <div class="mt-4 text-center">
                                                     <p class="mb-0">Don't have an account ?
                                                         <a href="{{ route('register') }}" class="fw-semibold text-primary"> Signup</a>
                                                     </p>
-                                                </div>
+                                                </div> --}}
 
                                             </form>
                                         </div>

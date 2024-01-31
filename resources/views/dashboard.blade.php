@@ -17,12 +17,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
-                            <h4 class="mb-sm-0">Job Dashboard</h4>
+                            <h4 class="mb-sm-0">Dashboard</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboards</a></li>
-                                    <li class="breadcrumb-item active">Job Dashboard</li>
+                                    <li class="breadcrumb-item active">Home</li>
                                 </ol>
                             </div>
 
@@ -35,6 +35,7 @@
                     <div class="col-xl-6">
                         <div class="d-flex flex-column h-100">
                             <div class="row">
+
                                 <div class="col-xl-6 col-md-6">
                                     <div class="card card-animate overflow-hidden">
                                         <div class="position-absolute start-0" style="z-index: 0;">
@@ -133,6 +134,7 @@
                                         </div><!-- end card body -->
                                     </div><!-- end card -->
                                 </div><!-- end col -->
+
                                 <div class="col-xl-6 col-md-6">
                                     <!-- card -->
                                     <div class="card card-animate overflow-hidden">
@@ -165,6 +167,7 @@
                                         </div><!-- end card body -->
                                     </div><!-- end card -->
                                 </div><!-- end col -->
+
                                 <div class="col-xl-6 col-md-6">
                                     <div class="card card-animate overflow-hidden">
                                         <div class="position-absolute start-0" style="z-index: 0;">
@@ -197,6 +200,7 @@
                                     </div><!-- end card -->
                                 </div>
                                 <!--end col-->
+
                                 <div class="col-xl-6 col-md-6">
                                     <!-- card -->
                                     <div class="card card-animate overflow-hidden">
@@ -234,6 +238,7 @@
                         </div>
                     </div>
                     <!--end col-->
+
                     <div class="col-xl-6">
                         <div class="card card-height-100">
                             <div class="card-header align-items-center d-flex">

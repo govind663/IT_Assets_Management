@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('dept_id')->after('id')->nullable(); // Foreign key column for department table
+            $table->integer('role_id')->unsigned()->after('name')->comment('1:Admin, 2:HOD,  3:Cleark');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('dept_id');
+            $table->dropColumn('role_id');
         });
     }
 };
