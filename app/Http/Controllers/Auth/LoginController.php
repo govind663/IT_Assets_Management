@@ -43,7 +43,7 @@ class LoginController extends Controller
     }
 
     public function logout() {
-        $this->UserLogActivityLogs->logUserLoginActivity(Auth::guard('web')->user()->id, 'users', 'log Out');
+        $this->UserLogActivityLogs->logUserLoginActivity('users', 'log Out');
         Session::flush();
         Auth::logout();
         return redirect()->route('login')->with('message', 'You are logout Successfully.');

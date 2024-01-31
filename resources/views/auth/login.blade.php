@@ -28,8 +28,8 @@
 
     <!-- Toaster Message -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 </head>
 
@@ -187,7 +187,6 @@
     <script src="{{ url('/') }}/assets/libs/node-waves/waves.min.js"></script>
     <script src="{{ url('/') }}/assets/libs/feather-icons/feather.min.js"></script>
     <script src="{{ url('/') }}/assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
-    <script src="{{ url('/') }}/assets/js/plugins.js"></script>
 
     <!-- password-addon init -->
     <script src="{{ url('/') }}/assets/js/pages/password-addon.init.js"></script>

@@ -3040,7 +3040,8 @@ textarea.form-control-lg {
     background-position: center;
     background-size: contain;
     border: var(--vz-border-width) solid var(--vz-border-color-translucent);
-    print-color-adjust: exact
+    -print-color-adjust: exact;
+    color: inherit
 }
 
 .form-check-input[type=checkbox] {

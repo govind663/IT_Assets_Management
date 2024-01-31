@@ -23,7 +23,8 @@ class UserLogActivityLogs{
                 'ip' => request()->ip(),
                 'device' => request()->header('Device-Type'),
                 'platform' =>request()->header('Platform') ?: "Other",
-                'os_version' => request()->header('OS-Version') ?: "Not Mentioned"
+                'os_version' => request()->header('OS-Version') ?: "Not Mentioned",
+                'app_version' => request()->header('App-Version') ?: "Not Mentioned",
             ];
         }
 
@@ -33,7 +34,7 @@ class UserLogActivityLogs{
             'log_type' => $logType,
             'data' => json_encode($data),
             'url' => URL::current(),
-            'action' => isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : '',
+            'action' => (request()->isMethod('post')) ? 'POST' : ((request()->isMethod('put')) ? 'PUT' : 'GET'),
             'ip_address' => request()->ip(),
             'created_at' => now(),
             'updated_at' => now()
