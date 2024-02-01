@@ -16,6 +16,7 @@ class DepartmentSeeder extends Seeder
     {
         Department::create([
             'dept_name' => 'IT Department',
+            'dep_code' => 'IT',
             'inserted_by' => '1',
             'inserted_at' => Carbon::now()
         ]);

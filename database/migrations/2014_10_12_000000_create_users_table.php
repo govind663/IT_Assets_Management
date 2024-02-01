@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Department;
+use App\Models\Role;
 
 return new class extends Migration
 {
@@ -15,8 +16,10 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignIdFor(Department::class)->nullable()->index();
+            $table->foreignIdFor(Role::class)->index();
+            $table->foreignIdFor(Department::class)->index();
             $table->string('email')->unique();
+            $table->unsignedInteger('phone_number')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

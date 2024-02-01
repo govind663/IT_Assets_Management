@@ -11,7 +11,7 @@ class DepartmentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,17 @@ class DepartmentRequest extends FormRequest
      */
     public function rules(): array
     {
+        $rule = [
+            'dept_name' => 'required|max:255',
+        ];
+
+        return $rule;
+    }
+
+    public function messages()
+    {
         return [
-            //
+            'dept_name.required' => __('Department Name is required'),
         ];
     }
 }

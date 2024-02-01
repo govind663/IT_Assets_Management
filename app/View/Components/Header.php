@@ -15,9 +15,7 @@ class Header extends Component
      */
     public function render(): View|Closure|string
     {
-        $authDept = User::with('department')
-                        ->where('id', Auth::user()->id)
-                        ->first();
+        $authDept = User::with('department', 'role')->where('id', Auth::user()->id)->first();
         // dd($authDept);
 
         return view('components.header', ['authDept' => $authDept]);

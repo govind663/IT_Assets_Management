@@ -2,63 +2,88 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\DepartmentRequest;
+use App\Models\Department;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class DepartmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $departments = Department::select('id', 'dept_name')->whereNull('deleted_at')->orderByDesc('id')->get();
+        // dd($departments);
+
+        return view('master.department.index')->with(['department' => $departments]);
+
+
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('master.department.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(DepartmentRequest $request)
     {
-        //
+        $data = $request->validated();
+        $data['inserted_by'] =  Auth::user()->id;
+        $data['inserted_at'] =  Carbon::now();
+        try {
+
+            $user = Department::create($data);
+
+            return redirect()->route('department.index')->with('message','Department created successfully');
+
+        } catch(\Exception $ex){
+
+            return redirect()->back()->with('error','Something Went Wrong  - '.$ex->getMessage());
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Department $Department)
     {
-        //
+        // dd($Department);
+        return view('master.department.view')->with(['department' => $Department]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Department $Department)
     {
-        //
+        // dd($Department);
+        return view('master.department.edit' )->with([ 'department'=>$Department ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(DepartmentRequest $request, $id)
     {
-        //
+        $data = $request->validated();
+        $data['modified_by'] =  Auth::user()->id;
+        $data['modified_at'] =  Carbon::now();
+        try {
+
+            $user = Department::findOrFail($id);
+            $user->update($data);
+
+            return redirect()->route('department.index')->with('message','Department updated successfully');
+
+        } catch(\Exception $ex){
+
+            return redirect()->back()->with('error','Something Went Wrong - '.$ex->getMessage());
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $data['deleted_by'] =  Auth::user()->id;
+        $data['deleted_at'] =  Carbon::now();
+        try {
+            $user = Department::findOrFail($id);
+            $user->update($data);
+
+            return redirect()->route('department.index')->with('message','Department Deleted Succeessfully');
+        } catch(\Exception $ex){
+
+            return redirect()->back()->with('error','Something Went Wrong - '.$ex->getMessage());
+        }
     }
 }

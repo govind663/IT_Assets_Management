@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
             'role_id' => '1',
             'department_id' => '1',
             'email' => 'admin@gmail.com',
+            'phone_number' => '1234567890',
             'password' => Hash::make('1234567890'),
             'created_by' => '1',
             'created_at' => Carbon::now()
@@ -30,8 +31,9 @@ class UserSeeder extends Seeder
             'role_id' => '2',
             'department_id' => '1',
             'email' => 'hod@gmail.com',
+            'phone_number' => '1234565890',
             'password' => Hash::make('1234567890'),
-            'created_by' => '2',
+            'created_by' => '1',
             'created_at' => Carbon::now()
         ]);
 
@@ -39,9 +41,10 @@ class UserSeeder extends Seeder
             'name' => 'Cleark',
             'role_id' => '3',
             'department_id' => '1',
+            'phone_number' => '1234568890',
             'email' => 'cleark@gmail.com',
             'password' => Hash::make('1234567890'),
-            'created_by' => '3',
+            'created_by' => '1',
             'created_at' => Carbon::now()
         ]);
     }

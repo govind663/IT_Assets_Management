@@ -37,7 +37,7 @@
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="{{ route('dashboard') }}">
                         <b>
-                            <i class="ri-dashboard-2-line"></i>
+                            <i class="ri-home-2-line"></i>
                             <span data-key="t-dashboards">Dashboards</span>
                         </b>
                     </a>
@@ -54,10 +54,10 @@
                     <div class="collapse menu-dropdown" id="sidebarApps">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="#" class="nav-link" data-key="t-chat"><b>Department</b></a>
+                                <a href="{{ route('department.index') }}" class="nav-link" data-key="t-chat"><b>Department</b></a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link" data-key="t-chat"><b>Users</b></a>
+                                <a href="{{ route('users.index') }}" class="nav-link" data-key="t-chat"><b>Users</b></a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link" data-key="t-chat"><b>Category</b></a>
