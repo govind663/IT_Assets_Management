@@ -22,10 +22,8 @@
 <script src="{{ url('/') }}/assets/js/app.js"></script>
 
 <!-- Select2 Js -->
-<script src="{{ url('/') }}/admin/js/select2.min.js"></script>
-<script src="{{ url('/') }}/admin/js/pages/select2.init.js"></script>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script>
+<script src="{{ url('/') }}/assets/js/select2.min.js"></script>
+<script src="{{ url('/') }}/assets/js/pages/select2.init.js"></script>
 
 <!--datatable js-->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>

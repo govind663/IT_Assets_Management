@@ -43,33 +43,11 @@
                         <form method="POST" action="{{ route('users.store') }}"  enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
-                                        <label for="firstNameinput" class="form-label"><b>First Name : <span class="text-danger">*</span></b></label>
-                                        <input type="text" id="f_name" name="dept_name" class="form-control @error('dept_name') is-invalid @enderror" value="{{ old('dept_name') }}" placeholder="Enter First Name" >
-                                        @error('dept_name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label for="firstNameinput" class="form-label"><b>Middle Name : <span class="text-danger">*</span></b></label>
-                                        <input type="text" id="m_name" name="dept_name" class="form-control @error('dept_name') is-invalid @enderror" value="{{ old('dept_name') }}" placeholder="Enter Middle Name" >
-                                        @error('dept_name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label for="firstNameinput" class="form-label"><b>Last Name : <span class="text-danger">*</span></b></label>
-                                        <input type="text" id="l_name" name="dept_name" class="form-control @error('dept_name') is-invalid @enderror" value="{{ old('dept_name') }}" placeholder="Enter Last Name" >
-                                        @error('dept_name')
+                                        <label for="FirstNameInput" class="form-label"><b>First Name : <span class="text-danger">*</span></b></label>
+                                        <input type="text" id="f_name" name="f_name" class="form-control @error('f_name') is-invalid @enderror" value="{{ old('f_name') }}" placeholder="Enter First Name" >
+                                        @error('f_name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -77,11 +55,11 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
-                                        <label for="firstNameinput" class="form-label"><b>Email Id : <span class="text-danger">*</span></b></label>
-                                        <input type="email" id="dept_name" name="dept_name" class="form-control @error('dept_name') is-invalid @enderror" value="{{ old('dept_name') }}" placeholder="Enter Email Id" >
-                                        @error('dept_name')
+                                        <label for="MiddleNameInput" class="form-label"><b>Middle Name : <span class="text-danger">*</span></b></label>
+                                        <input type="text" id="m_name" name="m_name" class="form-control @error('m_name') is-invalid @enderror" value="{{ old('m_name') }}" placeholder="Enter Middle Name" >
+                                        @error('m_name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -89,11 +67,93 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
-                                        <label for="firstNameinput" class="form-label"><b>Mobile Number : <span class="text-danger">*</span></b></label>
-                                        <input type="text" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="dept_name" name="dept_name" class="form-control @error('dept_name') is-invalid @enderror" value="{{ old('dept_name') }}" placeholder="Enter Mobile Number" >
-                                        @error('dept_name')
+                                        <label for="LastNameInput" class="form-label"><b>Last Name : <span class="text-danger">*</span></b></label>
+                                        <input type="text" id="l_name" name="l_name" class="form-control @error('l_name') is-invalid @enderror" value="{{ old('l_name') }}" placeholder="Enter Last Name" >
+                                        @error('l_name')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="Department" class="form-label"><b>Department : <span class="text-danger">*</span></b></label>
+                                        <select class="js-example-basic-single form-control @error('department_id') is-invalid @enderror" id="department_id" name="department_id">
+                                            <option value="">Select Department</option>
+                                            @foreach ($department as $value)
+                                            <option value="{{ $value->id }}"  {{ (old("department_id") == $value->id ? "selected":"") }} > {{ $value->dept_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('department_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="Role" class="form-label"><b>Degination : <span class="text-danger">*</span></b></label>
+                                        <select class="js-example-basic-single form-control @error('role_id') is-invalid @enderror" id="role_id" name="role_id">
+                                            <option value="">Select Degination</option>
+                                            @foreach ($rols as $value)
+                                            <option value="{{ $value->id }}" {{ (old("role_id") == $value->id ? "selected":"") }}>{{ $value->role_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('role_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="MobileNumberInput" class="form-label"><b>Mobile Number : <span class="text-danger">*</span></b></label>
+                                        <input type="text" id="phone_number" name="phone_number" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control @error('phone_number') is-invalid @enderror" value="{{ old('phone_number') }}" placeholder="Enter phone_number Id" >
+                                        @error('phone_number')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="EmailInput" class="form-label"><b>Email Id : <span class="text-danger">*</span></b></label>
+                                        <input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="Enter Email Id" >
+                                        @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="PasswordInput" class="form-label"><b>Password : <span class="text-danger">*</span></b></label>
+                                        <input type="password"  id="password" name="password" class="form-control @error('password') is-invalid @enderror" value="{{ old('password') }}" placeholder="Enter Password" >
+                                        @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="ConfirmPasswordInput" class="form-label"><b>Confirm : <span class="text-danger">*</span></b></label>
+                                        <input type="password"  id="password_confirmation" name="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror" value="{{ old('password_confirmation') }}" placeholder="Enter Confirm Password" >
+                                        @error('password_confirmation')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

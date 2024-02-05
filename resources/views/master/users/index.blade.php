@@ -59,7 +59,7 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <a class="btn btn-primary" href="{{ route('users.create') }}" role="button"><b>+ Add Department</b></a>
+                                <a class="btn btn-primary" href="{{ route('users.create') }}" role="button"><b>+ Add Users</b></a>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -79,7 +79,7 @@
                                             @foreach ($users as $key=>$value)
                                             <tr>
                                                 <td>{{ $key+1 }}</td>
-                                                <td>{{ ucwords($value->name) }}</td>
+                                                <td>{{ ucwords($value->f_name) }} &nbsp; {{ ucwords($value->m_name) }} &nbsp; {{ ucwords($value->l_name) }}</td>
                                                 <td>{{ strtolower($value->email) }}</td>
                                                 <td>{{ $value->phone_number }}</td>
                                                 <td>{{ $value->department?->dept_name }}</td>

@@ -30,7 +30,7 @@ class LoginController extends Controller
     public function authenticate(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
-        $remember_me = $request->has('remember_token') ? true : false;
+        $remember_me = ($request->has('remember_token')) ? true : false;
 
         if (Auth::attempt($credentials, $remember_me)) {
             $this->UserLogActivityLogs->logUserLoginActivity('users', 'loged In');

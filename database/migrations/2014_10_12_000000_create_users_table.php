@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('f_name');
+            $table->string('m_name');
+            $table->string('l_name');
             $table->foreignIdFor(Role::class)->index();
             $table->foreignIdFor(Department::class)->index();
             $table->string('email')->unique();

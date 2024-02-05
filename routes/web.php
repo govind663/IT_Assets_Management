@@ -65,7 +65,7 @@ Route::group(['middleware' => ['auth:web', 'preventBackHistoryMiddleware']], fun
             'edit'=>'department.edit',
             'update'=>'department.update',
             'destroy'=>'department.destroy'
-            ]);
+        ]);
 
         // ============== Users CRUD
         Route::resource('users',UsersController::class)
@@ -76,7 +76,7 @@ Route::group(['middleware' => ['auth:web', 'preventBackHistoryMiddleware']], fun
             'edit'=>'users.edit',
             'update'=>'users.update',
             'destroy'=>'users.destroy'
-            ]);
+        ]);
     });
 
 });

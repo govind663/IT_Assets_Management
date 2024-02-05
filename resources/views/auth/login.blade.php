@@ -9,8 +9,8 @@
     <meta content="IT Assets Management System" name="description" />
     <meta content="Panvel Municipal Corporation" name="author" />
 
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ url('/') }}/assets/images/panvel_img/pmc_favicon.png">
+    <!-- Site favicon -->
+    <link rel="shortcut icon" href="{{ url('/') }}/assets/images/panvel_img/pmc_favicon.png" type="image/x-icon"/>
 
     {{-- Title Start --}}
     <title>IT Assets Management System | Login</title>

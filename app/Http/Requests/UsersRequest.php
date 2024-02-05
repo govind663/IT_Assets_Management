@@ -22,19 +22,29 @@ class UsersRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rule = [
-            'name' => 'required|string|min:4|max:255',
-            'role_id' =>  'requied|integer|exists:roles,id',
-            'department_id' =>  'requied|exists:departments,id',
-            'email' => 'required|string|email|unique:users,email',
-            'phone_number' =>  ['required', 'numeric', 'regex:/^1[3-9]\d{9}$/'],
-            'password' => [
-                'required',
-                'confirmed',
-                Password::min(8)->letters()->numbers(),
-            ],
-            'password_confirmation' => 'required',
-        ];
+        if ($this->id){
+            $rule = [
+                'f_name' => 'string|min:4|max:255',
+                'm_name' => 'string|min:4|max:255',
+                'l_name' => 'string|min:4|max:255',
+                'role_id' =>  'integer',
+                'department_id' =>  'integer',
+                'phone_number' => 'string',
+                'email' => ' string|email:filter' . $this->id,
+            ];
+        }else{
+            $rule = [
+                'f_name' => 'required|string|min:4|max:255',
+                'm_name' => 'required|string|min:4|max:255',
+                'l_name' => 'required|string|min:4|max:255',
+                'role_id' =>  'required|integer',
+                'department_id' =>  'required|integer',
+                'email' => 'required|string|email',
+                'phone_number' =>  'required',
+                'password' => 'required|string|min:8|confirmed',
+                'password_confirmation' => 'required',
+            ];
+        }
 
         return $rule;
     }
@@ -42,31 +52,37 @@ class UsersRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => __('Username field is required'),
-            'name.string' => __('Invalid name format'),
-            'name.min' => __('The length of name must be at least 4 characters'),
-            'name.max' => __('The length of name can not exceed 255 characters'),
+            'f_name.required' => __('First Name is required'),
+            'f_name.string' => __('Invalid name format'),
+            'f_name.min' => __('The length of name must be at least 4 characters'),
+            'f_name.max' => __('The length of name can not exceed 255 characters'),
 
-            'role_id.required' => __('Please select a role for the employee'),
+            'm_name.required' => __('Middle Name is required'),
+            'm_name.string' => __('Invalid name format'),
+            'm_name.min' => __('The length of name must be at least 4 characters'),
+            'm_name.max' => __('The length of name can not exceed 255 characters'),
+
+            'l_name.required' => __('Last Name is required'),
+            'l_name.string' => __('Invalid name format'),
+            'l_name.min' => __('The length of name must be at least 4 characters'),
+            'l_name.max' => __('The length of name can not exceed 255 characters'),
+
+            'role_id.required' => __('Please select a Degination'),
             'role_id.integer' => __('Role id should be an integer'),
-            'role_id.exists' => __('Role does not exist'),
 
-            'department_id.required' => __('Department field is required'),
-            'department_id.exists' => __('Department does not exist') ,
-            'department_id.exists' => __('Department does not exist'),
+            'department_id.required' => __('Please select a Department'),
+            'department_id.integer' => __('Department should be an integer') ,
 
             'email.required' => __('Email Id is required'),
             'email.unique' => __('This email has already been registered'),
             'email.email' => __('Please enter a valid Email address'),
 
-            'phone_number.required' => __('Phone number field is required'),
-            'phone_number.regex' => __('Incorrect phone number format'),
+            'phone_number.required' => __('Phone number is required'),
+            'phone_number.regex' => __('Please enter a valid Phone number'),
+            'phone_number.numeric' => __('Phone number should only contain numbers'),
 
             'password.required' => __('Password is required'),
             'password.min' => __('The password must be at least 8 digits long'),
-            'password.letters' =>  __('The password must contain at least one letter'),
-            'password.numeric' =>  __('The password must contain at least one number'),
-
             'password.confirmed' => __('Passwords do not match'),
             'password_confirmation.required' => __('Confirm Password is required'),
         ];

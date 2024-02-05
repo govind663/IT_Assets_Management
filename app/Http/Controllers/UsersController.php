@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UsersRequest;
+use App\Models\Department;
+use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -27,7 +30,10 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('master.users.create');
+        $department = Department::select('dept_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
+        $rols = Role::select('role_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
+
+        return view('master.users.create')->with([ 'rols' => $rols, 'department' => $department ]);
     }
 
     /**
@@ -35,12 +41,20 @@ class UsersController extends Controller
      */
     public function store(UsersRequest $request)
     {
-        $data = $request->validated();
-        $data['inserted_by'] =  Auth::user()->id;
-        $data['inserted_at'] =  Carbon::now();
         try {
 
-            $user = User::create($data);
+            $data = User::create();
+            $data->f_name =  $request->get('f_name') ?? '';
+            $data->m_name =  $request->get('m_name') ?? '';
+            $data->l_name =  $request->get('l_name') ?? '';
+            $data->department_id =  $request->get('department_id') ?? '';
+            $data->role_id =  $request->get('role_id') ?? '';
+            $data->phone_number =  $request->get('phone_number') ?? '';
+            $data->email =  $request->get('email') ?? '';
+            $data->password =  Hash::make($request->get('password')) ?? '';
+            $data->created_by =  Auth::user()->id;
+            $data->created_at =  Carbon::now();
+            $data->save();
 
             return redirect()->route('users.index')->with('message','Users created successfully');
 
@@ -53,33 +67,47 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $User)
+    public function show($id)
     {
+        $users = User::with('department', 'role')->find($id)->whereNull('deleted_at')->first();
         // dd($User);
-        return view('master.users.view')->with(['users' => $User]);
+        return view('master.users.view')->with(['users' => $users]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $User)
+    public function edit($id)
     {
-        // dd($User);
-        return view('master.users.edit')->with(['users' => $User]);
+        $users = User::findOrFail($id);
+        $department = Department::select('dept_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
+        $rols = Role::select('role_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
+
+        // dd($users);
+        return view('master.users.edit')->with(['users' => $users, 'rols' => $rols, 'department' => $department]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UsersRequest $request, string $id)
+    public function update(UsersRequest $request, $id)
     {
-        $data = $request->validated();
-        $data['modified_by'] =  Auth::user()->id;
-        $data['modified_at'] =  Carbon::now();
         try {
 
-            $user = User::findOrFail($id);
-            $user->update($data);
+            $data = User::findOrFail($id);
+
+            $data->f_name =  $request->get('f_name') ?? '';
+            $data->m_name =  $request->get('m_name') ?? '';
+            $data->l_name =  $request->get('l_name') ?? '';
+            $data->role_id =  $request->get('role_id') ?? '';
+            $data->department_id =  $request->get('department_id') ?? '';
+
+            $data->phone_number =  $request->get('phone_number') ?? '';
+            $data->email =  $request->get('email') ?? '';
+
+            $data->updated_by =  Auth::user()->id;
+            $data->updated_at =  Carbon::now();
+            $data->save();
 
             return redirect()->route('users.index')->with('message','Users updated successfully');
 
@@ -92,7 +120,7 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         $data['deleted_by'] =  Auth::user()->id;
         $data['deleted_at'] =  Carbon::now();

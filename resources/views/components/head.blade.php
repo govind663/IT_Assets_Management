@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE= edge,chrome=1" />
 
 <!-- Site favicon -->
-<link rel="apple-touch-icon" sizes="180x180" href="{{ url('/') }}/assets/images/panvel_img/pmc_favicon.png" />
+<link rel="shortcut icon" href="{{ url('/') }}/assets/images/panvel_img/pmc_favicon.png" type="image/x-icon"/>
 
 <!-- Title -->
 <title>@yield('title')</title>
@@ -25,9 +25,11 @@
 <link href="{{ url('/') }}/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 <!-- App Css-->
 <link href="{{ url('/') }}/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+<!-- custom Css-->
+<link href="{{ url('/') }}/assets/css/custom.min.css" rel="stylesheet" type="text/css" />
 
 <!--  Custom Select2 CSS -->
-<link href="{{ url('/') }}/admin/css/select2.min.css" rel="stylesheet" />
+<link href="{{ url('/') }}/assets/css/select2.min.css" rel="stylesheet" />
 
 <!--datatable css-->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
@@ -39,4 +41,4 @@
 <!-- Toaster Message -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
