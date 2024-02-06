@@ -63,7 +63,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table id="buttons-datatables" class="display table table-bordered table-responsive" style="width:100%;">
+                                    <table id="buttons-datatables" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
                                         <thead  class="bg-primary text-light">
                                             <tr>
                                                 <th>Sr. No.</th>
@@ -84,25 +84,28 @@
                                                 <td>{{ $value->phone_number }}</td>
                                                 <td>{{ $value->department?->dept_name }}</td>
                                                 <td>{{ $value->role?->role_name }}</td>
-                                                <td style="display:flex;" >
+                                                <td class="no-export d-flex">
+                                                    {{-- Read --}}
                                                     <a href="{{ route('users.show', $value->id) }}">
                                                         <button class="btn btn-sm btn-info" >
                                                             <b><i class="ri-eye-line"></i> View</b>
                                                         </button>
                                                     </a>
                                                     &nbsp;
+                                                    {{-- Edit --}}
                                                     <a href="{{ route('users.edit', $value->id) }}">
                                                         <button class="btn btn-sm btn-warning" >
-                                                            <b><i class="ri-edit-2-line"></i> Edit</b>
+                                                            <b><i class="ri-edit-line"></i> Edit</b>
                                                         </button>
                                                     </a>
                                                     &nbsp;
+                                                    {{-- Delete --}}
                                                     <form action="{{ route('users.destroy', $value->id) }}" method="post">
                                                         @csrf
                                                         @method('DELETE')
                                                         <input name="_method" type="hidden" value="DELETE">
                                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');">
-                                                            <b><i class="ri-delete-bin-line"></i> Remove</b>
+                                                            <b><i class="ri-delete-bin-line"></i> Delete</b>
                                                         </button>
                                                     </form>
                                                 </td>

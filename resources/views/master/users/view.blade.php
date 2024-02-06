@@ -41,12 +41,53 @@
                 <div class="card-body">
                     <div class="live-preview">
                         <form >
-
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
-                                        <label for="firstNameinput" class="form-label"><b>Department Name : </b></label>
-                                        <input readonly class="form-control" value="{{ $department->dept_name }}" >
+                                        <label for="FirstNameInput" class="form-label"><b>First Name : <span class="text-danger">*</span></b></label>
+                                        <input typye="text" class="form-control" value="{{ $users->f_name }}" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="MiddleNameInput" class="form-label"><b>Middle Name : <span class="text-danger">*</span></b></label>
+                                        <input typye="text" class="form-control" value="{{ $users->m_name }}" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="LastNameInput" class="form-label"><b>Last Name : <span class="text-danger">*</span></b></label>
+                                        <input typye="text" class="form-control" value="{{ $users->l_name }}" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="Department" class="form-label"><b>Department : <span class="text-danger">*</span></b></label>
+                                        <input typye="text" class="form-control" value="{{ $users->department?->dept_name }}" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="Role" class="form-label"><b>Degination : <span class="text-danger">*</span></b></label>
+                                        <input typye="text" class="form-control" value="{{ $users->role?->role_name }}" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="MobileNumberInput" class="form-label"><b>Mobile Number : <span class="text-danger">*</span></b></label>
+                                        <input typye="text" class="form-control" value="{{ $users->phone_number }}" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="EmailInput" class="form-label"><b>Email Id : <span class="text-danger">*</span></b></label>
+                                        <input typye="text" class="form-control" value="{{ $users->email }}" readonly>
                                     </div>
                                 </div>
 

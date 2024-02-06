@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    Department | List
+    Units | List
 @endsection
 
 @push('styles')
@@ -35,7 +35,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
-                            <h4 class="mb-sm-0 text-primary text-capitalize">All Departments List</h4>
+                            <h4 class="mb-sm-0 text-primary text-capitalize">All Units List</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
@@ -44,7 +44,7 @@
                                             <i class="ri-home-2-line"></i> Dashboard
                                         </a>
                                     </li>
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Department</a></li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Units</a></li>
                                     <li class="breadcrumb-item active">List</li>
                                 </ol>
                             </div>
@@ -59,42 +59,46 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <a class="btn btn-primary" href="{{ route('department.create') }}" role="button"><b>+ Add Department</b></a>
+                                <a class="btn btn-primary" href="{{ route('units.create') }}" role="button"><b>+ Add Category</b></a>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table id="buttons-datatables" class="display table table-bordered table-responsive" style="width:100%;">
+                                    <table id="buttons-datatables" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
                                         <thead  class="bg-primary text-light">
                                             <tr>
-                                                <th>Name</th>
-                                                <th>Department Name</th>
-                                                <th class="no-export">Action</th>
+                                                <th>Sr. No.</th>
+                                                <th>Unit Name</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($department as $key=>$value)
+                                            @foreach ($units as $key=>$value)
                                             <tr>
                                                 <td>{{ $key+1 }}</td>
-                                                <td>{{ $value->dept_name }}</td>
-                                                <td class="no-export d-flex" >
-                                                    <a href="{{ route('department.show', $value->id) }}">
+                                                <td>{{ ucwords($value->unit_name) }}</td>
+
+                                                <td class="no-export d-flex">
+                                                    {{-- Read --}}
+                                                    <a href="{{ route('units.show', $value->id) }}">
                                                         <button class="btn btn-sm btn-info" >
                                                             <b><i class="ri-eye-line"></i> View</b>
                                                         </button>
                                                     </a>
                                                     &nbsp;
-                                                    <a href="{{ route('department.edit', $value->id) }}">
+                                                    {{-- Edit --}}
+                                                    <a href="{{ route('units.edit', $value->id) }}">
                                                         <button class="btn btn-sm btn-warning" >
-                                                            <b><i class="ri-edit-2-line"></i> Edit</b>
+                                                            <b><i class="ri-edit-line"></i> Edit</b>
                                                         </button>
                                                     </a>
                                                     &nbsp;
-                                                    <form action="{{ route('department.destroy', $value->id) }}" method="post">
+                                                    {{-- Delete --}}
+                                                    <form action="{{ route('units.destroy', $value->id) }}" method="post">
                                                         @csrf
                                                         @method('DELETE')
                                                         <input name="_method" type="hidden" value="DELETE">
                                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');">
-                                                            <b><i class="ri-delete-bin-line"></i> Remove</b>
+                                                            <b><i class="ri-delete-bin-line"></i> Delete</b>
                                                         </button>
                                                     </form>
                                                 </td>

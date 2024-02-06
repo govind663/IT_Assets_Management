@@ -43,7 +43,7 @@
                         <form method="POST" action="{{ route('users.update', $users->id ) }}"  enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
-
+                            <input type="text" id="id" name="id" hidden class="form-control" value="{{ $users->id }}" >
                             <div class="row">
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
@@ -85,7 +85,7 @@
                                     <div class="mb-3">
                                         <label for="Department" class="form-label"><b>Department : <span class="text-danger">*</span></b></label>
                                         <select class="js-example-basic-single form-control @error('department_id') is-invalid @enderror" id="department_id" name="department_id">
-                                            <option value="">Select Department</option>
+                                            {{-- <option value="">Select Department</option> --}}
                                             @foreach ($department as $value)
                                             <option value="{{ $value->id }}"  {{ ($users->department_id == $value->id ? "selected":"") }} > {{ $value->dept_name }}</option>
                                             @endforeach
@@ -102,7 +102,7 @@
                                     <div class="mb-3">
                                         <label for="Role" class="form-label"><b>Degination : <span class="text-danger">*</span></b></label>
                                         <select class="js-example-basic-single form-control @error('role_id') is-invalid @enderror" id="role_id" name="role_id">
-                                            <option value="">Select Degination</option>
+                                            {{-- <option value="">Select Degination</option> --}}
                                             @foreach ($rols as $value)
                                             <option value="{{ $value->id }}" {{ ($users->role_id == $value->id ? "selected":"") }}>{{ $value->role_name }}</option>
                                             @endforeach
@@ -118,7 +118,7 @@
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
                                         <label for="MobileNumberInput" class="form-label"><b>Mobile Number : <span class="text-danger">*</span></b></label>
-                                        <input type="text" id="phone_number" name="phone_number" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control @error('phone_number') is-invalid @enderror" value="{{ $users->phone_number }}" placeholder="Enter phone_number Id" >
+                                        <input type="number" id="phone_number" name="phone_number" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control @error('phone_number') is-invalid @enderror" value="{{ $users->phone_number }}" placeholder="Enter Mobile Number" >
                                         @error('phone_number')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

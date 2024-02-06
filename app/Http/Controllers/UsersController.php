@@ -18,11 +18,10 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::with('department', 'role')->whereNull('deleted_at')->orderByDesc('id')->get();
+        $users = User::with('department', 'role')->whereNull('deleted_at')->orderBy('id', 'desc')->get();
         // dd($users);
 
         return view('master.users.index')->with(['users' => $users]);
-
     }
 
     /**
@@ -41,17 +40,17 @@ class UsersController extends Controller
      */
     public function store(UsersRequest $request)
     {
+        $data = $request->validated();
         try {
-
-            $data = User::create();
-            $data->f_name =  $request->get('f_name') ?? '';
-            $data->m_name =  $request->get('m_name') ?? '';
-            $data->l_name =  $request->get('l_name') ?? '';
-            $data->department_id =  $request->get('department_id') ?? '';
-            $data->role_id =  $request->get('role_id') ?? '';
-            $data->phone_number =  $request->get('phone_number') ?? '';
-            $data->email =  $request->get('email') ?? '';
-            $data->password =  Hash::make($request->get('password')) ?? '';
+            $data = new User();
+            $data->f_name =  $request->get('f_name');
+            $data->m_name =  $request->get('m_name');
+            $data->l_name =  $request->get('l_name');
+            $data->department_id =  $request->get('department_id');
+            $data->role_id =  $request->get('role_id');
+            $data->phone_number =  $request->get('phone_number');
+            $data->email =  $request->get('email');
+            $data->password =  Hash::make($request->get('password'));
             $data->created_by =  Auth::user()->id;
             $data->created_at =  Carbon::now();
             $data->save();
@@ -69,8 +68,8 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $users = User::with('department', 'role')->find($id)->whereNull('deleted_at')->first();
-        // dd($User);
+        $users = User::findOrFail($id)->with('department', 'role')->whereNull('deleted_at')->orderByDesc('id')->first();
+        // return($users);
         return view('master.users.view')->with(['users' => $users]);
     }
 
@@ -92,22 +91,19 @@ class UsersController extends Controller
      */
     public function update(UsersRequest $request, $id)
     {
+        $data = $request->validated($id);
         try {
-
             $data = User::findOrFail($id);
-
-            $data->f_name =  $request->get('f_name') ?? '';
-            $data->m_name =  $request->get('m_name') ?? '';
-            $data->l_name =  $request->get('l_name') ?? '';
-            $data->role_id =  $request->get('role_id') ?? '';
-            $data->department_id =  $request->get('department_id') ?? '';
-
-            $data->phone_number =  $request->get('phone_number') ?? '';
-            $data->email =  $request->get('email') ?? '';
-
+            $data->f_name =  $request->get('f_name');
+            $data->m_name =  $request->get('m_name');
+            $data->l_name =  $request->get('l_name');
+            $data->role_id =  $request->get('role_id');
+            $data->department_id =  $request->get('department_id');
+            $data->phone_number =  $request->get('phone_number');
+            $data->email =  $request->get('email');
             $data->updated_by =  Auth::user()->id;
             $data->updated_at =  Carbon::now();
-            $data->save();
+            $data->update();
 
             return redirect()->route('users.index')->with('message','Users updated successfully');
 

@@ -54,22 +54,22 @@
                     <div class="collapse menu-dropdown" id="sidebarApps">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('department.index') }}" class="nav-link" data-key="t-chat"><b>Department</b></a>
+                                <a href="{{ route('department.index') }}" class="nav-link" data-key="department"><b>Department</b></a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('users.index') }}" class="nav-link" data-key="t-chat"><b>Users</b></a>
+                                <a href="{{ route('users.index') }}" class="nav-link" data-key="users"><b>Users</b></a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link" data-key="t-chat"><b>Category</b></a>
+                                <a href="{{ route('catagories.index') }}" class="nav-link" data-key="category"><b>Category</b></a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link" data-key="t-chat"><b>Units</b></a>
+                                <a href="{{ route('units.index') }}" class="nav-link" data-key="units"><b>Units</b></a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link" data-key="t-chat"><b>Products</b></a>
+                                <a href="{{ route('product.index') }}" class="nav-link" data-key="products"><b>Products</b></a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link" data-key="t-chat"><b>Vendors</b></a>
+                                <a href="{{ route('vendors.index') }}" class="nav-link" data-key="vendors"><b>Vendors</b></a>
                             </li>
                         </ul>
                     </div>

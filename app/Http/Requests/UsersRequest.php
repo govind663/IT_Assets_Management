@@ -24,28 +24,29 @@ class UsersRequest extends FormRequest
     {
         if ($this->id){
             $rule = [
-                'f_name' => 'string|min:4|max:255',
-                'm_name' => 'string|min:4|max:255',
-                'l_name' => 'string|min:4|max:255',
-                'role_id' =>  'integer',
-                'department_id' =>  'integer',
-                'phone_number' => 'string',
-                'email' => ' string|email:filter' . $this->id,
+                'f_name' => 'required|string',
+                'm_name' => 'required|string',
+                'l_name' => 'required|string',
+                'role_id' =>  'required|integer|exists:roles,id',
+                'department_id' =>  'required|integer|exists:departments,id',
+                'email' => "required|string|email:filter|unique:users,email,$this->id",
+                'phone_number' => "required|min:10",
             ];
         }else{
             $rule = [
-                'f_name' => 'required|string|min:4|max:255',
-                'm_name' => 'required|string|min:4|max:255',
-                'l_name' => 'required|string|min:4|max:255',
-                'role_id' =>  'required|integer',
-                'department_id' =>  'required|integer',
-                'email' => 'required|string|email',
-                'phone_number' =>  'required',
+                'f_name' => 'required|string',
+                'm_name' => 'required|string',
+                'l_name' => 'required|string',
+                'role_id' =>  'required|integer|exists:roles,id',
+                'department_id' =>  'required|integer|exists:departments,id',
+                'email' => 'required|string|email:filter|unique:users',
+                'phone_number' => "required|min:10",
                 'password' => 'required|string|min:8|confirmed',
                 'password_confirmation' => 'required',
             ];
         }
 
+        // dd($this->id);
         return $rule;
     }
 
@@ -53,37 +54,18 @@ class UsersRequest extends FormRequest
     {
         return [
             'f_name.required' => __('First Name is required'),
-            'f_name.string' => __('Invalid name format'),
-            'f_name.min' => __('The length of name must be at least 4 characters'),
-            'f_name.max' => __('The length of name can not exceed 255 characters'),
-
             'm_name.required' => __('Middle Name is required'),
-            'm_name.string' => __('Invalid name format'),
-            'm_name.min' => __('The length of name must be at least 4 characters'),
-            'm_name.max' => __('The length of name can not exceed 255 characters'),
-
             'l_name.required' => __('Last Name is required'),
-            'l_name.string' => __('Invalid name format'),
-            'l_name.min' => __('The length of name must be at least 4 characters'),
-            'l_name.max' => __('The length of name can not exceed 255 characters'),
 
             'role_id.required' => __('Please select a Degination'),
-            'role_id.integer' => __('Role id should be an integer'),
-
             'department_id.required' => __('Please select a Department'),
-            'department_id.integer' => __('Department should be an integer') ,
-
             'email.required' => __('Email Id is required'),
-            'email.unique' => __('This email has already been registered'),
-            'email.email' => __('Please enter a valid Email address'),
-
             'phone_number.required' => __('Phone number is required'),
-            'phone_number.regex' => __('Please enter a valid Phone number'),
-            'phone_number.numeric' => __('Phone number should only contain numbers'),
 
             'password.required' => __('Password is required'),
             'password.min' => __('The password must be at least 8 digits long'),
             'password.confirmed' => __('Passwords do not match'),
+
             'password_confirmation.required' => __('Confirm Password is required'),
         ];
     }

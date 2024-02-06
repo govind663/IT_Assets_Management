@@ -14,6 +14,10 @@ use  App\Http\Controllers\HomeController;
 // ==== Masters
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\CatagoriesController;
+use App\Http\Controllers\UnitController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\VendorsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +80,50 @@ Route::group(['middleware' => ['auth:web', 'preventBackHistoryMiddleware']], fun
             'edit'=>'users.edit',
             'update'=>'users.update',
             'destroy'=>'users.destroy'
+        ]);
+
+        // ============== Catagories CRUD
+        Route::resource('catagories',CatagoriesController::class)
+        ->names([
+            'index'=>'catagories.index',
+            'create'=>'catagories.create',
+            'show'=>'catagories.show',
+            'edit'=>'catagories.edit',
+            'update'=>'catagories.update',
+            'destroy'=>'catagories.destroy'
+        ]);
+
+        // ============== Units CRUD
+        Route::resource('units',UnitController::class)
+        ->names([
+            'index'=>'units.index',
+            'create'=>'units.create',
+            'show'=>'units.show',
+            'edit'=>'units.edit',
+            'update'=>'units.update',
+            'destroy'=>'units.destroy'
+        ]);
+
+        // ============== Product CRUD
+        Route::resource('products',ProductController::class)
+        ->names([
+            'index'=>'products.index',
+            'create'=>'products.create',
+            'show'=>'products.show',
+            'edit'=>'products.edit',
+            'update'=>'products.update',
+            'destroy'=>'products.destroy'
+        ]);
+
+        // ============== Vendors CRUD
+        Route::resource('vendors',VendorsController::class)
+        ->names([
+            'index'=>'vendors.index',
+            'create'=>'vendors.create',
+            'show'=>'vendors.show',
+            'edit'=>'vendors.edit',
+            'update'=>'vendors.update',
+            'destroy'=>'vendors.destroy'
         ]);
     });
 

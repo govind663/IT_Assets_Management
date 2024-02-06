@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    Department | Edit
+    Category | Add
 @endsection
 
 @section('content')
@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
-                            <h4 class="mb-sm-0 text-primary text-capitalize">Edit Department</h4>
+                            <h4 class="mb-sm-0 text-primary text-capitalize">Add Category</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
@@ -26,10 +26,10 @@
                                     </li>
                                     <li class="breadcrumb-item">
                                         <a href="{{ route('department.index') }}">
-                                            Department
+                                            Category
                                         </a>
                                     </li>
-                                    <li class="breadcrumb-item active">Edit</li>
+                                    <li class="breadcrumb-item active">Add</li>
                                 </ol>
                             </div>
 
@@ -40,18 +40,14 @@
 
                 <div class="card-body">
                     <div class="live-preview">
-                        <form method="POST" action="{{ route('department.update', $department->id ) }}"  enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('catagories.store') }}"  enctype="multipart/form-data">
                             @csrf
-                            @method('PATCH')
-
-                            <input type="text" id="id" name="id" hidden class="form-control" value="{{ $department->id }}" >
-
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="firstNameinput" class="form-label"><b>Department Name : <span class="text-danger">*</span></b></label>
-                                        <input type="text" id="dept_name" name="dept_name" class="form-control @error('dept_name') is-invalid @enderror" value="{{ $department->dept_name }}" placeholder="Enter Department Name" >
-                                        @error('dept_name')
+                                        <label for="firstNameinput" class="form-label"><b>Category Name : <span class="text-danger">*</span></b></label>
+                                        <input type="text" id="catagories_name" name="catagories_name" class="form-control @error('catagories_name') is-invalid @enderror" value="{{ old('catagories_name') }}" placeholder="Enter Category Name" >
+                                        @error('catagories_name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -61,7 +57,7 @@
 
                                 <div class="col-lg-12">
                                     <div class="text-end">
-                                        <a href="{{ route('department.index') }}" class="btn btn-danger">Cancel</a>&nbsp;
+                                        <a href="{{ route('catagories.index') }}" class="btn btn-danger">Cancel</a>&nbsp;
                                         <button type="submit" class="btn btn-primary">Submit</button>
                                     </div>
                                 </div>

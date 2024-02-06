@@ -11,13 +11,10 @@ class DepartmentController extends Controller
 {
     public function index()
     {
-        $departments = Department::select('id', 'dept_name')->whereNull('deleted_at')->orderByDesc('id')->get();
+        $departments = Department::select('id', 'dept_name')->whereNull('deleted_at')->orderBy('id', 'desc')->get();
         // dd($departments);
 
         return view('master.department.index')->with(['department' => $departments]);
-
-
-
     }
 
     public function create()
@@ -32,7 +29,7 @@ class DepartmentController extends Controller
         $data['inserted_at'] =  Carbon::now();
         try {
 
-            $user = Department::create($data);
+            $department = Department::create($data);
 
             return redirect()->route('department.index')->with('message','Department created successfully');
 
@@ -61,8 +58,8 @@ class DepartmentController extends Controller
         $data['modified_at'] =  Carbon::now();
         try {
 
-            $user = Department::findOrFail($id);
-            $user->update($data);
+            $department = Department::findOrFail($id);
+            $department->update($data);
 
             return redirect()->route('department.index')->with('message','Department updated successfully');
 
@@ -77,8 +74,8 @@ class DepartmentController extends Controller
         $data['deleted_by'] =  Auth::user()->id;
         $data['deleted_at'] =  Carbon::now();
         try {
-            $user = Department::findOrFail($id);
-            $user->update($data);
+            $department = Department::findOrFail($id);
+            $department->update($data);
 
             return redirect()->route('department.index')->with('message','Department Deleted Succeessfully');
         } catch(\Exception $ex){

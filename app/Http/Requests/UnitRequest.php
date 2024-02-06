@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DepartmentRequest extends FormRequest
+class UnitRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,21 +23,22 @@ class DepartmentRequest extends FormRequest
     {
         if ($this->id){
             $rule = [
-                'dept_name' => 'required|max:255',
+                'unit_name' => 'required|max:255',
             ];
         }else{
             $rule = [
-                'dept_name' => 'required|max:255',
+                'unit_name' => 'required|max:255',
             ];
         }
+        // dd($rule);
         return $rule;
     }
 
     public function messages()
     {
         return [
-            'dept_name.required' => __('Department Name is required'),
-            'dept_name.max' => __('The length of department name should not exceed 255 characters')
+            'unit_name.required' => __('Unit Name is required'),
+            'unit_name.max' => __('The length of unit name should not exceed 255 characters')
         ];
     }
 }
