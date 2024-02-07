@@ -27,7 +27,7 @@ class DepartmentRequest extends FormRequest
             ];
         }else{
             $rule = [
-                'dept_name' => 'required|max:255',
+                'dept_name' => 'required|max:255|unique:departments',
             ];
         }
         return $rule;
@@ -37,7 +37,8 @@ class DepartmentRequest extends FormRequest
     {
         return [
             'dept_name.required' => __('Department Name is required'),
-            'dept_name.max' => __('The length of department name should not exceed 255 characters')
+            'dept_name.max' => __('The length of department name should not exceed 255 characters'),
+            'dept_name.unique' => __('This department already exists')
         ];
     }
 }

@@ -20,9 +20,9 @@ return new class extends Migration
             $table->foreignIdFor(Catagories::class)->index()->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(Unit::class)->index()->nullable()->constrained()->onDelete('cascade');
             $table->string('brand');
-            $table->string('model_no');
+            $table->string('mobile_no');
             $table->text('description');
-            $table->integer('is_available')->default(1);   //0-not available, 1-available
+            $table->integer('is_available')->default(1)->comment('0: Not Available, 1: Available'); //0-Not Available, 1-Available
             $table->integer('inserted_by')->nullable();
             $table->timestamp('inserted_at')->nullable();
             $table->integer('modified_by')->nullable();

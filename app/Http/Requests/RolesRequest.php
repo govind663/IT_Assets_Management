@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CatagoriesRequest extends FormRequest
+class RolesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +23,11 @@ class CatagoriesRequest extends FormRequest
     {
         if ($this->id){
             $rule = [
-                'catagories_name' => 'required|max:255',
+                'role_name' => 'required|max:255',
             ];
         }else{
             $rule = [
-                'catagories_name' => 'required|max:255|unique:catagories',
+                'role_name' => 'required|max:255|unique:roles,role_name',
             ];
         }
         // dd($rule);
@@ -37,9 +37,9 @@ class CatagoriesRequest extends FormRequest
     public function messages()
     {
         return [
-            'catagories_name.required' => __('Category Name is required'),
-            'catagories_name.max' => __('The length of Category name should not exceed 255 characters'),
-            'catagories_name.unique' => __("This category already exists"),
+            'role_name.required' => __('Role Name is required'),
+            'role_name.max'      => __('Max length of Role Name must be :size characters'),
+            'role_name.unique'   => __('The same role name already exists'),
         ];
     }
 }

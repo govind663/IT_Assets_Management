@@ -31,9 +31,18 @@ class ProductController extends Controller
     {
         $data = $request->validated();
         $data['inserted_by'] =  Auth::user()->id;
-        $data['inserted_at'] =  Carbon::now();
+        $data['inserted_at'] =  Carbon::now();  
+
         try {
-            Product::create($data);
+            $products = Product::create($data);     
+            
+            // ==== Generate Product Code
+            $unique_id = "PMC/PRD/" . sprintf("%06d", abs((int)$products->id + 1))  . "/" . date("Y");
+            $update = [
+                'product_code' => $unique_id,
+            ];
+            Product::where('id', $products->id)->update($update);
+
             return redirect()->route('products.index')->with('message','Product created successfully');
 
         } catch(\Exception $ex){
@@ -63,7 +72,7 @@ class ProductController extends Controller
         $data['modified_by'] =  Auth::user()->id;
         $data['modified_at'] =  Carbon::now();
         try {
-            $products= Product::findOrFail($id);
+            $products = Product::findOrFail($id);
             $products->update($data);
             return redirect()->route('products.index')->with('message', 'Product updated Successfully!');
 

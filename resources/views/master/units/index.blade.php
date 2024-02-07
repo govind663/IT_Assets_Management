@@ -59,7 +59,7 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <a class="btn btn-primary" href="{{ route('units.create') }}" role="button"><b>+ Add Category</b></a>
+                                <a class="btn btn-primary" href="{{ route('units.create') }}" role="button"><b>+ Add Units</b></a>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -75,9 +75,9 @@
                                             @foreach ($units as $key=>$value)
                                             <tr>
                                                 <td>{{ $key+1 }}</td>
-                                                <td>{{ ucwords($value->unit_name) }}</td>
+                                                <td>{{ ucwords($value->unit_name ?: '') }}</td>
 
-                                                <td class="no-export d-flex">
+                                                <td class="d-flex">
                                                     {{-- Read --}}
                                                     <a href="{{ route('units.show', $value->id) }}">
                                                         <button class="btn btn-sm btn-info" >

@@ -12,11 +12,11 @@ class Product extends Model
     protected $fillable = [
         'id',
         'product_code',
-        'name',
+        'name', 
         'catagories_id',
         'unit_id',
         'brand',
-        'model_no',
+        'mobile_no',
         'description' ,
         'is_available',
         'inserted_by',
@@ -27,7 +27,7 @@ class Product extends Model
         'deleted_at',
     ];
 
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at', 'inserted_at', 'modified_at'];
 
 
     public function catagories()

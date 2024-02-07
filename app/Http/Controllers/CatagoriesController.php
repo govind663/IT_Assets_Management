@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CatagoriesRequest;
 use App\Models\Catagories;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CatagoriesController extends Controller
@@ -37,14 +36,14 @@ class CatagoriesController extends Controller
         }
     }
 
-    public function show(catagories $catagories, $id)
+    public function show(Catagories $catagories, $id)
     {
         $catagories = Catagories::findOrFail($id);
         // dd($catagories);
         return view('master.catagories.view')->with(['catagories' => $catagories]);
     }
 
-    public function edit(catagories $catagories, $id)
+    public function edit(Catagories $catagories, $id)
     {
         $catagories = Catagories::findOrFail($id);
         // dd($catagories);

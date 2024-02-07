@@ -12,8 +12,9 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use  App\Http\Controllers\HomeController;
 
 // ==== Masters
-use App\Http\Controllers\UsersController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\RolesController;
+use App\Http\Controllers\UsersController;
 use App\Http\Controllers\CatagoriesController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\ProductController;
@@ -69,6 +70,17 @@ Route::group(['middleware' => ['auth:web', 'preventBackHistoryMiddleware']], fun
             'edit'=>'department.edit',
             'update'=>'department.update',
             'destroy'=>'department.destroy'
+        ]);
+
+        // ============== Roles CRUD
+        Route::resource('roles',RolesController::class)
+        ->names([
+            'index'=>'roles.index',
+            'create'=>'roles.create',
+            'show'=>'roles.show',
+            'edit'=>'roles.edit',
+            'update'=>'roles.update',
+            'destroy'=>'roles.destroy'
         ]);
 
         // ============== Users CRUD

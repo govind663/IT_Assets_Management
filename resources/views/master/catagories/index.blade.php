@@ -75,9 +75,9 @@
                                             @foreach ($catagories as $key=>$value)
                                             <tr>
                                                 <td>{{ $key+1 }}</td>
-                                                <td>{{ ucwords($value->catagories_name) }}</td>
+                                                <td>{{ ucwords($value->catagories_name ?: '') }}</td>
 
-                                                <td class="no-export d-flex">
+                                                <td class="d-flex">
                                                     {{-- Read --}}
                                                     <a href="{{ route('catagories.show', $value->id) }}">
                                                         <button class="btn btn-sm btn-info" >

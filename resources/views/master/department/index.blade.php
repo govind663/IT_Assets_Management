@@ -68,15 +68,15 @@
                                             <tr>
                                                 <th>Name</th>
                                                 <th>Department Name</th>
-                                                <th class="no-export">Action</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($department as $key=>$value)
                                             <tr>
                                                 <td>{{ $key+1 }}</td>
-                                                <td>{{ $value->dept_name }}</td>
-                                                <td class="no-export d-flex" >
+                                                <td>{{ $value->dept_name?: '' }}</td>
+                                                <td class="d-flex" >
                                                     <a href="{{ route('department.show', $value->id) }}">
                                                         <button class="btn btn-sm btn-info" >
                                                             <b><i class="ri-eye-line"></i> View</b>

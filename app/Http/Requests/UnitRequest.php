@@ -27,7 +27,7 @@ class UnitRequest extends FormRequest
             ];
         }else{
             $rule = [
-                'unit_name' => 'required|max:255',
+                'unit_name' => 'required|max:255|unique:units',
             ];
         }
         // dd($rule);
@@ -38,7 +38,8 @@ class UnitRequest extends FormRequest
     {
         return [
             'unit_name.required' => __('Unit Name is required'),
-            'unit_name.max' => __('The length of unit name should not exceed 255 characters')
+            'unit_name.max' => __('The length of unit name should not exceed 255 characters'),
+            'unit_name.unique' => __('This unit name has already been taken'),
         ];
     }
 }

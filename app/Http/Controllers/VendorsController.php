@@ -2,63 +2,85 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\VendorsRequest;
+use App\Models\Vendor;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class VendorsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $vendors = Vendor::select('id', 'company_name', 'company_add', 'company_phone_no', 'phone', 'email', 'gst_no', 'description', 'status')
+                           ->whereNull('deleted_at')
+                           ->orderBy('id', 'desc')
+                           ->get();
+        // dd($vendors);
+
+        return view('master.vendors.index')->with(['vendors' => $vendors]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('master.vendors.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(VendorsRequest $request, )
     {
-        //
+        $data = $request->validated();
+        $data['inserted_by'] =  Auth::user()->id;
+        $data['inserted_at'] =  Carbon::now();
+        try {
+            Vendor::create($data);
+            return redirect()->route('vendors.index')->with('message','Vendors created successfully');
+
+        } catch(\Exception $ex){
+            return redirect()->back()->with('error','Something Went Wrong  - '.$ex->getMessage());
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Vendor $vendors, $id)
     {
-        //
+        $vendors = Vendor::findOrFail($id);
+        // dd($vendors);
+        return view('master.vendors.view')->with(['vendors' => $vendors]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Vendor $vendors, $id)
     {
-        //
+        $vendors = Vendor::findOrFail($id);
+        // dd($vendors);
+        return view('master.vendors.edit' )->with([ 'vendors'=>$vendors ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(VendorsRequest $request, $id)
     {
-        //
+        $data = $request->validated();
+        $data['modified_by'] =  Auth::user()->id;
+        $data['modified_at'] =  Carbon::now();
+        try {
+            $catagories= Vendor::findOrFail($id);
+            $catagories->update($data);
+            return redirect()->route('vendors.index')->with('message', 'Vendors updated Successfully!');
+
+        } catch(\Exception $ex){
+
+            return redirect()->back()->with('error','Something Went Wrong - '.$ex->getMessage());
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $data['deleted_by'] =  Auth::user()->id;
+        $data['deleted_at'] =  Carbon::now();
+        try {
+            $catagories = Vendor::findOrFail($id);
+            $catagories->update();
+
+            return redirect()->route('vendors.index')->with('message','Vendors Deleted Succeessfully');
+        } catch(\Exception $ex){
+
+            return redirect()->back()->with('error','Something Went Wrong - '.$ex->getMessage());
+        }
     }
 }

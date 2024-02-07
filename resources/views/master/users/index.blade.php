@@ -79,12 +79,12 @@
                                             @foreach ($users as $key=>$value)
                                             <tr>
                                                 <td>{{ $key+1 }}</td>
-                                                <td>{{ ucwords($value->f_name) }} &nbsp; {{ ucwords($value->m_name) }} &nbsp; {{ ucwords($value->l_name) }}</td>
-                                                <td>{{ strtolower($value->email) }}</td>
-                                                <td>{{ $value->phone_number }}</td>
-                                                <td>{{ $value->department?->dept_name }}</td>
-                                                <td>{{ $value->role?->role_name }}</td>
-                                                <td class="no-export d-flex">
+                                                <td>{{ ucwords($value->f_name ?: '') }} &nbsp; {{ ucwords($value->m_name) }} &nbsp; {{ ucwords($value->l_name) }}</td>
+                                                <td>{{ strtolower($value->email ?: '') }}</td>
+                                                <td>{{ $value->phone_number ?: '' }}</td>
+                                                <td>{{ $value->department?->dept_name ?: '' }}</td>
+                                                <td>{{ $value->role?->role_name ?: '' }}</td>
+                                                <td class="d-flex">
                                                     {{-- Read --}}
                                                     <a href="{{ route('users.show', $value->id) }}">
                                                         <button class="btn btn-sm btn-info" >
