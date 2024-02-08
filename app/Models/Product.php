@@ -12,7 +12,7 @@ class Product extends Model
     protected $fillable = [
         'id',
         'product_code',
-        'name', 
+        'name',
         'catagories_id',
         'unit_id',
         'brand',
@@ -29,12 +29,13 @@ class Product extends Model
 
     protected $dates = ['deleted_at', 'inserted_at', 'modified_at'];
 
-
+    // Relationship with Catagory model
     public function catagories()
     {
         return $this->belongsTo(Catagories::class);
     }
 
+    // Relationship with Unit model
     public function unit()
     {
         return $this->belongsTo(Unit::class);

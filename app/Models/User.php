@@ -57,11 +57,13 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    // Relationship with Vendor model.
     public function department()
     {
         return $this->belongsTo(Department::class);
     }
 
+    // Relationship with Role model
     public function role()
     {
         return $this->belongsTo(Role::class);

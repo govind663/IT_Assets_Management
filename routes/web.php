@@ -18,6 +18,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\CatagoriesController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\VendorsController;
 
 /*
@@ -55,9 +56,8 @@ Route::group(['prefix' => 'admin'],function(){
 });
 
 // ============================= Only Authenticated Users Can Access This Routs
-Route::group(['middleware' => ['auth:web', 'preventBackHistoryMiddleware']], function () {
+Route::group(['prefix' => 'admin','middleware'=>['auth', 'preventBackHistoryMiddleware']],function(){
 
-    Route::group(['prefix' => 'admin'],function(){
         // =============== Admin Dashboard
         Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
@@ -137,7 +137,17 @@ Route::group(['middleware' => ['auth:web', 'preventBackHistoryMiddleware']], fun
             'update'=>'vendors.update',
             'destroy'=>'vendors.destroy'
         ]);
-    });
+
+        // =============== Stocks Management
+        Route::resource('stocks',StockController::class)
+        ->names([
+            'index'=>'stocks.index',
+            'create'=>'stocks.create',
+            'show'=>'stocks.show',
+            'edit'=>'stocks.edit',
+            'update'=>'stocks.update',
+            'destroy'=>'stocks.destroy'
+        ]);
 
 });
 

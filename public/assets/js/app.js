@@ -123,8 +123,7 @@
             (document.querySelector(".navbar-menu") &&
                 (document.querySelector(".navbar-menu").innerHTML = d),
             ((n = document.createElement("ul")).innerHTML =
-                '<a href="#" class="logo"><img src="{{ url(' /
-                ') }}/assets/images/logo-sm.png" alt="" height="22"></a>'),
+                '<a href="#" class="logo"><img src="{{ url('/') }}/assets/images/logo-sm.png" alt="" height="22"></a>'),
             Array.from(
                 document
                     .getElementById("navbar-nav")

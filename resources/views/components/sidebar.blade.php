@@ -51,6 +51,7 @@
                             <span data-key="t-apps">Master</span>
                         </b>
                     </a>
+
                     <div class="collapse menu-dropdown" id="sidebarApps">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
@@ -76,6 +77,16 @@
                             </li>
                         </ul>
                     </div>
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="{{ route('stocks.index') }}">
+                            <b>
+                                <i class="ri-honour-line"></i>
+                                <span data-key="t-widgets">Stock Management</span>
+                            </b>
+                        </a>
+                    </li>
+
                 </li>
                 @endif
 
