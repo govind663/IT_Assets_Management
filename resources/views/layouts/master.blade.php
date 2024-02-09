@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-layout="horizontal" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-body-image="img-1" data-preloader="disable">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-layout="horizontal" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-body-image="img-1" data-preloader="disable>
 <head>
     <!-- Head Start -->
     <x-head />
@@ -40,6 +40,10 @@
         <!--start Preloader-->
         <x-preloader />
         <!--end Preloader-->
+
+         <!-- Theme Settings -->
+         <x-theme-setting />
+         <!-- End Theme Settings -->
 
         <!-- Start Main JS  -->
         <x-main-js />

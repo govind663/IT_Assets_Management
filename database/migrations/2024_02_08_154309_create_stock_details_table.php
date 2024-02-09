@@ -18,10 +18,11 @@ return new class extends Migration
         Schema::create('stock_details', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Stock::class)->index()->nullable()->constrained()->onDelete('cascade');
-            $table->foreignIdFor(Product::class)->index()->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(Catagories::class)->index()->nullable()->constrained()->onDelete('cascade');
-            $table->foreignIdFor(Unit::class)->index()->nullable()->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Product::class)->index()->nullable()->constrained()->onDelete('cascade');
             $table->string('brand')->nullable();
+            $table->string('model')->nullable();
+            $table->foreignIdFor(Unit::class)->index()->nullable()->constrained()->onDelete('cascade');
             $table->date('warranty_dt')->nullable();
             $table->string('quantity')->nullable();
             $table->integer('inserted_by')->nullable();

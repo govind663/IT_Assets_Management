@@ -73,7 +73,7 @@
                                                 <th>Mobile Number</th>
                                                 <th>Email Id</th>
                                                 <th>GST Number</th>
-                                                <th>Description</th>
+                                                <th class="text-wrap">Description</th>
                                                 <th>Status (Active/Inactive)</th>
                                                 <th>Action</th>
                                             </tr>
@@ -83,12 +83,12 @@
                                             <tr>
                                                 <td>{{ $key+1 }}</td>
                                                 <td>{{ $value->company_name ?: '' }}</td>
-                                                <td>{{ $value->company_add ?: '' }}</td>
+                                                <td class="text-wrap">{{ $value->company_add ?: '' }}</td>
                                                 <td>{{ $value->company_phone_no ?: '' }}</td>
                                                 <td>{{ $value->phone ?: '' }}</td>
                                                 <td>{{ $value->email ?: '' }}</td>
                                                 <td>{{ $value->gst_no ?: '' }}</td>
-                                                <td>{{ $value->description ?: '' }}</td>
+                                                <td class="text-wrap">{{ $value->description ?: '' }}</td>
 
                                                 @if ($value->status ?: '' == 1)
                                                 <td><span class="badge bg-success">Active</span></td>

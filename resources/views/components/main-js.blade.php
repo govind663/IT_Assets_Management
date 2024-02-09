@@ -3,7 +3,8 @@
 <script src="{{ asset('/assets/libs/simplebar/simplebar.min.js') }}"></script>
 <script src="{{ asset('/assets/libs/node-waves/waves.min.js') }}"></script>
 <script src="{{ asset('/assets/libs/feather-icons/feather.min.js') }}"></script>
-<script src="{{ asset('/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
+{{-- <script src="{{ asset('/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script> --}}
+<script src="{{ asset('/assets/js/plugins.js') }}"></script>
 
 <!-- apexcharts -->
 <script src="{{ asset('/assets/libs/apexcharts/apexcharts.min.js') }}"></script>
@@ -36,7 +37,7 @@
 <script src="{{ asset('/assets/js/pages/datatables.init.js') }}"></script>
 
 <!-- Modern colorpicker bundle -->
-<script src="{{ asset('/assets/libs/@simonwep/pickr/pickr.min.js') }}"></script>
+<script src="{{ asset('/assets/libs/simonwep/pickr/pickr.min.js') }}"></script>
 
 <!-- init js -->
 <script src="{{ asset('/assets/js/pages/form-pickers.init.js') }}"></script>
@@ -46,6 +47,10 @@
 
 <!-- prismjs plugin -->
 <script src="{{ asset('assets/libs/prismjs/prism.js') }}"></script>
+
+<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/choices.js/1.1.6/choices.min.js"></script>
+<script type='text/javascript' src='{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}'></script>
 
 <script>
     @if(Session::has('message'))

@@ -31,11 +31,12 @@ class ProductController extends Controller
     {
         $data = $request->validated();
         $data['inserted_by'] =  Auth::user()->id;
-        $data['inserted_at'] =  Carbon::now();  
+        $data['inserted_at'] =  Carbon::now();
+        // $image = Image::make(public_path('storage/' . $request ->file('inputname')->hashName()))->fit(100, 100 );
 
         try {
-            $products = Product::create($data);     
-            
+            $products = Product::create($data);
+
             // ==== Generate Product Code
             $unique_id = "PMC/PRD/" . sprintf("%06d", abs((int)$products->id + 1))  . "/" . date("Y");
             $update = [

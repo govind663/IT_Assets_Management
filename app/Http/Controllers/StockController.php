@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StockRequest;
+use App\Models\Catagories;
+use App\Models\Product;
 use App\Models\Stock;
+use App\Models\Unit;
 use App\Models\Vendor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -22,7 +25,11 @@ class StockController extends Controller
     public function create()
     {
         $vendos = Vendor::select('company_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
-        return view('stocks.create', ['vendors' => $vendos, ]);
+        $catagories = Catagories::select('catagories_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
+        $products = Product::select('name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
+        $units = Unit::select('unit_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
+
+        return view('stocks.create', ['vendors' => $vendos,'catagories' => $catagories, 'products' => $products, 'units' => $units ]);
     }
 
     public function store(StockRequest $request, )
@@ -82,5 +89,20 @@ class StockController extends Controller
 
             return redirect()->back()->with('error','Something Went Wrong - '.$ex->getMessage());
         }
+    }
+
+    /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    public function fetchProducts(Request $request)
+    {
+        $data['products'] = Product::where("catagories_id", $request->catagories_id)
+                                ->whereNull('deleted_at')
+                                ->orderByDesc('id')
+                                ->get(["name", "id", 'brand', 'mobile_no']);
+
+        return response()->json($data);
     }
 }
