@@ -146,46 +146,4 @@ Stock | Add
     });
 
 </script>
-
-<script>
-    $(document).ready(function() {
-
-        /*------------------------------------------
-        --------------------------------------------
-        Product Dropdown Change Event
-        --------------------------------------------
-        --------------------------------------------*/
-        $('#catagories_id').on('change', function() {
-            var idCatagories = this.value;
-            $("#product_id").html('');
-            $.ajax({
-                url: "{{ route('stocks.fetch-products') }}"
-                , type: "POST"
-                , data: {
-                    catagories_id: idCatagories
-                    , _token: '{{ csrf_token() }}'
-                }
-                , dataType: 'json'
-                , success: function(result) {
-                    $('#product_id').html(
-                        '<option value="">Select Product Name</option>');
-                    $.each(result.products, function(key, value) {
-                        // alert(value.model_no);
-                        $("#product_id").append('<option value="' + key.id + '">' +
-                            value.name + '</option>');
-                        $('#brand').val(value.brand);
-                        $('#modelNumber').val(value.model_no);
-                    });
-
-                    $('#unit_id').html('<option value="">Select Unit</option>');
-                    $.each(result.units, function(key, value) {
-                        $('#unit_id').append('<option value="' + key.id + '">' +
-                            value.unit_name + '</option>');
-                    });
-                }
-            });
-        });
-    });
-
-</script>
 @endpush()
