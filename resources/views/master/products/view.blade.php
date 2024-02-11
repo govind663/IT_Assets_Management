@@ -41,7 +41,7 @@
                 <div class="card-body">
                     <div class="live-preview">
                         <form >
-                                                        
+
                             <div class="row">
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
@@ -53,14 +53,14 @@
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
                                         <label for="CatagoryName" class="form-label"><b>Catagory Name : <span class="text-danger">*</span></b></label>
-                                        <input readonly type="text" class="form-control" value="{{ $products->name }}">
+                                        <input readonly type="text" class="form-control" value="{{ $products->catagories?->catagories_name }}">
                                     </div>
                                 </div>
 
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
                                         <label for="UnitName" class="form-label"><b>Units In Stock : <span class="text-danger">*</span></b></label>
-                                        <input readonly type="text" class="form-control" value="{{ $products->name }}">
+                                        <input readonly type="text" class="form-control" value="{{ $products->unit?->unit_name }}">
                                     </div>
                                 </div>
 
@@ -73,8 +73,8 @@
 
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
-                                        <label for="MobileNumberInput" class="form-label"><b>Mobile Number : <span class="text-danger">*</span></b></label>
-                                        <input readonly type="text" class="form-control" value="{{ $products->mobile_no }}">
+                                        <label for="ModelNumberInput" class="form-label"><b>Model Number : <span class="text-danger">*</span></b></label>
+                                        <input readonly type="text" class="form-control" value="{{ $products->model_no }}">
                                     </div>
                                 </div>
 

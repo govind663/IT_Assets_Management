@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StockRequest;
-use App\Models\Catagories;
 use App\Models\Product;
 use App\Models\Stock;
 use App\Models\Unit;
@@ -24,12 +23,9 @@ class StockController extends Controller
 
     public function create()
     {
-        $vendos = Vendor::select('company_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
-        $catagories = Catagories::select('catagories_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
-        $products = Product::select('name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
-        $units = Unit::select('unit_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
+        $vendors = Vendor::select('company_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
 
-        return view('stocks.create', ['vendors' => $vendos,'catagories' => $catagories, 'products' => $products, 'units' => $units ]);
+        return view('stocks.create', ['vendors' => $vendors ]);
     }
 
     public function store(StockRequest $request, )
@@ -38,7 +34,15 @@ class StockController extends Controller
         $data['inserted_by'] =  Auth::user()->id;
         $data['inserted_at'] =  Carbon::now();
         try {
-            Stock::create($data);
+            $vendors = Stock::create($data);
+
+            // ==== Generate Invoce Number
+            $unique_id = "PMC/STOCK" . sprintf("%06d", abs((int)$vendors->id + 1))  . "/" . date("Y");
+            $update = [
+                'invoice_no' => $unique_id,
+            ];
+            Stock::where('id', $vendors->id)->update($update);
+
             return redirect()->route('stocks.index')->with('message','Stock created successfully');
 
         } catch(\Exception $ex){
@@ -48,7 +52,7 @@ class StockController extends Controller
 
     public function show(Stock $stocks, $id)
     {
-        $stocks = Stock::findOrFail($id);
+        $stocks = Stock::findOrFail($id)->with('vendor')->whereNull('deleted_at')->orderByDesc('id')->first();
         // dd($stocks);
         return view('stocks.view')->with(['stocks' => $stocks]);
     }
@@ -56,8 +60,9 @@ class StockController extends Controller
     public function edit(Stock $stocks, $id)
     {
         $stocks = Stock::findOrFail($id);
+        $vendos = Vendor::select('company_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
         // dd($stocks);
-        return view('stocks.edit' )->with([ 'stocks'=>$stocks ]);
+        return view('stocks.edit' )->with([ 'stocks'=>$stocks, 'vendors'=>$vendos ]);
     }
 
     public function update(StockRequest $request, $id)
@@ -66,8 +71,8 @@ class StockController extends Controller
         $data['modified_by'] =  Auth::user()->id;
         $data['modified_at'] =  Carbon::now();
         try {
-            $catagories= Stock::findOrFail($id);
-            $catagories->update($data);
+            $stocks= Stock::findOrFail($id);
+            $stocks->update($data);
             return redirect()->route('stocks.index')->with('message', 'Stocks updated Successfully!');
 
         } catch(\Exception $ex){
@@ -81,8 +86,8 @@ class StockController extends Controller
         $data['deleted_by'] =  Auth::user()->id;
         $data['deleted_at'] =  Carbon::now();
         try {
-            $catagories = Stock::findOrFail($id);
-            $catagories->update();
+            $stocks = Stock::findOrFail($id);
+            $stocks->update($data);
 
             return redirect()->route('stocks.index')->with('message','Stocks Deleted Succeessfully');
         } catch(\Exception $ex){
@@ -101,8 +106,14 @@ class StockController extends Controller
         $data['products'] = Product::where("catagories_id", $request->catagories_id)
                                 ->whereNull('deleted_at')
                                 ->orderByDesc('id')
-                                ->get(["name", "id", 'brand', 'mobile_no']);
-
+                                ->get(["id", "name", 'brand', 'model_no', 'unit_id']);
+        // dd($data['products']);
+        $unitID = $data['products']->pluck('unit_id')->toArray();
+        if(!empty($unitID)){
+            $data['units'] = Unit::select(['id', 'unit_name'])->whereIn('id',$unitID)->get();
+        }else{
+            $data['units']= [];
+        }
         return response()->json($data);
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    stocks | List
+    Stock | List
 @endsection
 
 @push('styles')
@@ -35,7 +35,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
-                            <h4 class="mb-sm-0 text-primary text-capitalize">All stocks List</h4>
+                            <h4 class="mb-sm-0 text-primary text-capitalize">All Stock List</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
@@ -44,7 +44,7 @@
                                             <i class="ri-home-2-line"></i> Dashboard
                                         </a>
                                     </li>
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">stocks</a></li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Stock</a></li>
                                     <li class="breadcrumb-item active">List</li>
                                 </ol>
                             </div>
@@ -59,7 +59,7 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <a class="btn btn-primary" href="{{ route('stocks.create') }}" role="button"><b>+ Add Product</b></a>
+                                <a class="btn btn-primary" href="{{ route('stocks.create') }}" role="button"><b>+ Add Stock</b></a>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -82,7 +82,7 @@
                                                 <td>{{ date("d/m/Y", strtotime($value->inward_dt)) }}</td>
                                                 <td>{{ $value->work_order_no }}</td>
                                                 <td>{{ $value->voucher_no }}</td>
-                                                <td>
+                                                <td class="d-flex">
                                                     {{-- Read --}}
                                                     <a href="{{ route('stocks.show', $value->id) }}">
                                                         <button class="btn btn-sm btn-info" >
@@ -90,6 +90,7 @@
                                                         </button>
                                                     </a>
 
+                                                    &nbsp;
                                                     {{-- Edit --}}
                                                     <a href="{{ route('stocks.edit', $value->id) }}">
                                                         <button class="btn btn-sm btn-warning" >
@@ -97,6 +98,7 @@
                                                         </button>
                                                     </a>
 
+                                                    &nbsp;
                                                     {{-- Delete --}}
                                                     <form action="{{ route('stocks.destroy', $value->id) }}" method="post">
                                                         @csrf

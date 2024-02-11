@@ -16,7 +16,7 @@ class Product extends Model
         'catagories_id',
         'unit_id',
         'brand',
-        'mobile_no',
+        'model_no',
         'description' ,
         'is_available',
         'inserted_by',

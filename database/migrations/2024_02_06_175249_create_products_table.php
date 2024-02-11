@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(Catagories::class)->index()->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(Unit::class)->index()->nullable()->constrained()->onDelete('cascade');
             $table->string('brand');
-            $table->string('mobile_no');
+            $table->string('model_no');
             $table->text('description');
             $table->integer('is_available')->default(1)->comment('0: Not Available, 1: Available'); //0-Not Available, 1-Available
             $table->integer('inserted_by')->nullable();

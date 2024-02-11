@@ -77,16 +77,26 @@
                             </li>
                         </ul>
                     </div>
+                </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link menu-link" href="{{ route('stocks.index') }}">
-                            <b>
-                                <i class="ri-honour-line"></i>
-                                <span data-key="t-widgets">Stock Management</span>
-                            </b>
-                        </a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                        <b>
+                            <i class="ri-honour-line"></i>
+                            <span data-key="t-widgets">Stock Management</span>
+                        </b>
+                    </a>
 
+                    <div class="collapse menu-dropdown" id="sidebarApps">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('stocks.index') }}" class="nav-link" data-key="department"><b>All Stocks List</b></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('stock_details.index') }}" class="nav-link" data-key="roles"><b>All Stock Details List</b></a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 @endif
 

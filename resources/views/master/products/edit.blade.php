@@ -44,7 +44,7 @@
                             @csrf
                             @method('PATCH')
                             <input type="text" id="id" name="id" hidden class="form-control" value="{{ $products->id }}" >
-                            
+
                             <div class="row">
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
@@ -106,9 +106,9 @@
 
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
-                                        <label for="MobileNumberInput" class="form-label"><b>Mobile Number : <span class="text-danger">*</span></b></label>
-                                        <input type="text" id="mobile_no" name="mobile_no" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control @error('mobile_no') is-invalid @enderror" value="{{ $products->mobile_no }}" placeholder="Enter Mobile Number">
-                                        @error('mobile_no')
+                                        <label for="ModelNumberInput" class="form-label"><b>Model Number : <span class="text-danger">*</span></b></label>
+                                        <input type="text" id="model_no" name="model_no" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control @error('model_no') is-invalid @enderror" value="{{ $products->model_no }}" placeholder="Enter Mobile Number">
+                                        @error('model_no')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

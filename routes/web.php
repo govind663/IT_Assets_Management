@@ -19,6 +19,7 @@ use App\Http\Controllers\CatagoriesController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\StockDetailsController;
 use App\Http\Controllers\VendorsController;
 
 /*
@@ -149,6 +150,18 @@ Route::group(['prefix' => 'admin','middleware'=>['auth', 'preventBackHistoryMidd
             'destroy'=>'stocks.destroy'
         ]);
 
+        //  =================== Save Stocks Details
+        Route::resource('stock_details',StockDetailsController::class)
+        ->names([
+            'index'=>'stock_details.index',
+            'create'=>'stock_details.create',
+            'show'=>'stock_details.show',
+            'edit'=>'stock_details.edit',
+            'update'=>'stock_details.update',
+            'destroy'=>'stock_details.destroy'
+        ]);
+
+        // ============ Fetch Products for Stock
         Route::post('stocks/fetch-products', [StockController::class, 'fetchProducts'])->name('stocks.fetch-products');
 
 });

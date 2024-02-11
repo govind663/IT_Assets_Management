@@ -12,7 +12,7 @@ class Stock extends Model
     protected $fillable = [
         'id',
         'invoice_no',
-        'vendors_id',
+        'vendor_id',
         'inward_dt',
         'work_order_no',
         'voucher_no',
