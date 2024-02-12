@@ -37,10 +37,11 @@
 <script src="{{ asset('/assets/js/pages/datatables.init.js') }}"></script>
 
 <!-- Modern colorpicker bundle -->
-<script src="{{ asset('/assets/libs/simonwep/pickr/pickr.min.js') }}"></script>
+<script src="{{ asset('/assets/libs/@simonwep/pickr/pickr.min.js') }}"></script>
 
 <!-- init js -->
 <script src="{{ asset('/assets/js/pages/form-pickers.init.js') }}"></script>
+<script type='text/javascript' src='{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}'></script>
 
 <!-- Dashboard init -->
 <script src="{{ asset('/assets/js/pages/dashboard-job.init.js') }}"></script>
@@ -50,7 +51,6 @@
 
 <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.js'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/choices.js/1.1.6/choices.min.js"></script>
-<script type='text/javascript' src='{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}'></script>
 
 <script>
     @if(Session::has('message'))

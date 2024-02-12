@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StockRequest;
+use App\Models\Catagories;
 use App\Models\Product;
 use App\Models\Stock;
 use App\Models\Unit;
@@ -23,9 +24,11 @@ class StockController extends Controller
 
     public function create()
     {
+        $stocks = Stock::select('work_order_no', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
         $vendors = Vendor::select('company_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
+        $catagories = Catagories::select('catagories_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
 
-        return view('stocks.create', ['vendors' => $vendors ]);
+        return view('stocks.create', ['vendors' => $vendors, 'stocks' => $stocks, 'catagories' => $catagories,]);
     }
 
     public function store(StockRequest $request, )
@@ -108,11 +111,17 @@ class StockController extends Controller
                                 ->orderByDesc('id')
                                 ->get(["id", "name", 'brand', 'model_no', 'unit_id']);
         // dd($data['products']);
+
         $unitID = $data['products']->pluck('unit_id')->toArray();
         if(!empty($unitID)){
             $data['units'] = Unit::select(['id', 'unit_name'])->whereIn('id',$unitID)->get();
         }else{
-            $data['units']= [];
+            $data['units']= [
+                (object)[
+                    'id' => '',
+                    'unit_name'=> ''
+                ]
+            ];
         }
         return response()->json($data);
     }

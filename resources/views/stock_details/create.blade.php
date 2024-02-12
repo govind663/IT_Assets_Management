@@ -47,7 +47,7 @@ Stock Details | Add
                             <div class="col-lg-4 col-md-6">
                                 <div class="mb-3">
                                     <label for="CatagoryName" class="form-label"><b>Work Order Number : <span class="text-danger">*</span></b></label>
-                                    <select class="js-example-basic-single form-control @error('work_order_no') is-invalid @enderror" id="work_order_no" name="work_order_no">
+                                    <select class="form-control js-example-basic-multiple @error('work_order_no') is-invalid @enderror" id="work_order_no" name="work_order_no">
                                         <option value="">Select Work Order Number</option>
                                         @foreach ($stocks as $value)
                                         <option value="{{ $value->id }}" {{ (old("work_order_no") == $value->id ? "selected":"") }}> {{ $value->work_order_no }}</option>
@@ -64,7 +64,7 @@ Stock Details | Add
                             <div class="col-lg-4 col-md-6">
                                 <div class="mb-3">
                                     <label for="CatagoryName" class="form-label"><b>Catagory Name : <span class="text-danger">*</span></b></label>
-                                    <select class="js-example-basic-single form-control @error('catagories_id') is-invalid @enderror" id="catagories_id" name="catagories_id">
+                                    <select class="form-control js-example-basic-multiple @error('catagories_id') is-invalid @enderror" id="catagories_id" name="catagories_id">
                                         <option value="">Select Catagory Name</option>
                                         @foreach ($catagories as $value)
                                         <option value="{{ $value->id }}" {{ (old("catagories_id") == $value->id ? "selected":"") }}> {{ $value->catagories_name }}</option>
@@ -81,7 +81,7 @@ Stock Details | Add
                             <div class="col-lg-4 col-md-6">
                                 <div class="mb-3">
                                     <label for="ProductName" class="form-label"><b>Product Name : <span class="text-danger">*</span></b></label>
-                                    <select class="js-example-basic-single form-control @error('product_id') is-invalid @enderror" id="product_id" name="product_id">
+                                    <select class="form-control js-example-basic-multiple @error('product_id') is-invalid @enderror" id="productID" name="product_id">
                                         <option value="">Select Product Name</option>
                                     </select>
                                     @error('product_id')
@@ -95,7 +95,7 @@ Stock Details | Add
                             <div class="col-lg-4 col-md-6">
                                 <div class="mb-3">
                                     <label for="BrandInput" class="form-label"><b>Brand : <span class="text-danger">*</span></b></label>
-                                    <input type="text" id="brand" brand="brand" class="form-control @error('brand') is-invalid @enderror" value="" placeholder="Enter Brand">
+                                    <input type="text" id="brand" name="brand" class="form-control @error('brand') is-invalid @enderror" placeholder="Enter Brand">
                                     @error('brand')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -107,7 +107,7 @@ Stock Details | Add
                             <div class="col-lg-4 col-md-6">
                                 <div class="mb-3">
                                     <label for="ModelInput" class="form-label"><b>Model : <span class="text-danger">*</span></b></label>
-                                    <input type="text" id="modelNumber" name="model" class="form-control @error('model') is-invalid @enderror" value="" placeholder="Enter Model">
+                                    <input type="text" id="model" name="model" class="form-control @error('model') is-invalid @enderror" placeholder="Enter Model">
                                     @error('model')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -119,8 +119,8 @@ Stock Details | Add
                             <div class="col-lg-4 col-md-6">
                                 <div class="mb-3">
                                     <label for="UnitName" class="form-label"><b>Unit : <span class="text-danger">*</span></b></label>
-                                    <select class="js-example-basic-single form-control @error('unit_id') is-invalid @enderror" id="unit_id" name="unit_id">
-                                        <option value="">Select Product Name</option>
+                                    <select class="form-control js-example-basic-multiple @error('unit_id') is-invalid @enderror" id="unitID" name="unit_id">
+                                        <option value="">Select Unit</option>
                                     </select>
                                     @error('unit_id')
                                     <span class="invalid-feedback" role="alert">
@@ -191,30 +191,26 @@ Stock Details | Add
         --------------------------------------------*/
         $('#catagories_id').on('change', function() {
             var idCatagories = this.value;
-            $("#product_id").html('');
+            $("#productID").html('');
             $.ajax({
-                url: "{{ route('stocks.fetch-products') }}"
-                , type: "POST"
-                , data: {
-                    catagories_id: idCatagories
-                    , _token: '{{ csrf_token() }}'
-                }
-                , dataType: 'json'
-                , success: function(result) {
-                    $('#product_id').html(
-                        '<option value="">Select Product Name</option>');
+                url: "{{ route('stocks.fetch-products') }}",
+                method: 'POST',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    catagories_id: idCatagories,
+                },
+                dataType: 'json',
+                success: function(result) {
+                    $('#productID').html('<option value="">Please Select Product Name</option>');
                     $.each(result.products, function(key, value) {
-                        // alert(value.model_no);
-                        $("#product_id").append('<option value="' + key.id + '">' +
-                            value.name + '</option>');
+                        $("#productID").append('<option value="' + key.id + '">'  + value.name + '</option>');
                         $('#brand').val(value.brand);
-                        $('#modelNumber').val(value.model_no);
+                        $('#model').val(value.model_no);
                     });
 
-                    $('#unit_id').html('<option value="">Select Unit</option>');
-                    $.each(result.units, function(key, value) {
-                        $('#unit_id').append('<option value="' + key.id + '">' +
-                            value.unit_name + '</option>');
+                    $('#unitID').html('<option value="">Please Select Unit</option>');
+                    $.each(result.units, function(index, item){
+                        $('#unitID').append('<option value="'+item.id+'">'+item.unit_name+'</option>');
                     });
                 }
             });

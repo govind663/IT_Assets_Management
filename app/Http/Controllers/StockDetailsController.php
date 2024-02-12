@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StockRequest;
+use App\Http\Requests\StockDetailsRequest;
 use App\Models\Catagories;
-use App\Models\Product;
 use App\Models\Stock;
 use App\Models\StockDetail;
-use App\Models\Unit;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class StockDetailsController extends Controller
@@ -33,13 +30,22 @@ class StockDetailsController extends Controller
         return view('stock_details.create', ['stocks' => $stocks, 'catagories' => $catagories ]);
     }
 
-    public function store(StockRequest $request, )
+    public function store(StockDetailsRequest $request, )
     {
-        $data = $request->validated();
-        $data['inserted_by'] =  Auth::user()->id;
-        $data['inserted_at'] =  Carbon::now();
-        try {
-            $StockDetail = StockDetail::create($data);
+        $StockDetail = $request->validated();
+
+        $StockDetail = new StockDetail();
+            $StockDetail->work_order_no = $request->get('work_order_no');
+            $StockDetail->catagories_id = $request->get('catagories_id');
+            $StockDetail->product_id = $request->get('product_id');
+            $StockDetail->brand = $request->get('brand');
+            $StockDetail->model = $request->get('model');
+            $StockDetail->unit_id = $request->get('unit_id');
+            $StockDetail->warranty_dt = date( "Y-m-d", strtotime($request->get('warranty_dt')));
+            $StockDetail->quantity = $request->get('quantity');
+            $StockDetail->inserted_at = Carbon::now();
+            $StockDetail->inserted_by = Auth::user()->id;
+            $StockDetail->save();
 
             // ==== Generate Product Code
             $unique_id = "PMC/" . sprintf("%06d", abs((int)$StockDetail->id + 1))  . "/" . date("Y");
@@ -50,9 +56,32 @@ class StockDetailsController extends Controller
 
             return redirect()->route('stock_details.index')->with('message','Stock Details created successfully');
 
-        } catch(\Exception $ex){
+        // try {
+        //     $StockDetail = new StockDetail();
+        //     $StockDetail->work_order_no = $request->get('work_order_no');
+        //     $StockDetail->catagories_id = $request->get('catagories_id');
+        //     $StockDetail->product_id = $request->get('product_id');
+        //     $StockDetail->brand = $request->get('brand');
+        //     $StockDetail->model = $request->get('model');
+        //     $StockDetail->unit_id = $request->get('unit_id');
+        //     $StockDetail->warranty_dt = $request->get('warranty_dt');
+        //     $StockDetail->quantity = $request->get('quantity');
+        //     $StockDetail->inserted_at = Carbon::now();
+        //     $StockDetail->inserted_by = Auth::user()->id;
+        //     $StockDetail->save();
 
-            return redirect()->back()->with('error','Something Went Wrong  - '.$ex->getMessage());
-        }
+        //     // ==== Generate Product Code
+        //     $unique_id = "PMC/" . sprintf("%06d", abs((int)$StockDetail->id + 1))  . "/" . date("Y");
+        //     $update = [
+        //         'product_code' => $unique_id,
+        //     ];
+        //     Stock::where('id', $StockDetail->id)->update($update);
+
+        //     return redirect()->route('stock_details.index')->with('message','Stock Details created successfully');
+
+        // } catch(\Exception $ex){
+
+        //     return redirect()->back()->with('error','Something Went Wrong  - '.$ex->getMessage());
+        // }
     }
 }

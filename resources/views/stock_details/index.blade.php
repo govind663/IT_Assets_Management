@@ -68,6 +68,7 @@
                                             <tr>
                                                 <th>Sr. No.</th>
                                                 <th>Vendor Numder</th>
+                                                <th>Invoice No</th>
                                                 <th>Category Name</th>
                                                 <th>Product Name</th>
                                                 <th>Product Code</th>
@@ -84,6 +85,7 @@
                                             <tr>
                                                 <td>{{ $key+1 }}</td>
                                                 <td>{{ $value->stock?->vendor_no }}</td>
+                                                <td>{{ $value->stock?->invoice_no }}</td>
                                                 <td>{{ $value->catagory?->catagories_name }}</td>
                                                 <td>{{ $value->product?->name }}</td>
                                                 <td>{{ $value->product_code }}</td>

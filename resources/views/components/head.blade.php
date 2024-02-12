@@ -41,9 +41,9 @@
 <link rel="stylesheet" href="{{ asset('/assets/datatables/buttons/2.2.2/css/buttons.dataTables.min.css') }}">
 
  <!-- One of the following themes -->
- <link rel="stylesheet" href="{{ asset('/assets/libs/simonwep/pickr/themes/classic.min.css') }}" /> <!-- 'classic' theme -->
- <link rel="stylesheet" href="{{ asset('/assets/libs/simonwep/pickr/themes/monolith.min.css') }}" /> <!-- 'monolith' theme -->
- <link rel="stylesheet" href="{{ asset('/assets/libs/simonwep/pickr/themes/nano.min.css') }}" /> <!-- 'nano' theme -->
+ <link rel="stylesheet" href="{{ asset('/assets/libs/@simonwep/pickr/themes/classic.min.css') }}" /> <!-- 'classic' theme -->
+ <link rel="stylesheet" href="{{ asset('/assets/libs/@simonwep/pickr/themes/monolith.min.css') }}" /> <!-- 'monolith' theme -->
+ <link rel="stylesheet" href="{{ asset('/assets/libs/@simonwep/pickr/themes/nano.min.css') }}" /> <!-- 'nano' theme -->
 
 <!-- Toaster Message -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

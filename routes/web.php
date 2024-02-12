@@ -67,6 +67,7 @@ Route::group(['prefix' => 'admin','middleware'=>['auth', 'preventBackHistoryMidd
         ->names([
             'index'=>'department.index',
             'create'=>'department.create',
+            'store'=>'department.store',
             'show'=>'department.show',
             'edit'=>'department.edit',
             'update'=>'department.update',
@@ -78,6 +79,7 @@ Route::group(['prefix' => 'admin','middleware'=>['auth', 'preventBackHistoryMidd
         ->names([
             'index'=>'roles.index',
             'create'=>'roles.create',
+            'store'=>'roles.store',
             'show'=>'roles.show',
             'edit'=>'roles.edit',
             'update'=>'roles.update',
@@ -89,6 +91,7 @@ Route::group(['prefix' => 'admin','middleware'=>['auth', 'preventBackHistoryMidd
         ->names([
             'index'=>'users.index',
             'create'=>'users.create',
+            'store'=>'users.store',
             'show'=>'users.show',
             'edit'=>'users.edit',
             'update'=>'users.update',
@@ -100,6 +103,7 @@ Route::group(['prefix' => 'admin','middleware'=>['auth', 'preventBackHistoryMidd
         ->names([
             'index'=>'catagories.index',
             'create'=>'catagories.create',
+            'store'=>'catagories.store',
             'show'=>'catagories.show',
             'edit'=>'catagories.edit',
             'update'=>'catagories.update',
@@ -111,6 +115,7 @@ Route::group(['prefix' => 'admin','middleware'=>['auth', 'preventBackHistoryMidd
         ->names([
             'index'=>'units.index',
             'create'=>'units.create',
+            'store'=>'units.store',
             'show'=>'units.show',
             'edit'=>'units.edit',
             'update'=>'units.update',
@@ -122,6 +127,7 @@ Route::group(['prefix' => 'admin','middleware'=>['auth', 'preventBackHistoryMidd
         ->names([
             'index'=>'products.index',
             'create'=>'products.create',
+            'store'=>'products.store',
             'show'=>'products.show',
             'edit'=>'products.edit',
             'update'=>'products.update',
@@ -133,6 +139,7 @@ Route::group(['prefix' => 'admin','middleware'=>['auth', 'preventBackHistoryMidd
         ->names([
             'index'=>'vendors.index',
             'create'=>'vendors.create',
+            'store'=>'vendors.store',
             'show'=>'vendors.show',
             'edit'=>'vendors.edit',
             'update'=>'vendors.update',
@@ -144,6 +151,7 @@ Route::group(['prefix' => 'admin','middleware'=>['auth', 'preventBackHistoryMidd
         ->names([
             'index'=>'stocks.index',
             'create'=>'stocks.create',
+            'store'=>'stocks.store',
             'show'=>'stocks.show',
             'edit'=>'stocks.edit',
             'update'=>'stocks.update',
@@ -155,6 +163,7 @@ Route::group(['prefix' => 'admin','middleware'=>['auth', 'preventBackHistoryMidd
         ->names([
             'index'=>'stock_details.index',
             'create'=>'stock_details.create',
+            'store'=>'stock_details.store',
             'show'=>'stock_details.show',
             'edit'=>'stock_details.edit',
             'update'=>'stock_details.update',
@@ -162,7 +171,8 @@ Route::group(['prefix' => 'admin','middleware'=>['auth', 'preventBackHistoryMidd
         ]);
 
         // ============ Fetch Products for Stock
-        Route::post('stocks/fetch-products', [StockController::class, 'fetchProducts'])->name('stocks.fetch-products');
+        Route::post('stocks/fetch-products', [StockController::class, 'fetchProducts'])
+        ->name('stocks.fetch-products');
 
 });
 

@@ -18,8 +18,10 @@ return new class extends Migration
         Schema::create('stock_details', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Stock::class)->index()->nullable()->constrained()->onDelete('cascade');
+            $table->integer('work_order_no')->nullable()->comment('Work order number in which this stock is created');
             $table->foreignIdFor(Catagories::class)->index()->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(Product::class)->index()->nullable()->constrained()->onDelete('cascade');
+            $table->string('product_code')->unique()->nullable();
             $table->string('brand')->nullable();
             $table->string('model')->nullable();
             $table->foreignIdFor(Unit::class)->index()->nullable()->constrained()->onDelete('cascade');
