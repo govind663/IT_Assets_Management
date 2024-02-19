@@ -17,18 +17,13 @@ class StockController extends Controller
     public function index()
     {
         $stocks = Stock::with('vendor')->whereNull('deleted_at')->orderBy('id', 'desc')->get();
-        // dd($stocks);
 
         return view('stocks.index', ['stocks' => $stocks]);
     }
 
     public function create()
     {
-        $stocks = Stock::select('work_order_no', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
-        $vendors = Vendor::select('company_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
-        $catagories = Catagories::select('catagories_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
-
-        return view('stocks.create', ['vendors' => $vendors, 'stocks' => $stocks, 'catagories' => $catagories,]);
+        return view('stocks.create');
     }
 
     public function store(StockRequest $request, )
@@ -109,7 +104,7 @@ class StockController extends Controller
         $data['products'] = Product::where("catagories_id", $request->catagories_id)
                                 ->whereNull('deleted_at')
                                 ->orderByDesc('id')
-                                ->get(["id", "name", 'brand', 'model_no', 'unit_id']);
+                                ->get(["id", "name", 'brand', 'mobile_no', 'unit_id']);
         // dd($data['products']);
 
         $unitID = $data['products']->pluck('unit_id')->toArray();

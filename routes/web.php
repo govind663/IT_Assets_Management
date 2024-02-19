@@ -171,8 +171,7 @@ Route::group(['prefix' => 'admin','middleware'=>['auth', 'preventBackHistoryMidd
         ]);
 
         // ============ Fetch Products for Stock
-        Route::post('stocks/fetch-products', [StockController::class, 'fetchProducts'])
-        ->name('stocks.fetch-products');
+        Route::post('stocks/fetch-products', [StockController::class, 'fetchProducts'])->name('stocks.fetch-products');
 
 });
 
