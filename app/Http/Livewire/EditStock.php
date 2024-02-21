@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Http\Requests\StockRequest;
 use App\Models\Catagories;
 use App\Models\Product;
 use App\Models\Stock;
@@ -15,15 +14,21 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 
-class AddStock extends Component
+class EditStock extends Component
 {
     // COPONENT VARIABLES
     public $stockIds;
     public $vendorIds;
+    public $productId;
+    public $catagoryId;
+    public $categoryRows;
+    public $unitId;
     public $categoryIds;
     public $loop_products;
     public $loop_units;
     public $formCounts = 1;
+    public $show;
+    public $rowsCount;
 
     // FORM MODELS
     public $vendor_id;
@@ -40,15 +45,72 @@ class AddStock extends Component
     //  SHOW/HIDE Form
     public $work_order_no =  '';
 
+
     public function render()
     {
-        $stocks = Stock::select('work_order_no', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
         $categories = Catagories::select('catagories_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
         $vendors = Vendor::select('company_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
 
-        return view('livewire.add-stock')->with(['stocks'=> $stocks, 'vendors'=> $vendors, 'categories'=> $categories]);
+        //===  request idwhen edit  stock ===//
+        $stockIds = request()->stock;
+
+        // ====  get the data for show in form when editing a record=====//
+        $stocks = Stock::findOrFail($stockIds);
+        $stocksDetails = StockDetail::with('catagory', 'product', 'unit')
+                                    ->where('stock_id', $stockIds)
+                                    ->whereNull('deleted_at')
+                                    ->orderBy('id', 'desc')
+                                    ->get();
+
+        $this->stockIds = $stocks['id'];
+        $this->vendor_id = $stocks['vendor_id'];
+        $this->inward_dt = Carbon::parse($stocks['inward_dt'])->format('Y-m-d');
+        $this->voucher_no = $stocks['voucher_no'];
+        $this->work_order_no = $stocks['work_order_no'];
+
+        // === display  $stocksDetails all input value base on stock Id ===//
+        foreach ($stocksDetails as $key => $item) {
+            $this->categories_id[$key] = $item['catagories_id'];
+            $this->product_id[$key] =  $item['product_id'];
+            $this->brand[$key] = $item['brand'];
+            $this->model[$key] = $item['model'];
+            $this->unit_id[$key]  = $item['unit_id'];
+            $this->warranty_dt[$key] = Carbon::parse($item['warranty_dt'])->format('Y-m-d');
+            $this->quantity[$key] = $item['quantity'];
+        }
+
+
+        if ($this->work_order_no) {
+            $this->show = true;
+            $this->displayForm(true);
+        } else {
+            $this->resetForm();
+        }
+
+        return view('livewire.edit-stock')->with([
+            'vendors' => $vendors,
+            'categories' => $categories,
+            'stocks' => $stocks,
+            'stocksDetails' => $stocksDetails
+        ]);
     }
 
+
+    // === show or Hide the form =======
+    public function displayForm($value)
+    {
+        $this->show = $value;
+    }
+
+    // ===== Show vlue in   row base on category ====
+    public function categoryShowRow($row){
+        if (!isset($this->categoryRows[$row->cataglogy_id])){
+            $this->categoryRows[$row->cataglogy_id] = false;
+            }
+
+        $this->categoryRows[$row->cataglogy_id]  = true;
+        $this->rowsCount++;
+    }
     public function boot()
     {
         $this->categories_id[$this->formCounts] = [];
@@ -163,6 +225,7 @@ class AddStock extends Component
             $this->loop_units[$this->formCounts] = [];
         }
     }
+
     public function remove()
     {
         if($this->formCounts > 1)

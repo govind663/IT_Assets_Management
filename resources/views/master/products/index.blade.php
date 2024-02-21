@@ -87,7 +87,7 @@
                                                 <td>{{ $value->catagories?->catagories_name }}</td>
                                                 <td>{{ $value->unit?->unit_name }}</td>
                                                 <td>{{ $value->brand ?: '' }}</td>
-                                                <td>{{ $value->mobile_no ?: '' }}</td>
+                                                <td>{{ $value->model_no ?: '' }}</td>
                                                 <td class="text-wrap">{{ $value->description ?: '' }}</td>
 
                                                 @if ($value->is_available == 1)

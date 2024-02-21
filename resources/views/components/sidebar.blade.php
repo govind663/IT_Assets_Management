@@ -92,9 +92,6 @@
                             <li class="nav-item">
                                 <a href="{{ route('stocks.index') }}" class="nav-link" data-key="department"><b>All Stocks List</b></a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('stock_details.index') }}" class="nav-link" data-key="roles"><b>All Stock Details List</b></a>
-                            </li>
                         </ul>
                     </div>
                 </li>
