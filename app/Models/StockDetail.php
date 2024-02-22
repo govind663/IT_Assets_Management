@@ -38,16 +38,16 @@ class StockDetail extends Model
 
     // Relationship with Catagories model.
     public function catagory(){
-        return $this->belongsTo(Catagories::class);
+        return $this->belongsTo(Catagories::class , "catagories_id");
     }
 
     // Relationship with Product model.
     public function product(){
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class , "product_id", "id");
     }
 
     // Relationship with Unit model.
     public function unit() {
-        return $this->belongsTo(Unit::class);
+        return $this->belongsTo(Unit::class , "unit_id");
     }
 }

@@ -16,24 +16,23 @@ use Livewire\Component;
 
 class EditStock extends Component
 {
+
+    // PROP VARIABLE
+    public $stock;
+
     // COPONENT VARIABLES
-    public $stockIds;
-    public $vendorIds;
-    public $productId;
-    public $catagoryId;
-    public $categoryRows;
-    public $unitId;
-    public $categoryIds;
+    public $vendor_id;
+    public $inward_dt;
+    public $voucher_no;
     public $loop_products;
     public $loop_units;
     public $formCounts = 1;
     public $show;
-    public $rowsCount;
+    public $add;
 
     // FORM MODELS
-    public $vendor_id;
-    public $inward_dt;
-    public $voucher_no;
+    public $hidden_stock_detail_id;
+    public $product_code;
     public $categories_id;
     public $product_id;
     public $brand;
@@ -51,48 +50,54 @@ class EditStock extends Component
         $categories = Catagories::select('catagories_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
         $vendors = Vendor::select('company_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
 
-        //===  request idwhen edit  stock ===//
-        $stockIds = request()->stock;
-
-        // ====  get the data for show in form when editing a record=====//
-        $stocks = Stock::findOrFail($stockIds);
-        $stocksDetails = StockDetail::with('catagory', 'product', 'unit')
-                                    ->where('stock_id', $stockIds)
-                                    ->whereNull('deleted_at')
-                                    ->orderBy('id', 'desc')
-                                    ->get();
-
-        $this->stockIds = $stocks['id'];
-        $this->vendor_id = $stocks['vendor_id'];
-        $this->inward_dt = Carbon::parse($stocks['inward_dt'])->format('Y-m-d');
-        $this->voucher_no = $stocks['voucher_no'];
-        $this->work_order_no = $stocks['work_order_no'];
-
-        // === display  $stocksDetails all input value base on stock Id ===//
-        foreach ($stocksDetails as $key => $item) {
-            $this->categories_id[$key] = $item['catagories_id'];
-            $this->product_id[$key] =  $item['product_id'];
-            $this->brand[$key] = $item['brand'];
-            $this->model[$key] = $item['model'];
-            $this->unit_id[$key]  = $item['unit_id'];
-            $this->warranty_dt[$key] = Carbon::parse($item['warranty_dt'])->format('Y-m-d');
-            $this->quantity[$key] = $item['quantity'];
-        }
-
-
-        if ($this->work_order_no) {
-            $this->show = true;
-            $this->displayForm(true);
-        } else {
-            $this->resetForm();
-        }
-
         return view('livewire.edit-stock')->with([
             'vendors' => $vendors,
-            'categories' => $categories,
-            'stocks' => $stocks,
-            'stocksDetails' => $stocksDetails
+            'categories' => $categories
         ]);
+    }
+
+
+
+    public function mount()
+    {
+        $this->stock = Stock::find(request()->stock)->toArray();
+
+        $stocksDetails = StockDetail::with('catagory', 'product', 'unit')
+                                    ->where('stock_id', $this->stock['id'])
+                                    ->orderByDesc('id')
+                                    ->get();
+
+        foreach ($stocksDetails as $key => $stocksDetail)
+        {
+            $this->product_code[$key+1] = $stocksDetail['product_code'];
+            $this->hidden_stock_detail_id[$key+1] = $stocksDetail['id'];
+            $this->categories_id[$key+1] = $stocksDetail['catagories_id'];
+            $this->product_id[$key+1] = $stocksDetail['product_id'];
+            $this->brand[$key+1] = $stocksDetail['brand'];
+            $this->model[$key+1] = $stocksDetail['model'];
+            $this->warranty_dt[$key+1] = $stocksDetail['warranty_dt'];
+            $this->quantity[$key+1] = $stocksDetail['quantity'];
+            $this->unit_id[$key+1] = $stocksDetail['unit_id'];
+
+            $products = Product::where("catagories_id", $this->categories_id[$key+1])
+                                ->whereNull('deleted_at')
+                                ->orderByDesc('id')
+                                ->select("id", "name")->get();
+
+            if($products)
+                $this->loop_products[$key+1] = $products;
+
+            $units = Unit::whereNull('deleted_at')->get();
+            if($units)
+                $this->loop_units[$key+1] = $units;
+        }
+
+        $this->vendor_id = $this->stock['vendor_id'];
+        $this->inward_dt = $this->stock['inward_dt'];
+        $this->voucher_no = $this->stock['voucher_no'];
+        $this->work_order_no = $this->stock['work_order_no'];
+
+        $this->formCounts = $stocksDetails->count();
     }
 
 
@@ -102,76 +107,47 @@ class EditStock extends Component
         $this->show = $value;
     }
 
-    // ===== Show vlue in   row base on category ====
-    public function categoryShowRow($row){
-        if (!isset($this->categoryRows[$row->cataglogy_id])){
-            $this->categoryRows[$row->cataglogy_id] = false;
-            }
-
-        $this->categoryRows[$row->cataglogy_id]  = true;
-        $this->rowsCount++;
-    }
-    public function boot()
-    {
-        $this->categories_id[$this->formCounts] = [];
-        $this->product_id[$this->formCounts] = [];
-        $this->brand[$this->formCounts] = [];
-        $this->model[$this->formCounts] = [];
-        $this->unit_id[$this->formCounts] = [];
-        $this->loop_products[$this->formCounts] = [];
-        $this->loop_units[$this->formCounts] = [];
-    }
-
-    //  Add new form fields to the loop
+    //  Update form fields to the loop
     public function submitApplication()
     {
         $this->addValidate();
-
-        // ===== store  in DB =======
-        $vendors = Stock::create([
-            'vendor_id' => $this->vendor_id ?: null,
-            'inward_dt' => date("Y-m-d", strtotime($this->inward_dt)),
-            'voucher_no' =>  $this->voucher_no ?: null,
+        $stock = Stock::findOrFail($this->stock['id']);
+        $stock->update([
+            'voucher_no' => $this->voucher_no ?: null,
+            'work_order_no'=>$this->work_order_no ?: null,
+            'inward_dt' =>  date('Y-m-d', strtotime($this->inward_dt)),
             'work_order_no' =>  $this->work_order_no ?: null,
-            'inserted_by' => Auth::user()->id,
-            'inserted_at' => Carbon::now()
+            'modified_by'  => Auth::user()->id,
+            'modified_at' => Carbon::now()
         ]);
 
-        // ==== Generate Invoce Number
-        $unique_id = "PMC-INV" . sprintf("%06d", abs((int)$vendors->id + 1))  . "/" . date("Y");
-        $update = [
-            'invoice_no' => $unique_id,
-        ];
-        Stock::where('id', $vendors->id)->update($update);
-
-        //  === save product details into stock_details table.
-        foreach ($this->categories_id as $key=>$value) :
-            if (!empty($value)) :
-                StockDetail::create([
-                    "stock_id" => $vendors->id,
-                    "catagories_id" =>  $value,
-                    "product_id" => $this->product_id[$key],
-                    "brand" => $this->brand[$key],
-                    "model" => $this->model[$key],
-                    "unit_id" => $this->unit_id[$key],
-                    "warranty_dt" =>  isset($this->warranty_dt[$key])?date("Y-m-d",strtotime($this->warranty_dt[$key])):"",
-                    "quantity" =>  $this->quantity[$key],
-                    "inserted_by" => Auth::user()->id,
-                    "inserted_at" => Carbon::now(),
-                ]);
-            endif;
-            //  Reset all field after add one time
-            // $this->reset(['categories_id', 'product_id','brand','model','unit_id', 'warranty_dt','quantity']);
-
-            // ==== Generate  unique SKU for each Product
-            $sku_id = "PMC_SKU-" . substr(md5(time()), rand(0, 26), 6);
-            $skuUpdate = [
-                "product_code" => $sku_id,
+        // save product details into stock_details table
+        foreach ($this->product as $key=>$val){
+            $data = [
+                'stock_id'     => $stock->id ,
+                "category_id" => $val["category"],
+                'product_id ' => $val['product_id '],
+                'brand' => $val['brand'],
+                'model' => $val['model'],
+                'unit_id' => $val['unit_id'],
+                'warranty_dt' =>  date("Y-m-d",strtotime($val['warranty_dt'])) ?? null,
+                'quantity' => $val['quantity'],
+                'modified_by'  => Auth::user()->id,
+                'modified_at' => Carbon::now()
             ];
-            StockDetail::where('product_id', $this->product_id[$key])->update($skuUpdate);
-        endforeach;
+            if(isset($this->stockDetailId[$key])){
+                $data['id'] = $this->stockDetailId[$key];
+                StockDetail::where('id',$this->stockDetailId[$key])
+                            ->where('product_code', $this->product_code[$key])
+                            ->update($data);
+            }else{
+                $data['inserted_by'] = Auth::user()->id ;
+                $data['inserted_at'] = Carbon::now();
+                StockDetail::create($data);
+            }
+        }
 
-        return redirect()->route('stocks.index')->with('message','Stock created successfully');;
+        return redirect()->route('stocks.index')->with('message','Stock Updated Successfully');;
     }
 
 
@@ -209,27 +185,47 @@ class EditStock extends Component
         }
     }
 
-
     public function addMore()
     {
         if($this->formCounts < 10)
         {
             $this->formCounts = ++$this->formCounts;
-
             $this->categories_id[$this->formCounts] = [];
             $this->product_id[$this->formCounts] = [];
             $this->brand[$this->formCounts] = [];
             $this->model[$this->formCounts] = [];
             $this->unit_id[$this->formCounts] = [];
-            $this->loop_products[$this->formCounts] = [];
-            $this->loop_units[$this->formCounts] = [];
+            $this->loop_products[$this->formCounts] = $this->loop_products[$this->formCounts-1];
+            $this->loop_units[$this->formCounts] = $this->loop_units[$this->formCounts-1];
         }
     }
 
     public function remove()
     {
+        //  If the user is trying to remove last row then do not allow
         if($this->formCounts > 1)
-            $this->formCounts = --$this->formCounts;
+        {
+            unset($this->categories_id[$this->formCounts]);
+            unset($this->product_id[$this->formCounts]);
+            unset($this->brand[$this->formCounts]);
+            unset($this->model[$this->formCounts]);
+            unset($this->unit_id[$this->formCounts]);
+            unset($this->warranty_dt[$this->formCounts]);
+            unset($this->quantity[$this->formCounts]);
+            --$this->formCounts;
+
+            //  Reset the last form to have all data filled in again.
+            $lastFormKey = $this->formCounts - 1;
+            $this->categories_id[$lastFormKey] = $this->categories_id[$this->formCounts];
+            $this->product_id[$lastFormKey] = $this->product_id[$this->formCounts];
+            $this->brand[$lastFormKey] = $this->brand[$this->formCounts];
+            $this->model[$lastFormKey] = $this->model[$this->formCounts];
+            $this->unit_id[$lastFormKey] = $this->unit_id[$this->formCounts];
+            $this->warranty_dt[$lastFormKey] = $this->warranty_dt[$this->formCounts];
+            $this->quantity[ $lastFormKey ]=  "1";
+
+
+        }
     }
 
     public function work_order_no($event)
@@ -250,7 +246,7 @@ class EditStock extends Component
         for ($i=1; $i<=$this->formCounts; $i++)
         {
             $fieldArray['categories_id.'.$i] = 'required';
-            $fieldArray['product_id.'.$i] = 'required';
+            $fieldArray['product_id.'.$i] = 'required|unique:stock_details,product_id,NULL,id,deleted_at,NULL';
             $fieldArray['brand.'.$i] = 'required';
             $fieldArray['model.'.$i] = 'required';
             $fieldArray['unit_id.'.$i] = 'required';

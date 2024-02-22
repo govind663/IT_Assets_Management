@@ -41,7 +41,10 @@
                 <div class="card-body">
                     <div class="live-preview">
 
-                        @livewire('edit-stock')
+                        {{-- @livewire('edit-stock', :stock="$stocks->toArray()" ) --}}
+
+                        {{-- <livewire:edit-stock  :stock="$stocks->toArray()"> --}}
+                        <livewire:edit-stock >
                         <!--end form-->
 
                     </div>

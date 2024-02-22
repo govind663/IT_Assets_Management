@@ -187,7 +187,7 @@ class AddStock extends Component
         for ($i=1; $i<=$this->formCounts; $i++)
         {
             $fieldArray['categories_id.'.$i] = 'required';
-            $fieldArray['product_id.'.$i] = 'required';
+            $fieldArray['product_id.'.$i] = 'required|unique:stock_details,product_id,NULL,id,deleted_at,NULL';
             $fieldArray['brand.'.$i] = 'required';
             $fieldArray['model.'.$i] = 'required';
             $fieldArray['unit_id.'.$i] = 'required';

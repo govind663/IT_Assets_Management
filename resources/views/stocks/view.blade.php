@@ -3,7 +3,7 @@
 @section('title')
     Stock | View
 @endsection
-
+@livewireStyles
 @section('content')
 
     <div class="main-content">
@@ -40,45 +40,12 @@
 
                 <div class="card-body">
                     <div class="live-preview">
-                        <form >
 
-                            <div class="form-group row align-items-center">
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="mb-3">
-                                        <label for="VendorsName" class="form-label"><b>Vendors Name : <span class="text-danger">*</span></b></label>
-                                        <input readonly type="text" class="form-control" value="{{ $stocks->vendor?->company_name }}">
-                                    </div>
-                                </div>
+                        @livewire('view-stock')
+                        <!--end form-->
 
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="mb-3">
-                                        <label for="InworDateinput" class="form-label"><b>Inword Stock Date : <span class="text-danger">*</span></b></label>
-                                        <input readonly type="text" class="form-control" value="{{ $stocks->inward_dt }}">
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="mb-3">
-                                        <label for="VoucherNoinput" class="form-label"><b>Voucher No : <span class="text-danger">*</span></b></label>
-                                        <input readonly type="text" class="form-control" value="{{ $stocks->voucher_no }}">
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="mb-3">
-                                        <label for="WorkOrderNoinput" class="form-label"><b>Work Order No : <span class="text-danger">*</span></b></label>
-                                        <input readonly type="text" class="form-control" value="{{ $stocks->work_order_no }}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12 mt-2">
-                                <div class="text-end">
-                                    <a href="{{ route('stocks.index') }}" class="btn btn-danger">Cancel</a>
-                                </div>
-                            </div>
-                            <!--end col-->
-                        </form>
                     </div>
+                    <!--end row-->
                 </div>
 
             </div>
@@ -93,3 +60,4 @@
     </div>
     <!-- end main content-->
 @endsection
+@livewireScripts

@@ -12,6 +12,7 @@ use App\Models\Vendor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class StockController extends Controller
 {
@@ -29,37 +30,14 @@ class StockController extends Controller
 
     public function show(Stock $stocks, $id)
     {
-        $stocks = Stock::findOrFail($id)->with('vendor')->whereNull('deleted_at')->orderByDesc('id')->first();
+        $stocks = Stock::findOrFail($id);
         // dd($stocks);
         return view('stocks.view')->with(['stocks' => $stocks]);
     }
 
-    public function edit(Stock $stocks, $id)
+    public function edit(String $id)
     {
-        $stocks = Stock::findOrFail($id);
-        // == get stock & stockdetails
-        $stocks = StockDetail::with('stock', 'catagory', 'product', 'unit')
-                                ->whereNull('deleted_at')
-                                ->orderBy('id', 'desc')
-                                ->get();
-        // dd($stocks);
-        return view('stocks.edit' )->with([ 'stocks'=>$stocks]);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $data = $request->validated();
-        $data['modified_by'] =  Auth::user()->id;
-        $data['modified_at'] =  Carbon::now();
-        try {
-            $stocks= Stock::findOrFail($id);
-            $stocks->update($data);
-            return redirect()->route('stocks.index')->with('message', 'Stocks updated Successfully!');
-
-        } catch(\Exception $ex){
-
-            return redirect()->back()->with('error','Something Went Wrong - '.$ex->getMessage());
-        }
+        return view('stocks.edit' );
     }
 
     public function destroy($id)
@@ -67,8 +45,9 @@ class StockController extends Controller
         $data['deleted_by'] =  Auth::user()->id;
         $data['deleted_at'] =  Carbon::now();
         try {
-            $stocks = Stock::findOrFail($id);
-            $stocks->update($data);
+            // delete  from table stockdetail first then stock
+            DB::table("stock_details")->where("stock_id", "=",  $id)->update($data);
+            DB::table("stocks")->where("id","=",$id)->update($data);
 
             return redirect()->route('stocks.index')->with('message','Stocks Deleted Succeessfully');
         } catch(\Exception $ex){
