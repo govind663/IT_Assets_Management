@@ -56,11 +56,12 @@ class EditStock extends Component
         ]);
     }
 
-
-
+    //  INITIALIZE COMPONENT
     public function mount()
     {
         $this->stock = Stock::find(request()->stock)->toArray();
+        $this->product_code = StockDetail::where('stock_id', request()->stock)
+                                ->value('product_code');
 
         $stocksDetails = StockDetail::with('catagory', 'product', 'unit')
                                     ->where('stock_id', $this->stock['id'])
@@ -69,7 +70,6 @@ class EditStock extends Component
 
         foreach ($stocksDetails as $key => $stocksDetail)
         {
-            $this->product_code[$key+1] = $stocksDetail['product_code'];
             $this->hidden_stock_detail_id[$key+1] = $stocksDetail['id'];
             $this->categories_id[$key+1] = $stocksDetail['catagories_id'];
             $this->product_id[$key+1] = $stocksDetail['product_id'];
@@ -121,31 +121,32 @@ class EditStock extends Component
             'modified_at' => Carbon::now()
         ]);
 
-        // save product details into stock_details table
-        foreach ($this->product as $key=>$val){
-            $data = [
-                'stock_id'     => $stock->id ,
-                "category_id" => $val["category"],
-                'product_id ' => $val['product_id '],
-                'brand' => $val['brand'],
-                'model' => $val['model'],
-                'unit_id' => $val['unit_id'],
-                'warranty_dt' =>  date("Y-m-d",strtotime($val['warranty_dt'])) ?? null,
-                'quantity' => $val['quantity'],
-                'modified_by'  => Auth::user()->id,
-                'modified_at' => Carbon::now()
+        // === store all stock details  in a variable and then clear it. ===
+        StockDetail::where('stock_id',$stock->id)->delete();
+        //  === save product details into stock_details table.
+        foreach ($this->categories_id as $key=>$value) :
+            if (!empty($value)) :
+                StockDetail::create([
+                    "stock_id" =>  $stock->id,
+                    "catagories_id" =>  $value,
+                    "product_id" => $this->product_id[$key],
+                    "brand" => $this->brand[$key],
+                    "model" => $this->model[$key],
+                    "unit_id" => $this->unit_id[$key],
+                    "warranty_dt" =>  isset($this->warranty_dt[$key])?date("Y-m-d",strtotime($this->warranty_dt[$key])):"",
+                    "quantity" =>  $this->quantity[$key],
+                    "inserted_by" => Auth::user()->id,
+                    "inserted_at" => Carbon::now(),
+                ]);
+            endif;
+
+            // ==== Generate  unique SKU for each Product
+            $sku_id = "PMC_SKU-" . substr(md5(time()), rand(0, 26), 6) .  sprintf("%06d", $this->hidden_stock_detail_id);
+            $skuUpdate = [
+                "product_code" => $sku_id,
             ];
-            if(isset($this->stockDetailId[$key])){
-                $data['id'] = $this->stockDetailId[$key];
-                StockDetail::where('id',$this->stockDetailId[$key])
-                            ->where('product_code', $this->product_code[$key])
-                            ->update($data);
-            }else{
-                $data['inserted_by'] = Auth::user()->id ;
-                $data['inserted_at'] = Carbon::now();
-                StockDetail::create($data);
-            }
-        }
+            StockDetail::where('product_id', $this->product_id[$key])->update($skuUpdate);
+        endforeach;
 
         return redirect()->route('stocks.index')->with('message','Stock Updated Successfully');;
     }
@@ -197,6 +198,8 @@ class EditStock extends Component
             $this->unit_id[$this->formCounts] = [];
             $this->loop_products[$this->formCounts] = $this->loop_products[$this->formCounts-1];
             $this->loop_units[$this->formCounts] = $this->loop_units[$this->formCounts-1];
+        } else {
+            $this->emit('alert', ['type' => 'error', 'message' => 'You can not add more than 10 items']);
         }
     }
 
@@ -247,9 +250,9 @@ class EditStock extends Component
         {
             $fieldArray['categories_id.'.$i] = 'required';
             $fieldArray['product_id.'.$i] = 'required|unique:stock_details,product_id,NULL,id,deleted_at,NULL';
-            $fieldArray['brand.'.$i] = 'required';
-            $fieldArray['model.'.$i] = 'required';
-            $fieldArray['unit_id.'.$i] = 'required';
+            $fieldArray['brand.'.$i] = 'required|unique:stock_details,brand'.','.'id,deleted_at';
+            $fieldArray['model.'.$i] = 'required|unique:stock_details,model'.','.'id,deleted_at';
+            $fieldArray['unit_id.'.$i] = 'required|unique:stock_details,unit_id,NULL,id,deleted_at,NULL';
             $fieldArray['warranty_dt.'.$i] = 'required';
             $fieldArray['quantity.'.$i] = 'required';
 
@@ -289,4 +292,5 @@ class EditStock extends Component
 
         $validator->validate();
     }
+
 }

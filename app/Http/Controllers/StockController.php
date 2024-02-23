@@ -28,11 +28,9 @@ class StockController extends Controller
         return view('stocks.create');
     }
 
-    public function show(Stock $stocks, $id)
+    public function show(Stock $stocks)
     {
-        $stocks = Stock::findOrFail($id);
-        // dd($stocks);
-        return view('stocks.view')->with(['stocks' => $stocks]);
+        return view('stocks.view');
     }
 
     public function edit(String $id)

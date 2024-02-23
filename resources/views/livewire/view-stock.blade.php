@@ -57,10 +57,9 @@
     @if($work_order_no == true)
         <div class="row form-group  align-items-center" >
             <h6 class="page-title-box mb-sm-0 text-primary text-capitalize"><b>Stock Details :</b> </h6>
-            <table id="buttons-datatables" class="table table-bordered  dt-responsive nowrap " style="width:100%">
+            <table class="table table-bordered  dt-responsive nowrap " style="width:100%">
                 <thead  class="bg-primary text-light">
                     <tr>
-                        <td>Sr. No.</td>
                         <th>Category Name</th>
                         <th>Product Name</th>
                         <th>Brand</th>
@@ -71,88 +70,81 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- forloop for stocks Details --}}
-                    @foreach ($stocksDetails as  $key => $value)
-                        @for ($i=1; $i <= $formCounts; $i++)
-                            <tr id="row_{{ $key }}">
-                                <td >{{ $key+1 }}</td>
-                                <input type="hidden" name="stockId[{{$key}}][item Id]" value="{{ $value['id'] ?? '' }}"/>
-                                <input type="hidden" name="id[]" value="{{$value['id'] ?? ''}}"/>
-
-                                <td>
-                                    <select class="form-control categories_id @if ($errors->has('categories_id.'.$i)) 'is-invalid' @endif" wire:model="categories_id.{{$i}}">
-                                        <option value="">Select Catagory Name</option>
-                                        @foreach ($categories as $value)
-                                        <option value="{{ $value->id }}"> {{ $value->catagories_name }}</option>
-                                        @endforeach
-                                    </select>
-                                    @if ($errors->has('categories_id.'.$i))
-                                        <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{{ $errors->first('categories_id.'.$i) }}</strong>
-                                        </span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <select class="form-control product_id @if ($errors->has('product_id.'.$i)) 'is-invalid' @endif" wire:model="product_id.{{$i}}">
-                                        {{-- <option value="">Select Product Name</option> --}}
-                                        @foreach ($loop_products[$i] as $product)
-                                            <option value="{{ $product['id'] }}" >{{ $product['name'] }}</option>
-                                        @endforeach
-                                    </select>
-                                    @if ($errors->has('product_id.'.$i))
-                                        <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{{ $errors->first('product_id.'.$i) }}</strong>
-                                        </span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <input type="text" wire:model="brand.{{$i}}" class="form-control brand @if ($errors->has('brand.'.$i)) 'is-invalid' @endif" placeholder="Enter Brand">
-                                    @if ($errors->has('brand.'.$i))
-                                        <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{{ $errors->first('brand.'.$i) }}</strong>
-                                        </span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <input type="text" wire:model.defer="model.{{$i}}" class="form-control model @if ($errors->has('model.'.$i)) 'is-invalid' @endif" placeholder="Enter Model">
-                                    @if ($errors->has('model.'.$i))
-                                        <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{{ $errors->first('model.'.$i) }}</strong>
-                                        </span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <select class="form-control unit_id @if ($errors->has('unit_id.'.$i)) 'is-invalid' @endif" wire:model.defer="unit_id.{{$i}}">
-                                        {{-- <option value="">Select Unit</option> --}}
-                                        @foreach ($loop_units[$i] as $unit)
-                                            <option value="{{ $unit['id'] }}">{{ $unit['unit_name'] }}</option>
-                                        @endforeach
-                                    </select>
-                                    @if ($errors->has('unit_id.'.$i))
-                                        <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{{ $errors->first('unit_id.'.$i) }}</strong>
-                                        </span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <input type="date" wire:model="warranty_dt.{{$i}}" class="form-control warranty_dt @if ($errors->has('warranty_dt.'.$i)) 'is-invalid' @endif">
-                                    @if ($errors->has('warranty_dt.'.$i))
-                                        <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{{ $errors->first('warranty_dt.'.$i) }}</strong>
-                                        </span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <input type="text" wire:model="quantity.{{$i}}" class="form-control quantity @if ($errors->has('quantity.'.$i)) 'is-invalid' @endif" placeholder="Enter Quantity">
-                                    @if ($errors->has('quantity.'.$i))
-                                        <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{{ $errors->first('quantity.'.$i) }}</strong>
-                                        </span>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endfor
-                    @endforeach
+                    @for ($i=1; $i <= $formCounts; $i++)
+                        <tr >
+                            <td>
+                                <select class="form-control categories_id @if ($errors->has('categories_id.'.$i)) 'is-invalid' @endif" wire:model="categories_id.{{$i}}">
+                                    <option value="">Select Catagory Name</option>
+                                    @foreach ($categories as $value)
+                                    <option value="{{ $value->id }}"> {{ $value->catagories_name }}</option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('categories_id.'.$i))
+                                    <span class="invalid-feedback d-block" role="alert">
+                                        <strong>{{ $errors->first('categories_id.'.$i) }}</strong>
+                                    </span>
+                                @endif
+                            </td>
+                            <td>
+                                <select class="form-control product_id @if ($errors->has('product_id.'.$i)) 'is-invalid' @endif" wire:model="product_id.{{$i}}">
+                                    <option value="">Select Product Name</option>
+                                    @foreach ($loop_products[$i] as $product)
+                                        <option value="{{ $product['id'] }}" >{{ $product['name'] }}</option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('product_id.'.$i))
+                                    <span class="invalid-feedback d-block" role="alert">
+                                        <strong>{{ $errors->first('product_id.'.$i) }}</strong>
+                                    </span>
+                                @endif
+                            </td>
+                            <td>
+                                <input type="text" wire:model="brand.{{$i}}" class="form-control brand @if ($errors->has('brand.'.$i)) 'is-invalid' @endif" placeholder="Enter Brand">
+                                @if ($errors->has('brand.'.$i))
+                                    <span class="invalid-feedback d-block" role="alert">
+                                        <strong>{{ $errors->first('brand.'.$i) }}</strong>
+                                    </span>
+                                @endif
+                            </td>
+                            <td>
+                                <input type="text" wire:model.defer="model.{{$i}}" class="form-control model @if ($errors->has('model.'.$i)) 'is-invalid' @endif" placeholder="Enter Model">
+                                @if ($errors->has('model.'.$i))
+                                    <span class="invalid-feedback d-block" role="alert">
+                                        <strong>{{ $errors->first('model.'.$i) }}</strong>
+                                    </span>
+                                @endif
+                            </td>
+                            <td>
+                                <select class="form-control unit_id @if ($errors->has('unit_id.'.$i)) 'is-invalid' @endif" wire:model.defer="unit_id.{{$i}}">
+                                    <option value="">Select Unit</option>
+                                    @foreach ($loop_units[$i] as $unit)
+                                        <option value="{{ $unit['id'] }}">{{ $unit['unit_name'] }}</option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('unit_id.'.$i))
+                                    <span class="invalid-feedback d-block" role="alert">
+                                        <strong>{{ $errors->first('unit_id.'.$i) }}</strong>
+                                    </span>
+                                @endif
+                            </td>
+                            <td>
+                                <input type="date" wire:model="warranty_dt.{{$i}}" class="form-control warranty_dt @if ($errors->has('warranty_dt.'.$i)) 'is-invalid' @endif">
+                                @if ($errors->has('warranty_dt.'.$i))
+                                    <span class="invalid-feedback d-block" role="alert">
+                                        <strong>{{ $errors->first('warranty_dt.'.$i) }}</strong>
+                                    </span>
+                                @endif
+                            </td>
+                            <td>
+                                <input type="text" wire:model="quantity.{{$i}}" class="form-control quantity @if ($errors->has('quantity.'.$i)) 'is-invalid' @endif" placeholder="Enter Quantity">
+                                @if ($errors->has('quantity.'.$i))
+                                    <span class="invalid-feedback d-block" role="alert">
+                                        <strong>{{ $errors->first('quantity.'.$i) }}</strong>
+                                    </span>
+                                @endif
+                            </td>
+                        </tr>
+                    @endfor
                 </tbody>
             </table>
         </div>

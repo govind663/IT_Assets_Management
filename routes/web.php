@@ -21,6 +21,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\VendorsController;
 
+// ==== Request for new materals and supplies
+use App\Http\Controllers\NewMaterialController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -155,6 +157,18 @@ Route::group(['prefix' => 'admin','middleware'=>['auth', 'preventBackHistoryMidd
             'edit'=>'stocks.edit',
             'update'=>'stocks.update',
             'destroy'=>'stocks.destroy'
+        ]);
+
+        // =============== Request for new materals and supplies
+        Route::resource('request-new-material',NewMaterialController::class)
+        ->names([
+            'index'=>'request-new-material.index',
+            'create'=>'request-new-material.create',
+            'store'=>'request-new-material.store',
+            'show'=>'request-new-material.show',
+            'edit'=>'request-new-material.edit',
+            'update'=>'request-new-material.update',
+            'destroy'=>'request-new-material.destroy'
         ]);
 
 });
