@@ -63,7 +63,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table id="buttons-datatables" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                                    <table id="buttons-datatables" class="table table-bordered dt-responsive table-nowrap table-striped align-middle" style="width:100%">
                                         <thead  class="bg-primary text-light">
                                             <tr>
                                                 <th>Sr. No.</th>
@@ -88,7 +88,7 @@
                                                 <td>{{ $value->unit?->unit_name }}</td>
                                                 <td>{{ $value->brand ?: '' }}</td>
                                                 <td>{{ $value->model_no ?: '' }}</td>
-                                                <td class="text-wrap">{{ $value->description ?: '' }}</td>
+                                                <td>{{ $value->description ?: '' }}</td>
 
                                                 @if ($value->is_available == 1)
                                                 <td><span class="badge bg-success">Available</span></td>

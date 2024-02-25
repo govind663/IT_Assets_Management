@@ -102,7 +102,7 @@ class AddStock extends Component
             // $this->reset(['categories_id', 'product_id','brand','model','unit_id', 'warranty_dt','quantity']);
 
             // ==== Generate  unique SKU for each Product
-            $sku_id = "PMC_SKU-" . substr(md5(time()), rand(0, 26), 6) .  sprintf("%06d", $this->hidden_stock_detail_id);
+            $sku_id = "PMC_SKU-" . substr(md5(time()), rand(0, 26), 6) .  sprintf("%06d", $this->product_id[$key]);
             $skuUpdate = [
                 "product_code" => $sku_id,
             ];

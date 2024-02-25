@@ -103,7 +103,7 @@
                     <div class="collapse menu-dropdown" id="sidebarApps">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('/') }}" class="nav-link" data-key="department"><b>New Request List</b></a>
+                                <a href="{{ route('request-new-material.index') }}" class="nav-link" data-key="department"><b>New Request List</b></a>
                             </li>
                         </ul>
                     </div>

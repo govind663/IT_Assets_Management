@@ -34,12 +34,11 @@ return new class extends Migration
             $table->text('rejection_reason_by_it')->nullable();
 
             // === status operated  by the Admin ===
-            $table->boolean('is_approved_by_admin')->default(0)
-            ->comment('0 - not yet,
-                       1 - approved,
-                       2 - rejected,
-                       3 - return to product  department for correction
-                    ');
+            $table->boolean('is_approved_by_admin')->default(0)->comment('  0 - not yet,
+                                                                            1 - approved,
+                                                                            2 - rejected,
+                                                                            3 - return to product  department for correction
+                                                                         ');
             $table->date('approval_made_at')->nullable();
             $table->text('rejection_reason_by_admin')->nullable();
 
