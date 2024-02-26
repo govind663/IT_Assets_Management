@@ -42,7 +42,7 @@ New Request | Edit
             <div class="card-body">
                 <div class="live-preview">
 
-                    @livewire('edit-new-material',  ['id' => $id])
+                    <livewire:edit-new-material >
                     <!--end form-->
 
                 </div>

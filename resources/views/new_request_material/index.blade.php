@@ -63,18 +63,17 @@ Request For Material | List
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table id="buttons-datatables" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                                    <table id="buttons-datatables" class="table table-bordered dt-responsive table-nowrap table-striped align-middle" style="width:100%">
                                         <thead  class="bg-primary text-light">
                                             <tr>
                                                 <th>Sr. No.</th>
-                                                <th>Request Material Id</th>
-                                                <th>Request Material Name</th>
+                                                <th>Request Id</th>
+                                                <th>Name</th>
                                                 <th>Department</th>
                                                 <th>Mobile No.</th>
                                                 <th>Email Id</th>
                                                 <th>Request Date & Time</th>
                                                 <th>Material's Document</th>
-                                                <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -89,11 +88,13 @@ Request For Material | List
                                                 <td>{{ $newMaterial->email }}</td>
                                                 <td>{{ date("d-m-Y H:i A", strtotime($newMaterial->requested_at)) }}</td>
                                                 <td>
-                                                   <a href="" class="btn btn-primary btn-sm">View</a>
+                                                    <a href="{{ asset('/storage/' .$newMaterial->material_doc ) }}" target="_blank" type="button"  class="btn btn-sm btn-primary">
+                                                        View Document
+                                                    </a>
                                                 </td>
-                                                <td class="d-flex">
+                                                <td >
                                                     {{-- Read --}}
-                                                    <a href="{{ route('request-new-material.show', $value->id) }}">
+                                                    <a href="{{ route('request-new-material.show', $newMaterial->id) }}">
                                                         <button class="btn btn-sm btn-info" >
                                                             <b><i class="ri-eye-line"></i> View</b>
                                                         </button>
@@ -101,7 +102,7 @@ Request For Material | List
 
                                                     &nbsp;
                                                     {{-- Edit --}}
-                                                    <a href="{{ route('request-new-material.edit', $value->id) }}">
+                                                    <a href="{{ route('request-new-material.edit', $newMaterial->id) }}">
                                                         <button class="btn btn-sm btn-warning" >
                                                             <b><i class="ri-edit-line"></i> Edit</b>
                                                         </button>
@@ -109,7 +110,7 @@ Request For Material | List
 
                                                     &nbsp;
                                                     {{-- Delete --}}
-                                                    <form action="{{ route('request-new-material.destroy', $value->id) }}" method="post">
+                                                    <form action="{{ route('request-new-material.destroy', $newMaterial->id) }}" method="post">
                                                         @csrf
                                                         @method('DELETE')
                                                         <input name="_method" type="hidden" value="DELETE">

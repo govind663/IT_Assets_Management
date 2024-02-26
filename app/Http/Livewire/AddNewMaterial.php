@@ -6,15 +6,18 @@ use App\Models\Catagories;
 use App\Models\Department;
 use App\Models\NewMaterial;
 use App\Models\Product;
+use App\Models\RequestMaterialProduct;
 use App\Models\Unit;
 use Livewire\Component;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Livewire\WithFileUploads;
 
 class AddNewMaterial extends Component
 {
+    use WithFileUploads;
+
     // COPONENT VARIABLES
     public $loop_products;
     public $loop_units;
@@ -35,6 +38,9 @@ class AddNewMaterial extends Component
     public $model;
     public $unit_id;
     public $quantity;
+
+    // Show  or Hide forms
+    public $fileUploaded = false;
 
     public function render()
     {
@@ -61,50 +67,54 @@ class AddNewMaterial extends Component
         $this->addValidate();
 
         // ===== store  in DB =======
-        // $vendors = NewMaterial::create([
-        //     'vendor_id' => $this->vendor_id ?: null,
-        //     'inward_dt' => date("Y-m-d", strtotime($this->inward_dt)),
-        //     'voucher_no' =>  $this->voucher_no ?: null,
-        //     'material_doc' =>  $this->material_doc ?: null,
-        //     'inserted_by' => Auth::user()->id,
-        //     'inserted_at' => Carbon::now()
-        // ]);
+        $newMaterial = NewMaterial::create([
+                            'user_id' => auth()->user()->id,
+                            'name' => $this->name ?: null,
+                            'department_id' => $this->department_id ?: null,
+                            'mobile_no' =>  $this->mobile_no,
+                            'email' => $this->email,
+                            'requested_at' => date("Y-m-d", strtotime($this->requested_at)),
+                            'material_doc' =>  $this->material_doc->store('uploads/material_docs', 'public'),
+                            'inserted_by' => Auth::user()->id,
+                            'inserted_at' => Carbon::now()
+                        ]);
 
         // ==== Generate Request number
-        // $unique_id = "PMC-INV" . sprintf("%06d", abs((int)$vendors->id + 1))  . "/" . date("Y");
-        // $update = [
-        //     'invoice_no' => $unique_id,
-        // ];
-        // NewMaterial::where('id', $vendors->id)->update($update);
+        $requestID = "PMC-MATERIALS" . sprintf("%06d", abs((int)$newMaterial->id + 1))  . "/" . date("Y");
+        $update = [
+            'request_no' => $requestID,
+        ];
+        NewMaterial::where('id', $newMaterial->id)->update($update);
 
-        //  === save new product details into
-        // foreach ($this->categories_id as $key=>$value) :
-        //     if (!empty($value)) :
-        //         StockDetail::create([
-        //             "stock_id" => $vendors->id,
-        //             "catagories_id" =>  $value,
-        //             "product_id" => $this->product_id[$key],
-        //             "brand" => $this->brand[$key],
-        //             "model" => $this->model[$key],
-        //             "unit_id" => $this->unit_id[$key],
-        //             "warranty_dt" =>  isset($this->warranty_dt[$key])?date("Y-m-d",strtotime($this->warranty_dt[$key])):"",
-        //             "quantity" =>  $this->quantity[$key],
-        //             "inserted_by" => Auth::user()->id,
-        //             "inserted_at" => Carbon::now(),
-        //         ]);
-        //     endif;
-        //     //  Reset all field after add one time
-        //     // $this->reset(['categories_id', 'product_id','brand','model','unit_id', 'warranty_dt','quantity']);
+        //  === save new material product details   into db ===
+        foreach ($this->categories_id as $key=>$value) :
+            if (!empty($value)) :
 
-        //     // ==== Generate  unique SKU for each Product
-        //     $sku_id = "PMC_SKU-" . substr(md5(time()), rand(0, 26), 6) .  sprintf("%06d", $this->product_id[$key]);
-        //     $skuUpdate = [
-        //         "product_code" => $sku_id,
-        //     ];
-        //     StockDetail::where('product_id', $this->product_id[$key])->update($skuUpdate);
-        // endforeach;
+                RequestMaterialProduct::create([
+                    "new_material_id" => $newMaterial->id ,
+                    "catagories_id" =>  $value,
+                    "product_id" =>  $this->product_id[$key],
+                    "brand" =>  $this->brand[$key],
+                    "model" =>  $this->model[$key],
+                    "unit_id" => $this->unit_id[$key],
+                    "quantity" => $this->quantity[$key],
+                    "inserted_by" => Auth::user()->id,
+                    "created_at" => Carbon::now(),
+                ]);
+            endif;
 
-        return redirect()->route('request-new-material.index')->with('message','Stock created successfully');;
+            // ==== get last inserted  id for next data
+            $lastId = RequestMaterialProduct::latest()->first()->id;
+
+            // ==== Generate  unique SKU for each Product
+            $sku_id = "PMC_SKU-" . substr(md5(time()), rand(0, 26), 6) .  sprintf("%06d", $this->product_id[$key]);
+            $skuUpdate = [
+                "product_code" => $sku_id,
+            ];
+            RequestMaterialProduct::where('product_id', $this->product_id[$key])->update($skuUpdate);
+        endforeach;
+
+        return redirect()->route('request-new-material.index')->with('message','Your request for new material has been submitted successfully.');
     }
 
     // ======= GET PRODUCT CATRGORYWISE
@@ -179,10 +189,10 @@ class AddNewMaterial extends Component
         for ($i=1; $i<=$this->formCounts; $i++)
         {
             $fieldArray['categories_id.'.$i] = 'required';
-            $fieldArray['product_id.'.$i] = 'required|unique:stock_details,product_id,NULL,id,deleted_at,NULL';
-            $fieldArray['brand.'.$i] = 'required|unique:stock_details,brand'.','.'id,deleted_at';
-            $fieldArray['model.'.$i] = 'required|unique:stock_details,model'.','.'id,deleted_at';
-            $fieldArray['unit_id.'.$i] = 'required|unique:stock_details,unit_id,NULL,id,deleted_at,NULL';
+            $fieldArray['product_id.'.$i] = 'required|unique:request_material_products,product_id,NULL,id,deleted_at,NULL';
+            $fieldArray['brand.'.$i] = 'required|unique:request_material_products,brand'.','.'id,deleted_at';
+            $fieldArray['model.'.$i] = 'required|unique:request_material_products,model'.','.'id,deleted_at';
+            $fieldArray['unit_id.'.$i] = 'required|unique:request_material_products,unit_id,NULL,id,deleted_at,NULL';
             $fieldArray['quantity.'.$i] = 'required';
 
             $messageArray['categories_id.'.$i . '.required'] = 'Please select any category';
@@ -222,7 +232,7 @@ class AddNewMaterial extends Component
 
         $validator = Validator::make([
                             'categories_id' => $this->categories_id,
-                            'product_id' => $this->product_id,
+                            'product_id' =>  $this->product_id,
                             'brand' => $this->brand,
                             'model' => $this->model,
                             'unit_id' => $this->unit_id,
@@ -237,4 +247,15 @@ class AddNewMaterial extends Component
 
         $validator->validate();
     }
+
+    // ==== check file uploaded or not then show div  otherwise hide it=====//
+     public function updatedMaterialDoc($event)
+     {
+        if(!empty($event)){
+            $this->fileUploaded = true;
+           }else{
+            $this->fileUploaded = false;
+        }
+     }
+
 }

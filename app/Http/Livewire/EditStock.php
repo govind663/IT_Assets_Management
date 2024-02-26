@@ -100,13 +100,6 @@ class EditStock extends Component
         $this->formCounts = $stocksDetails->count();
     }
 
-
-    // === show or Hide the form =======
-    public function displayForm($value)
-    {
-        $this->show = $value;
-    }
-
     //  Update form fields to the loop
     public function submitApplication()
     {
@@ -226,8 +219,6 @@ class EditStock extends Component
             $this->unit_id[$lastFormKey] = $this->unit_id[$this->formCounts];
             $this->warranty_dt[$lastFormKey] = $this->warranty_dt[$this->formCounts];
             $this->quantity[ $lastFormKey ]=  "1";
-
-
         }
     }
 

@@ -8,10 +8,6 @@ use App\Models\Stock;
 use App\Models\StockDetail;
 use App\Models\Unit;
 use App\Models\Vendor;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 
 class ViewStock extends Component
@@ -93,12 +89,6 @@ class ViewStock extends Component
         $this->work_order_no = $this->stock['work_order_no'];
 
         $this->formCounts = $stocksDetails->count();
-    }
-
-    // === show or Hide the form =======
-    public function displayForm($value)
-    {
-        $this->show = $value;
     }
 
     public function work_order_no($event)
