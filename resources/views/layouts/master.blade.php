@@ -22,7 +22,7 @@
         <!-- Header End -->
 
         <!-- Notification Model Start -->
-        {{-- <x-header /> --}}
+        <x-notification />
         <!-- Notification Model End -->
 
         <!-- Sidebar Start -->

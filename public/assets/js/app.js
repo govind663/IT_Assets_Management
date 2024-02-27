@@ -863,7 +863,7 @@
     }
     function E() {
         document
-            .getElementById("vertical-hover")
+            .getElementById("horizontal-hover")
             .addEventListener("click", function () {
                 "sm-hover" ===
                 document.documentElement.getAttribute("data-sidebar-size")

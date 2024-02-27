@@ -38,7 +38,11 @@ Request For Material | List
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
-                            <h4 class="mb-sm-0 text-primary text-capitalize">All New Request List</h4>
+                            @if($status = 0)
+                            <h4 class="mb-sm-0 text-primary text-capitalize">All New Pending Request List</h4>
+                            @elseif ($status = 6)
+                            <h4 class="mb-sm-0 text-primary text-capitalize">All New Pending Request List</h4>
+                            @endif
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
@@ -61,9 +65,6 @@ Request For Material | List
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
-                            <div class="card-header">
-                                <a class="btn btn-primary" href="{{ route('request-new-material.create') }}" role="button"><b>+ Add New Request</b></a>
-                            </div>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table id="buttons-datatables" class="table table-bordered dt-responsive table-nowrap table-striped align-middle" style="width:100%">
@@ -75,7 +76,7 @@ Request For Material | List
                                                 <th>Department</th>
                                                 <th>Mobile No.</th>
                                                 <th>Email Id</th>
-                                                <th>Request Date & Time</th>
+                                                <th>Request </th>
                                                 <th>Material's Document</th>
                                                 <th>Material's Status</th>
                                                 <th>Action</th>
@@ -90,44 +91,57 @@ Request For Material | List
                                                 <td>{{ $newMaterial->department?->dept_name }}</td>
                                                 <td>{{ $newMaterial->mobile_no }}</td>
                                                 <td>{{ $newMaterial->email }}</td>
-                                                <td>{{ date("d-m-Y H:i A", strtotime($newMaterial->requested_at)) }}</td>
+                                                <td>{{ date("d-m-Y", strtotime($newMaterial->requested_at)) }}</td>
                                                 <td>
                                                     <a href="{{ asset('/storage/' .$newMaterial->material_doc ) }}" target="_blank" type="button"  class="btn btn-sm btn-primary">
                                                         View Document
                                                     </a>
                                                 </td>
+
                                                 <td>
                                                     {{-- status --}}
                                                     @if($newMaterial->status == 0)
                                                         <span class="badge bg-warning text-black text-justify">Pending</span>
+                                                    @elseif($newMaterial->status == 6)
+                                                        <span class="badge bg-dark text-justify">Approved but not yet recived</span>
                                                     @endif
                                                 </td>
-                                                <td >
+
+                                                <td>
                                                     {{-- Read --}}
-                                                    <a href="{{ route('request-new-material.show', $newMaterial->id) }}">
+                                                    <a href="{{ route('request-new-material.view', [ 'id'=>$newMaterial->id, 'status'=>$newMaterial->status ] ) }}">
                                                         <button class="btn btn-sm btn-info" >
                                                             <b><i class="ri-eye-line"></i> View</b>
                                                         </button>
                                                     </a>
 
-                                                    &nbsp;
-                                                    {{-- Edit --}}
-                                                    <a href="{{ route('request-new-material.edit', $newMaterial->id) }}">
-                                                        <button class="btn btn-sm btn-warning" >
-                                                            <b><i class="ri-edit-line"></i> Edit</b>
-                                                        </button>
-                                                    </a>
+                                                    @if(Auth::user()->role_id > '3' && Auth::user()->department_id != '1')
+                                                        {{-- Read --}}
+                                                        <a href="{{ route('request-new-material.show', $newMaterial->id) }}">
+                                                            <button class="btn btn-sm btn-info" >
+                                                                <b><i class="ri-eye-line"></i> View</b>
+                                                            </button>
+                                                        </a>
 
-                                                    &nbsp;
-                                                    {{-- Delete --}}
-                                                    <form action="{{ route('request-new-material.destroy', $newMaterial->id) }}" method="post">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <input name="_method" type="hidden" value="DELETE">
-                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');">
-                                                            <b><i class="ri-delete-bin-line"></i> Delete</b>
-                                                        </button>
-                                                    </form>
+                                                        &nbsp;
+                                                        {{-- Edit --}}
+                                                        <a href="{{ route('request-new-material.edit', $newMaterial->id) }}">
+                                                            <button class="btn btn-sm btn-warning" >
+                                                                <b><i class="ri-edit-line"></i> Edit</b>
+                                                            </button>
+                                                        </a>
+
+                                                        &nbsp;
+                                                        {{-- Delete --}}
+                                                        <form action="{{ route('request-new-material.destroy', $newMaterial->id) }}" method="post">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <input name="_method" type="hidden" value="DELETE">
+                                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');">
+                                                                <b><i class="ri-delete-bin-line"></i> Delete</b>
+                                                            </button>
+                                                        </form>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @endforeach

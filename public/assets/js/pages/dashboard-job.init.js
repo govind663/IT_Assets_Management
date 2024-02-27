@@ -182,14 +182,16 @@ var jobListAll, searchResultList, options, chart, jobListAllData = [
                 r = t.querySelector(".candidate-img").src;
             document.getElementById("candidate-name").innerHTML = e, document.getElementById("candidate-position").innerHTML = a, document.getElementById("candidate-img").src = r
         })
-    }), window.addEventListener("load", () => {
-        var r = document.getElementById("searchList"),
-            t = document.querySelectorAll("#candidate-list li");
-        r.onkeyup = () => {
-            var e, a = r.value.toLowerCase();
-            for (e of t) - 1 == e.querySelector(".candidate-name").innerHTML.toLowerCase().indexOf(a) ? e.classList.add("d-none") : e.classList.remove("d-none")
-        }
-    }), getChartColorsArray("total_jobs"));
+    })
+    // , window.addEventListener("load", () => {
+    //     var r = document.getElementById("searchList"),
+    //         t = document.querySelectorAll("#candidate-list li");
+    //     r.onkeyup = () => {
+    //         var e, a = r.value.toLowerCase();
+    //         for (e of t) - 1 == e.querySelector(".candidate-name").innerHTML.toLowerCase().indexOf(a) ? e.classList.add("d-none") : e.classList.remove("d-none")
+    //     }
+    // })
+    , getChartColorsArray("total_jobs"));
 chartRadialbarBasicColors && (options = {
     series: [95],
     chart: {

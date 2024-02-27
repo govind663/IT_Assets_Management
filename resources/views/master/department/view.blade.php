@@ -43,10 +43,17 @@
                         <form >
 
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="firstNameinput" class="form-label"><b>Department Name : </b></label>
+                                <div class="col-md-4">
+                                    <div class="mb-2">
+                                        <label for="DepartmentNameinput" class="form-label"><b>Department Name : </b></label>
                                         <input readonly class="form-control" value="{{ $department->dept_name }}" >
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="mb-2">
+                                        <label for="DepartmentCodeinput" class="form-label"><b>Department Code : </b></label>
+                                        <input readonly class="form-control" value="{{ $department->dep_code }}" >
                                     </div>
                                 </div>
 

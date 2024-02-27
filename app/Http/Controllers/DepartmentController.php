@@ -11,7 +11,7 @@ class DepartmentController extends Controller
 {
     public function index()
     {
-        $departments = Department::select('id', 'dept_name')->whereNull('deleted_at')->orderBy('id', 'desc')->get();
+        $departments = Department::select('id', 'dept_name', 'dep_code')->whereNull('deleted_at')->orderBy('id', 'desc')->get();
         // dd($departments);
 
         return view('master.department.index')->with(['department' => $departments]);

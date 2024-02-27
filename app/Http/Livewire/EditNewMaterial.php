@@ -64,13 +64,27 @@ class EditNewMaterial extends Component
 
         $newMaterial = NewMaterial::findOrFail($this->materialID['id']);
 
+        // update document  if file is uploaded or not
+        if ($request->hasFile('material_docs')){
+            //  store new image and delete old one in storage  folder
+            Storage::delete('public/uploads/material_docs' .$newMaterial->material_doc);
+            $imageName = time().'.'.$request->material_docs->extension();
+            $request->material_docs->store('uploads/material_doc', $imageName,  'public');
+            $this->material_doc = '/storage/uploads/material_docs/' . $imageName ;
+            $this->fileUploaded=true;
+            $newMaterial->update(['material_doc'=> $imageName]);
+        } elseif (!$this->fileUploaded){
+                unset($newMaterial->material_doc );
+        }
+
+
+        // Save data in database
         $newMaterial->update([
             'name' => $this->name ?: null,
             'department_id' => $this->department_id ?: null,
             'mobile_no' =>  $this->mobile_no,
             'email' => $this->email,
             'requested_at' => date("Y-m-d", strtotime($this->requested_at)),
-            'material_doc' => $this->material_doc->store('uploads/material_docs', 'public'),
             'modified_by'  => Auth::user()->id,
             'modified_at' => Carbon::now()
         ]);
@@ -266,7 +280,7 @@ class EditNewMaterial extends Component
         $fieldArray['mobile_no'] = 'required|max:10';
         $fieldArray['email'] = 'required|max:255';
         $fieldArray['requested_at'] = 'required|date';
-        $fieldArray['material_doc'] =  'mimes:pdf,jpeg,jpg,png|max:3072';
+        // $fieldArray['material_doc'] =  'mimes:pdf,jpeg,jpg,png|max:3072';
 
         $messageArray['name.required'] =  'Name is required';
 
@@ -284,8 +298,8 @@ class EditNewMaterial extends Component
         $messageArray['requested_at.required'] =  'Material Request Date is required';
 
         // $messageArray['material_doc.required'] =  'Document is required';
-        $messageArray['material_doc.mimes'] = 'Only jpeg, png and pdf are allowed';
-        $messageArray['material_doc.max'] = 'Maximum size for document should be 3MB';
+        // $messageArray['material_doc.mimes'] = 'Only jpeg, png and pdf are allowed';
+        // $messageArray['material_doc.max'] = 'Maximum size for document should be 3MB';
 
 
         $validator = Validator::make([
@@ -306,5 +320,11 @@ class EditNewMaterial extends Component
         $validator->validate();
     }
 
-
+    // ==== check file uploaded or not then show div  otherwise hide it=====//
+    public function updatedMaterialDoc($event)
+    {
+       if(!empty($event)){
+           $this->fileUploaded =  $this->material_doc;
+       }
+    }
 }

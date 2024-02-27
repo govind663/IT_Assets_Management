@@ -68,6 +68,7 @@
                                             <tr>
                                                 <th>Name</th>
                                                 <th>Department Name</th>
+                                                <th>Department Code</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -76,6 +77,7 @@
                                             <tr>
                                                 <td>{{ $key+1 }}</td>
                                                 <td>{{ $value->dept_name?: '' }}</td>
+                                                <td>{{ $value->dep_code?: '' }}</td>
                                                 <td class="d-flex" >
                                                     <a href="{{ route('department.show', $value->id) }}">
                                                         <button class="btn btn-sm btn-info" >

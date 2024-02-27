@@ -23,6 +23,8 @@ use App\Http\Controllers\VendorsController;
 
 // ==== Request for new materals and supplies
 use App\Http\Controllers\NewMaterialController;
+use App\Http\Controllers\AllRequestMaterialController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -58,7 +60,7 @@ Route::group(['prefix' => 'admin'],function(){
 });
 
 // ============================= Only Authenticated Users Can Access This Routs
-Route::group(['prefix' => 'admin','middleware'=>['auth', 'preventBackHistoryMiddleware']],function(){
+Route::group(['prefix' => 'it_assets_management','middleware'=>['auth', 'preventBackHistoryMiddleware']],function(){
 
         // =============== Admin Dashboard
         Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
@@ -171,5 +173,12 @@ Route::group(['prefix' => 'admin','middleware'=>['auth', 'preventBackHistoryMidd
             'destroy'=>'request-new-material.destroy'
         ]);
 
+        // === Handle  the approval of request  from
+        Route::prefix('request-new-material')->group(function(){
+            Route::get('list/{status}', [AllRequestMaterialController ::class,'index'])->name('request-new-material.list');
+            Route::get('{id}/{status}/view', [AllRequestMaterialController ::class,'show'])->name('request-new-material.view');
+            Route::get('{id}/approve', [AllRequestMaterialController ::class,'approve'])->name('request-new-material.approve');
+            Route::post('{id}/reject', [AllRequestMaterialController ::class,'reject'])->name('request-new-material.reject');
+        });
 });
 

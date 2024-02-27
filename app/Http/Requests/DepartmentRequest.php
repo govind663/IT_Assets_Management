@@ -24,10 +24,13 @@ class DepartmentRequest extends FormRequest
         if ($this->id){
             $rule = [
                 'dept_name' => 'required|max:255',
+                'dep_code' => 'required|max:255',
+
             ];
         }else{
             $rule = [
                 'dept_name' => 'required|max:255|unique:departments',
+                'dep_code' => 'required|max:255|unique:departments',
             ];
         }
         return $rule;
@@ -38,7 +41,10 @@ class DepartmentRequest extends FormRequest
         return [
             'dept_name.required' => __('Department Name is required'),
             'dept_name.max' => __('The length of department name should not exceed 255 characters'),
-            'dept_name.unique' => __('This department already exists')
+            'dept_name.unique' => __('This department already exists'),
+            'dep_code.required' => __('Department Code is required'),
+            'dep_code.max' => __('The length of department code should not exceed  255 characters'),
+            'dep_code.unique' => __('This department code has been used')
         ];
     }
 }

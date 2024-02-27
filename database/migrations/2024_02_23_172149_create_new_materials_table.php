@@ -21,7 +21,16 @@ return new class extends Migration
             $table->string('email')->unique()->nullable();
             $table->date('requested_at')->nullable();
             $table->string('material_doc')->comment('Material documentation file link')->nullable()->default(null);
-            $table->integer('status')->comment('0 - Pending , 1 - Approved, 2 - Rejected, 3 - Delivered', '4 - Returned', '5 - Approved but not yet recived', '6 - Recived')->default(0);
+            $table->integer('status')->comment('
+                0 - Pending ,
+                1 - Approved,
+                2 - Rejected,
+                3 - Delivered,
+                4 - Collected,
+                5 - Returned,
+                6 - Approved but not yet recived,
+                7 - Recived
+            ')->default(0);
 
             // === status operated  by the HOD ===
             $table->integer('is_checked_by_hod')->default(0)->comment('0 - not checked , 1 - checked and approved, 2 - checked and rejected');

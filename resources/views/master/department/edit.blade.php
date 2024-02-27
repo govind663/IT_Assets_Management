@@ -47,11 +47,23 @@
                             <input type="text" id="id" name="id" hidden class="form-control" value="{{ $department->id }}" >
 
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
+                                <div class="col-md-4">
+                                    <div class="mb-2">
                                         <label for="firstNameinput" class="form-label"><b>Department Name : <span class="text-danger">*</span></b></label>
                                         <input type="text" id="dept_name" name="dept_name" class="form-control @error('dept_name') is-invalid @enderror" value="{{ $department->dept_name }}" placeholder="Enter Department Name" >
                                         @error('dept_name')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="mb-2">
+                                        <label for="DepartmentCodeinput" class="form-label"><b>Department Code : <span class="text-danger">*</span></b></label>
+                                        <input type="text" id="dep_code" name="dep_code" class="form-control @error('dep_code') is-invalid @enderror" value="{{ $department->dep_code }}" placeholder="Enter Department Code" >
+                                        @error('dep_code')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
