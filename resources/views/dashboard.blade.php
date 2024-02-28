@@ -4,6 +4,13 @@
     IT Assets Management System | Home
 @endsection
 
+@push('styles')
+    <style>
+        .card-body {
+            border: 1px solid #8859e0;
+        }
+    </style>
+@endpush
 @section('content')
     <!-- ============================================================== -->
     <!-- Start right Content here -->

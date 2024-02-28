@@ -78,6 +78,10 @@ Request For Material | List
                                                 <th>Request Date & Time</th>
                                                 <th>Material's Document</th>
                                                 <th>Material's Status</th>
+                                                @if($currentMaterialStatus->status == 2)
+                                                <th>Remarks for rejection</th>
+                                                <th>Date for rejection</th>
+                                                @endif
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -100,8 +104,24 @@ Request For Material | List
                                                     {{-- status --}}
                                                     @if($newMaterial->status == 0)
                                                         <span class="badge bg-warning text-black text-justify">Pending</span>
+                                                    @elseif($newMaterial->status == 1)
+                                                        <span class="badge bg-success text-justify">Approved</span>
+                                                    @elseif($newMaterial->status == 2)
+                                                        <span class="badge bg-danger text-justify">Reject</span>
+                                                    @elseif($newMaterial->status == 6)
+                                                        <span class="badge bg-info text-justify">checked and approved by HOD</span>
+                                                    @elseif($newMaterial->status == 7)
+                                                        <span class="badge bg-primary text-justify">checked and approved by clerk</span>
                                                     @endif
                                                 </td>
+
+                                                @if($newMaterial->status == 2 && $newMaterial->is_checked_by_hod == 2)
+                                                <td>{{ $newMaterial->rejection_reason_by_hod }}</td>
+                                                <td>{{ date("d-m-Y", strtotime($newMaterial->checked_by_hod_at)) }}</td>
+                                                @elseif($newMaterial->status == 2 && $newMaterial->is_processed_by_clerk == 2)
+                                                <td>{{ $newMaterial->rejection_reason_by_clerk }}</td>
+                                                <td>{{ date("d-m-Y", strtotime($newMaterial->checked_by_clerk_at)) }}</td>
+                                                @endif
                                                 <td >
                                                     {{-- Read --}}
                                                     <a href="{{ route('request-new-material.show', $newMaterial->id) }}">
@@ -109,7 +129,7 @@ Request For Material | List
                                                             <b><i class="ri-eye-line"></i> View</b>
                                                         </button>
                                                     </a>
-
+                                                    @if($newMaterial->status == 0  || $newMaterial->status == 2 )
                                                     &nbsp;
                                                     {{-- Edit --}}
                                                     <a href="{{ route('request-new-material.edit', $newMaterial->id) }}">
@@ -128,6 +148,7 @@ Request For Material | List
                                                             <b><i class="ri-delete-bin-line"></i> Delete</b>
                                                         </button>
                                                     </form>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @endforeach

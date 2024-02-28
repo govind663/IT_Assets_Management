@@ -21,6 +21,7 @@ class EditNewMaterial extends Component
     use WithFileUploads;
 
     // COPONENT VARIABLES
+    public $updatenewMaterialstatus;
     public $loop_products;
     public $loop_units;
     public $formCounts = 1;
@@ -116,6 +117,11 @@ class EditNewMaterial extends Component
             RequestMaterialProduct::where('product_id', $this->product_id[$key])->update($skuUpdate);
         endforeach;
 
+        // === update status when other department clerk is  logged in===//
+        if (Auth::User()->role_id == 2 || Auth::User()->role_id == 3  && Auth::User()->department_id != 1) {
+            $status = ['status'=>0];
+            NewMaterial::whereId($newMaterial->id)->update($status);
+        }
         return redirect()->route('request-new-material.index')->with('message','Your request for new material has been updated successfully.');;
     }
 

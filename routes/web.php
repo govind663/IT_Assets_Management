@@ -177,8 +177,10 @@ Route::group(['prefix' => 'it_assets_management','middleware'=>['auth', 'prevent
         Route::prefix('request-new-material')->group(function(){
             Route::get('list/{status}', [AllRequestMaterialController ::class,'index'])->name('request-new-material.list');
             Route::get('{id}/{status}/view', [AllRequestMaterialController ::class,'show'])->name('request-new-material.view');
-            Route::get('{id}/approve', [AllRequestMaterialController ::class,'approve'])->name('request-new-material.approve');
-            Route::post('{id}/reject', [AllRequestMaterialController ::class,'reject'])->name('request-new-material.reject');
+            Route::get('{id}/{status}/approve', [AllRequestMaterialController ::class,'approveRequestMaterial'])->name('request-new-material.approve');
+            Route::post('{id}/{status}/reject', [AllRequestMaterialController ::class,'rejectRequestMaterial'])->name('request-new-material.reject');
+            Route::get('{status}/processs_list', [AllRequestMaterialController ::class,'listRequestMaterial'])->name('request-new-material.processslist');
+            Route::get('{id}/{status}/processs_view', [AllRequestMaterialController ::class,'showRequestMaterial'])->name('request-new-material.processs_view');
         });
 });
 

@@ -35,4 +35,9 @@ class NewMaterial extends Model
     {
         return $this->belongsTo(Department::class);
     }
+    // Relationship with roles model.
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }

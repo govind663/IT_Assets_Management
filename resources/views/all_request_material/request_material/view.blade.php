@@ -1,10 +1,8 @@
 @extends('layouts.master')
 
 @section('title')
-New Request | Edit
+New Request | View
 @endsection
-
-@livewireStyles
 
 @section('content')
 <div class="main-content">
@@ -103,7 +101,7 @@ New Request | Edit
 
                     <div class="row form-group  align-items-center">
                         <h6 class="page-title-box mb-sm-0 text-primary text-capitalize"><b>Stock Details :</b> </h6>
-                        <table id="dynamicTable" class="table table-bordered  table-nowrap table-striped align-middle" style="width:100%">
+                        <table id="example" class="table table-bordered dt-responsive table-nowrap table-striped align-middle" style="width:100%">
                             <thead class="bg-primary text-light">
                                 <tr>
                                     <th>Sr. No.</th>
@@ -133,11 +131,11 @@ New Request | Edit
 
                     <div class="col-lg-12 m-2">
                         <div class="text-end">
-                            @if($status == 0)
-                            <a href="{{ route('request-new-material.list', 0) }}" class="btn btn-danger">Cancel</a>&nbsp;
-                            @elseif($status == 6)
-                            <a href="{{ route('request-new-material.list', 6) }}" class="btn btn-danger">Cancel</a>&nbsp;
-                            @endif
+                            <a href="{{ route('request-new-material.list', $status) }}" class="btn btn-danger">Cancel</a>&nbsp;
+                            <a href="{{ route('request-new-material.approve', [ 'id'=>$materials['new_material']->id, 'status'=>$status ]) }}" class="btn btn-success">Approve</a>&nbsp;
+                            <button type="button" class="btn btn-warning text-dark" data-bs-toggle="modal" data-bs-target="#rejectByHODModal_{{ $materials['new_material']->id }}_{{ $status }}">
+                                Reject
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -149,6 +147,56 @@ New Request | Edit
 </div>
 <!-- End Page-content -->
 
+{{-- Approve by HOD --}}
+<div class="modal fade" id="rejectByHODModal_{{ $materials['new_material']->id }}_{{ $status }}" tabindex="-1" aria-labelledby="exampleModalgridLabel" aria-modal="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                @if (Auth::user()->role_id == '2' && Auth::user()->department_id == '1' )
+                <h5 class="modal-title text-primary" id="exampleModalgridLabel">Rejection reason by the Head of Department</h5>
+                @elseif (Auth::user()->role_id == '3' && Auth::user()->department_id == '1' )
+                <h5 class="modal-title text-primary" id="exampleModalgridLabel">Rejection reason by the Head of Department</h5>
+                @endif
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ route('request-new-material.reject', [ 'id'=>$materials['new_material']->id, 'status'=>$status ]) }}"  enctype="multipart/form-data">
+                    @csrf
+                    <div class="row g-3">
+                        <div class="col-xxl-6">
+                            @if (Auth::user()->role_id == '2' && Auth::user()->department_id == '1' )
+                            <div class="form-group" >
+                                <label for="lastName" class="form-label"><b>Remarks for rejection : <span class="text-danger">*</span></b></label>
+                                <textarea type="text" class="form-control @error('rejection_reason_by_hod') is-invalid @enderror" id="rejection_reason_by_hod" name="rejection_reason_by_hod" placeholder="Enter Remarks for rejection" vlue="{{ old('rejection_reason_by_hod') }}">{{ old('rejection_reason_by_hod') }}</textarea>
+                                @error('rejection_reason_by_hod')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            @elseif (Auth::user()->role_id == '3' && Auth::user()->department_id == '1' )
+                            <div class="form-group" >
+                                <label for="lastName" class="form-label"><b>Remarks for rejection : <span class="text-danger">*</span></b></label>
+                                <textarea type="text" class="form-control @error('rejection_reason_by_clerk') is-invalid @enderror" id="rejection_reason_by_clerk" name="rejection_reason_by_clerk" placeholder="Enter Remarks for rejection" vlue="{{ old('rejection_reason_by_clerk') }}">{{ old('rejection_reason_by_clerk') }}</textarea>
+                                @error('rejection_reason_by_clerk')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            @endif
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </div><!--end row-->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Start Footer -->
 <x-footer />
 <!-- End Footer -->

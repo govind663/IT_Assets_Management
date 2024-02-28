@@ -79,6 +79,10 @@ Request For Material | List
                                                 <th>Request </th>
                                                 <th>Material's Document</th>
                                                 <th>Material's Status</th>
+                                                @if($status == 2)
+                                                <th>Remarks for rejection</th>
+                                                <th>Date for rejection</th>
+                                                @endif
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -102,10 +106,24 @@ Request For Material | List
                                                     {{-- status --}}
                                                     @if($newMaterial->status == 0)
                                                         <span class="badge bg-warning text-black text-justify">Pending</span>
+                                                    @elseif($newMaterial->status == 1)
+                                                        <span class="badge bg-success text-justify">Approved</span>
+                                                    @elseif($newMaterial->status == 2)
+                                                        <span class="badge bg-danger text-justify">Reject</span>
                                                     @elseif($newMaterial->status == 6)
-                                                        <span class="badge bg-dark text-justify">Approved but not yet recived</span>
+                                                        <span class="badge bg-info text-justify">checked and approved by HOD</span>
+                                                    @elseif($newMaterial->status == 7)
+                                                        <span class="badge bg-primary text-justify">checked and approved by clerk</span>
                                                     @endif
                                                 </td>
+
+                                                @if($newMaterial->status == 2 && $newMaterial->is_checked_by_hod == 2)
+                                                <td>{{ $newMaterial->rejection_reason_by_hod }}</td>
+                                                <td>{{ date("d-m-Y", strtotime($newMaterial->checked_by_hod_at)) }}</td>
+                                                @elseif($newMaterial->status == 2 && $newMaterial->is_processed_by_clerk == 2)
+                                                <td>{{ $newMaterial->rejection_reason_by_clerk }}</td>
+                                                <td>{{ date("d-m-Y", strtotime($newMaterial->checked_by_clerk_at)) }}</td>
+                                                @endif
 
                                                 <td>
                                                     {{-- Read --}}
@@ -114,34 +132,6 @@ Request For Material | List
                                                             <b><i class="ri-eye-line"></i> View</b>
                                                         </button>
                                                     </a>
-
-                                                    @if(Auth::user()->role_id > '3' && Auth::user()->department_id != '1')
-                                                        {{-- Read --}}
-                                                        <a href="{{ route('request-new-material.show', $newMaterial->id) }}">
-                                                            <button class="btn btn-sm btn-info" >
-                                                                <b><i class="ri-eye-line"></i> View</b>
-                                                            </button>
-                                                        </a>
-
-                                                        &nbsp;
-                                                        {{-- Edit --}}
-                                                        <a href="{{ route('request-new-material.edit', $newMaterial->id) }}">
-                                                            <button class="btn btn-sm btn-warning" >
-                                                                <b><i class="ri-edit-line"></i> Edit</b>
-                                                            </button>
-                                                        </a>
-
-                                                        &nbsp;
-                                                        {{-- Delete --}}
-                                                        <form action="{{ route('request-new-material.destroy', $newMaterial->id) }}" method="post">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <input name="_method" type="hidden" value="DELETE">
-                                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');">
-                                                                <b><i class="ri-delete-bin-line"></i> Delete</b>
-                                                            </button>
-                                                        </form>
-                                                    @endif
                                                 </td>
                                             </tr>
                                             @endforeach

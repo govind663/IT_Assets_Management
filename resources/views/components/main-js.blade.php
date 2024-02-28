@@ -49,6 +49,9 @@
 <!-- prismjs plugin -->
 <script src="{{ asset('assets/libs/prismjs/prism.js') }}"></script>
 
+<!-- Modal Js -->
+<script src="{{ asset('assets/js/pages/modal.init.js') }}"></script>
+
 <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.js'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/choices.js/1.1.6/choices.min.js"></script>
 

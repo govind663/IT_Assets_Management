@@ -14,7 +14,13 @@ class NewMaterialController extends Controller
     {
         $newMaterials = NewMaterial::with('department')->whereNull('deleted_at')->orderBy('id', 'desc')->get();
 
-        return view('new_request_material.index', ['newMaterials' => $newMaterials]);
+        // === newMaterials status
+        $currentMaterialStatus  = NewMaterial::whereNull('deleted_at')
+                                               ->where('user_id', Auth::user()->id)
+                                               ->orderByDesc('id')
+                                               ->first( 'status' );
+        // dd($currentMaterialStatus);
+        return view('new_request_material.index', ['newMaterials' => $newMaterials, 'currentMaterialStatus' => $currentMaterialStatus]);
     }
 
     public function create()

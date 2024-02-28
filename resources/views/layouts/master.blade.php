@@ -42,7 +42,7 @@
         <!--end Preloader-->
 
          <!-- Theme Settings -->
-         <x-theme-setting />
+         {{-- <x-theme-setting /> --}}
          <!-- End Theme Settings -->
 
         <!-- Start Main JS  -->

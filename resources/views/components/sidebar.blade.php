@@ -21,8 +21,7 @@
                 <img src="{{ url('/') }}/assets/images/panvel_img/pmc-logo-dark.png" alt="" height="17">
             </span>
         </a>
-        <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-horizontal-sm-hover"
-            id="horizontal-hover">
+        <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-horizontal-sm-hover" id="horizontal-hover">
             <i class="ri-record-circle-line"></i>
         </button>
     </div>
@@ -153,10 +152,10 @@
                                 <a href="{{ route('request-new-material.list', 0) }}" class="nav-link" data-key="department"><b>Pending Material List</b></a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('request-new-material.approve', 1) }}" class="nav-link" data-key="department"><b>Approve Material List</b></a>
+                                <a href="{{ route('request-new-material.processslist', 1) }}" class="nav-link" data-key="department"><b>Approve Material List</b></a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('request-new-material.reject', 2) }}" class="nav-link" data-key="department"><b>Reject Material List</b></a>
+                                <a href="{{ route('request-new-material.processslist', 2) }}" class="nav-link" data-key="department"><b>Reject Material List</b></a>
                             </li>
                         </ul>
                         @elseif(Auth::user()->role_id == '3' && Auth::user()->department_id == '1')
@@ -166,13 +165,11 @@
                                 <a href="{{ route('request-new-material.list', 6) }}" class="nav-link" data-key="department"><b>Pending Material List</b></a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('request-new-material.approve', 1) }}" class="nav-link" data-key="department"><b>Approve Material List</b></a>
+                                <a href="{{ route('request-new-material.processslist', 1) }}" class="nav-link" data-key="department"><b>Approve Material List</b></a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('request-new-material.reject', 2) }}" class="nav-link" data-key="department"><b>Reject Material List</b></a>
+                                <a href="{{ route('request-new-material.processslist', 2) }}" class="nav-link" data-key="department"><b>Reject Material List</b></a>
                             </li>
-
-                            {{-- only show recived request list --}}
                             <li class="nav-item">
                                 <a href="{{ route('request-new-material.list', 7) }}" class="nav-link" data-key="department"><b> Product List</b></a>
                             </li>
