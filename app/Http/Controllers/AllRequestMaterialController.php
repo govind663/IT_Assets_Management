@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RemarksRequest;
 use App\Models\NewMaterial;
+use App\Models\ReceiveActionMaterial;
 use App\Models\RequestMaterialProduct;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 class AllRequestMaterialController extends Controller
 {
@@ -26,8 +29,20 @@ class AllRequestMaterialController extends Controller
             $query->where('status', $status);
         } elseif (Auth::user()->role_id == 2) {  // === Departmental HOD
             $query->where('status', $status);
-        } elseif (Auth::user()->role_id == 3) {  //=== Departmental Clerk
+        } elseif (Auth::user()->role_id == 3 && $status == 6) {  //=== Departmental Clerk
             $query->where('status', $status);
+        }elseif (Auth::user()->role_id == 3 && $status == 3) {  //=== Departmental Clerk Recive  Material
+            $query->where('status', $status);
+            // == check for recived  action from Hod to clerk is_confirmed = 1 and status=3
+            $actionQuery = ReceiveActionMaterial::select('new_material_id')
+                                                    ->where('is_confirmed','=', 1)
+                                                    ->where('inserted_by', Auth::user()->id)
+                                                    ->get();
+            $ids=[];
+            foreach ($actionQuery as $item){
+                array_push($ids,$item->new_material_id);
+            }
+            $query->whereIn('id' , $ids)->where('status', $status);
         }
 
         $newMaterials = $query->get();
@@ -69,6 +84,10 @@ class AllRequestMaterialController extends Controller
                                                 ->get();
         }
         // return $materials['requested_products'];
+
+        // ==== ReceiveActionMaterial  Module Start Here=====
+        $materials['receiveActions'] = ReceiveActionMaterial::where('is_confirmed', 1)->where('new_material_id',$id)->first();
+        // return($receiveActions);
         return view('all_request_material.request_material.view', ['materials' => $materials,  'status'=>$status]);
     }
 
@@ -92,7 +111,7 @@ class AllRequestMaterialController extends Controller
 
         } elseif (Auth::user()->role_id == 3 && Auth::user()->department_id == 1){
             $update = [
-                'status' => 7, // ==== form go to IT Department for appproval
+                'status' => 3, // ==== form go to IT Department for appproval
                 'is_processed_by_clerk' => 1, // === checked and approved by Clerk
                 'checked_by_clerk_at' => date("Y-m-d H:i:s"),
             ];
@@ -193,6 +212,82 @@ class AllRequestMaterialController extends Controller
                                                 ->get();
         }
         // return $materials['requested_products'];
+
         return view('all_request_material.current_request_material.view', ['materials' => $materials,  'status'=>$status]);
     }
+
+    // ==== Receive  Material
+    public function receiveMaterial(Request $request, $id, $status ){
+
+        // ==== only  for department clerk with  status "Approved"
+        if (Auth::user()->role_id ==  3  &&  Auth::user()->department_id == 1 ) {
+            try {
+                $data = new ReceiveActionMaterial();
+                $data->new_material_id = $id;
+                $data->name =  Auth::user()->f_name.' '. Auth::user()->m_name. ' '. Auth::user()->l_name;
+                $data->mobile_no =  Auth::user()->phone_number;
+                $data->department_id = Auth::user()->department_id;
+                $data->gender = Auth::user()->gender;
+                $data->role_id =  Auth::user()->role_id;
+                $data->date_time_of_receive =  Carbon::now();
+                $data->is_confirmed = 1 ;
+                $data->inserted_by =  Auth::user()->id;
+                $data->inserted_at =  Carbon::now();
+                $data->save();
+
+                return  redirect()->route('request-new-material.list', $status )->with('message',   'The Material has been successfully received by the departement clerck & added to the product list !');
+
+            } catch(\Exception $ex){
+                return redirect()->back()->with('error','Something Went Wrong  - '.$ex->getMessage());
+            }
+        }
+    }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function download($id, $status)
+    {
+        $query = NewMaterial::with('department')
+                 ->whereNull('deleted_at')
+                 ->orderBy('id', 'desc');
+
+
+        if (Auth::user()->role_id == 1) {  // === Departmental Head
+            $query->where('id', $id)
+                  ->where('status', $status);
+        } elseif (Auth::user()->role_id == 2) {  // === Departmental HOD
+            $query->where('id', $id)
+                  ->where('status', $status);
+        } elseif (Auth::user()->role_id == 3) {  //=== Departmental Clerk
+            $query->where('id', $id)
+                  ->where('status', $status);
+        }
+
+        $materials['new_material'] = $query->firstOrFail();
+
+        //  Checking whether there is any record or not in other table  for this id then push  it to view data array
+        foreach ($materials as $material ) {
+
+            $materials['requested_products'] = RequestMaterialProduct::with('catagory','product','unit')
+                                                ->where("new_material_id", $material->id)
+                                                ->get();
+        }
+        // return $materials['requested_products'];
+
+        // ==== ReceiveActionMaterial  Module Start Here=====
+        $materials['receiveActions'] = ReceiveActionMaterial::where('is_confirmed', 1)->where('new_material_id',$id)->first();
+        // return($materials['receiveActions']);
+
+
+        return FacadePdf::loadView('all_request_material.request_material.pdf', ['materials' => $materials,  'status'=>$status])
+                        ->stream('order_details.' . $materials['new_material']->fileExtension);
+
+        // return view('all_request_material.request_material.pdf', ['materials' => $materials,  'status'=>$status]);
+    }
+
 }

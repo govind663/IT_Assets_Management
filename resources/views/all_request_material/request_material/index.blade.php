@@ -42,6 +42,8 @@ Request For Material | List
                             <h4 class="mb-sm-0 text-primary text-capitalize">All New Pending Request List</h4>
                             @elseif ($status = 6)
                             <h4 class="mb-sm-0 text-primary text-capitalize">All New Pending Request List</h4>
+                            @elseif ($status = 3)
+                            <h4 class="mb-sm-0 text-primary text-capitalize">All New Delivered Request List</h4>
                             @endif
 
                             <div class="page-title-right">
@@ -110,6 +112,8 @@ Request For Material | List
                                                         <span class="badge bg-success text-justify">Approved</span>
                                                     @elseif($newMaterial->status == 2)
                                                         <span class="badge bg-danger text-justify">Reject</span>
+                                                    @elseif($newMaterial->status == 3)
+                                                        <span class="badge bg-danger text-justify">Delivered</span>
                                                     @elseif($newMaterial->status == 6)
                                                         <span class="badge bg-info text-justify">checked and approved by HOD</span>
                                                     @elseif($newMaterial->status == 7)
@@ -132,6 +136,13 @@ Request For Material | List
                                                             <b><i class="ri-eye-line"></i> View</b>
                                                         </button>
                                                     </a>
+                                                    @if($newMaterial->status == 3)
+                                                    <a href="{{ route('request-new-material.download', [ 'id'=>$newMaterial->id, 'status'=>$newMaterial->status ] ) }}">
+                                                        <button class="btn btn-sm btn-primary" >
+                                                            <b><i class="ri-file-pdf-line"></i> Download</b>
+                                                        </button>
+                                                    </a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @endforeach

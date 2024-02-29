@@ -110,6 +110,8 @@ Request For Material | List
                                                         <span class="badge bg-success text-justify">Approved</span>
                                                     @elseif($newMaterial->status == 2)
                                                         <span class="badge bg-danger text-justify">Reject</span>
+                                                    @elseif($newMaterial->status == 3)
+                                                        <span class="badge bg-danger text-justify">Delivered</span>
                                                     @elseif($newMaterial->status == 6)
                                                         <span class="badge bg-info text-justify">checked and approved by HOD</span>
                                                     @elseif($newMaterial->status == 7)

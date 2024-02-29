@@ -80,7 +80,7 @@ class AddNewMaterial extends Component
                         ]);
 
         // ==== Generate Request number
-        $requestID = "PMC-MATERIALS" . sprintf("%06d", abs((int)$newMaterial->id + 1))  . "/" . date("Y");
+        $requestID = "PMC". "/" . sprintf("%06d", abs((int)$newMaterial->id + 1))  . "/" . date("Y");
         $update = [
             'request_no' => $requestID,
         ];

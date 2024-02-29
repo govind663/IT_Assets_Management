@@ -170,10 +170,19 @@
                             <li class="nav-item">
                                 <a href="{{ route('request-new-material.processslist', 2) }}" class="nav-link" data-key="department"><b>Reject Material List</b></a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('request-new-material.list', 7) }}" class="nav-link" data-key="department"><b> Product List</b></a>
-                            </li>
+                            {{-- <li class="nav-item">
+                                <a href="{{ route('request-new-material.list', 3) }}" class="nav-link" data-key="department"><b> Product Delivered List</b></a>
+                            </li> --}}
                         </ul>
+
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" href="{{ route('request-new-material.list', 3) }}">
+                                <b>
+                                    <i class="ri-product-hunt-line"></i>
+                                    <span data-key="t-shop"> Delivered Product List</span>
+                                </b>
+                            </a>
+                        </li>
                         @endif
                     </div>
                 </li>
