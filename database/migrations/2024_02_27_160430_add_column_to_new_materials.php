@@ -15,7 +15,12 @@ return new class extends Migration
 
             // === status operated  by the Department Clerk ===
             $table->boolean('is_processed_by_clerk')->default(0)
-            ->comment('0 - material isn`t processed yet, 1 - material is processed by clerk, 2 - material processing was rejected by clerk')->after('rejection_reason_by_hod');
+            ->comment('
+            0 - material isn`t processed yet,
+            1 - material is processed by clerk,
+            2 - material processing was rejected by clerk,
+            3 - material delivered  to the department for further processing
+            ')->after('rejection_reason_by_hod');
             $table->date('checked_by_clerk_at')->nullable()->after('is_processed_by_clerk');
             $table->text('rejection_reason_by_clerk')->nullable()->after('checked_by_clerk_at');
 

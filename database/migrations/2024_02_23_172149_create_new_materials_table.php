@@ -30,7 +30,6 @@ return new class extends Migration
                 5 - Returned,
                 6 - Approved but not yet recived by department clecking team,
                 7 - Recived and waiting for approval from manager to mark as delivered,
-                8 - product is damaged or not as per description,
             ')->default(0);
 
             // === status operated  by the HOD ===
@@ -51,7 +50,6 @@ return new class extends Migration
                                                                          ');
             $table->date('approval_made_at')->nullable();
             $table->text('rejection_reason_by_admin')->nullable();
-
 
             $table->integer('inserted_by')->nullable();
             $table->timestamp('inserted_at')->nullable();

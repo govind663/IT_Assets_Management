@@ -41,7 +41,7 @@
                 </li>
 
 
-                @if (Auth::user()->role_id == '1' && Auth::user()->department_id == '1' )
+                @if (Auth::user()->department_id == '1' )
                 <!--  All Master  Menu Start -->
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button"
@@ -99,24 +99,7 @@
                 @endif
 
                 <!--  Request New Material Both Clerk/HOD in IT Department  -->
-                @if(Auth::user()->role_id != '2' && Auth::user()->department_id != '1')
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
-                        <b>
-                            <i class="ri-honour-line"></i>
-                            <span data-key="t-widgets">Request For Material</span>
-                        </b>
-                    </a>
-
-                    <div class="collapse menu-dropdown" id="sidebarApps">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('request-new-material.index') }}" class="nav-link" data-key="department"><b>New Request List</b></a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                @elseif(Auth::user()->role_id != '3' && Auth::user()->department_id != '1')
+                @if(Auth::user()->role_id == '3' &&  Auth::user()->department_id != '1')
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <b>
@@ -135,7 +118,8 @@
                 </li>
                 @endif
 
-                @if(Auth::user()->role_id == '1' || Auth::user()->role_id == '2' || Auth::user()->role_id == '3' && Auth::user()->department_id == '1')
+                {{-- HOD/Clerk --}}
+                @if(Auth::user()->department_id == '1')
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <b>
@@ -145,7 +129,7 @@
                     </a>
 
                     <div class="collapse menu-dropdown" id="sidebarApps">
-                        @if(Auth::user()->role_id == '2' && Auth::user()->department_id == '1')
+                        @if(Auth::user()->role_id == '1' || Auth::user()->role_id == '3' && Auth::user()->department_id == '1')
                         <ul class="nav nav-sm flex-column">
                             {{-- only show pending request list from Hod --}}
                             <li class="nav-item">
@@ -158,9 +142,31 @@
                                 <a href="{{ route('request-new-material.processslist', 2) }}" class="nav-link" data-key="department"><b>Reject Material List</b></a>
                             </li>
                         </ul>
-                        @elseif(Auth::user()->role_id == '3' && Auth::user()->department_id == '1')
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" href="{{ route('request-new-material.processslist', 3) }}">
+                                <b>
+                                    <i class="ri-product-hunt-line"></i>
+                                    <span data-key="t-shop"> Delivered Product List</span>
+                                </b>
+                            </a>
+                        </li>
+                        @endif
+                    </div>
+                </li>
+                @endif
+
+                @if(Auth::user()->role_id == '2' && Auth::user()->department_id != '1')
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                        <b>
+                            <i class="ri-honour-line"></i>
+                            <span data-key="t-widgets">All New Request List </span>
+                        </b>
+                    </a>
+
+                    <div class="collapse menu-dropdown" id="sidebarApps">
                         <ul class="nav nav-sm flex-column">
-                            {{-- only show apprved request list from Hod --}}
+                            {{-- only show pending request list from Hod --}}
                             <li class="nav-item">
                                 <a href="{{ route('request-new-material.list', 6) }}" class="nav-link" data-key="department"><b>Pending Material List</b></a>
                             </li>
@@ -170,20 +176,7 @@
                             <li class="nav-item">
                                 <a href="{{ route('request-new-material.processslist', 2) }}" class="nav-link" data-key="department"><b>Reject Material List</b></a>
                             </li>
-                            {{-- <li class="nav-item">
-                                <a href="{{ route('request-new-material.list', 3) }}" class="nav-link" data-key="department"><b> Product Delivered List</b></a>
-                            </li> --}}
                         </ul>
-
-                        <li class="nav-item">
-                            <a class="nav-link menu-link" href="{{ route('request-new-material.list', 3) }}">
-                                <b>
-                                    <i class="ri-product-hunt-line"></i>
-                                    <span data-key="t-shop"> Delivered Product List</span>
-                                </b>
-                            </a>
-                        </li>
-                        @endif
                     </div>
                 </li>
                 @endif

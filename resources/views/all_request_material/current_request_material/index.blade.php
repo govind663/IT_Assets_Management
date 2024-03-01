@@ -38,10 +38,14 @@ Request For Material | List
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
-                            @if($status == 1)
+                            @if($status == 0)
+                            <h4 class="mb-sm-0 text-primary text-dark text-capitalize">All New Pending Request List</h4>
+                            @elseif($status == 1)
                             <h4 class="mb-sm-0 text-primary text-capitalize">All New Approved Request List</h4>
                             @elseif ($status == 2)
                             <h4 class="mb-sm-0 text-primary text-capitalize">All New Rejected Request List</h4>
+                            @elseif ($status == 3)
+                            <h4 class="mb-sm-0 text-primary text-capitalize">All New Delivered Request List</h4>
                             @endif
 
                             <div class="page-title-right">
@@ -104,18 +108,14 @@ Request For Material | List
 
                                                 <td>
                                                     {{-- status --}}
-                                                    @if($newMaterial->status == 0)
+                                                    @if($status == 0)
                                                         <span class="badge bg-warning text-black text-justify">Pending</span>
-                                                    @elseif($newMaterial->status == 1)
+                                                    @elseif($status == 1)
                                                         <span class="badge bg-success text-justify">Approved</span>
-                                                    @elseif($newMaterial->status == 2)
+                                                    @elseif($status == 2)
                                                         <span class="badge bg-danger text-justify">Reject</span>
-                                                    @elseif($newMaterial->status == 3)
-                                                        <span class="badge bg-danger text-justify">Delivered</span>
-                                                    @elseif($newMaterial->status == 6)
-                                                        <span class="badge bg-info text-justify">checked and approved by HOD</span>
-                                                    @elseif($newMaterial->status == 7)
-                                                        <span class="badge bg-primary text-justify">checked and approved by clerk</span>
+                                                    @elseif($status == 3)
+                                                        <span class="badge bg-primary text-justify">Delivered</span>
                                                     @endif
                                                 </td>
 

@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
             'l_name' => 'L',
             'role_id' => '1',
             'department_id' => '1',
+            'gender' => '1',
             'email' => 'admin@gmail.com',
             'phone_number' => '1234567890',
             'password' => Hash::make('1234567890'),

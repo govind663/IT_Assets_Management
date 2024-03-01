@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use PSpell\Config;
 
 class AllRequestMaterialController extends Controller
 {
@@ -31,18 +32,6 @@ class AllRequestMaterialController extends Controller
             $query->where('status', $status);
         } elseif (Auth::user()->role_id == 3 && $status == 6) {  //=== Departmental Clerk
             $query->where('status', $status);
-        }elseif (Auth::user()->role_id == 3 && $status == 3) {  //=== Departmental Clerk Recive  Material
-            $query->where('status', $status);
-            // == check for recived  action from Hod to clerk is_confirmed = 1 and status=3
-            $actionQuery = ReceiveActionMaterial::select('new_material_id')
-                                                    ->where('is_confirmed','=', 1)
-                                                    ->where('inserted_by', Auth::user()->id)
-                                                    ->get();
-            $ids=[];
-            foreach ($actionQuery as $item){
-                array_push($ids,$item->new_material_id);
-            }
-            $query->whereIn('id' , $ids)->where('status', $status);
         }
 
         $newMaterials = $query->get();
@@ -168,14 +157,28 @@ class AllRequestMaterialController extends Controller
                  ->whereNull('deleted_at')
                  ->orderBy('id', 'desc');
 
-
         if (Auth::user()->role_id == 2) {  // === Departmental HOD
             $query->where('is_checked_by_hod', $status);
         } elseif (Auth::user()->role_id == 3) {  //=== Departmental Clerk
-            $query->where('is_processed_by_clerk', $status);
+                $query->where('is_processed_by_clerk', $status);
+
+                // == check for recived  action from Hod to clerk is_confirmed = 1 and status=3 and
+                $actionQuery = ReceiveActionMaterial::select('new_material_id')
+                                                        ->orWhere('is_confirmed','=', 1)
+                                                        ->where('inserted_by', Auth::user()->id)
+                                                        ->get();
+                $ids=[];
+                foreach ($actionQuery as $item){
+                    array_push($ids,$item->new_material_id);
+                }
+                $query->whereIn('id' , $ids)
+                ->where('is_processed_by_clerk', $status);
+
         }
 
         $newMaterials = $query->get();
+
+        // return($newMaterials);
 
         return view('all_request_material.current_request_material.index', ['newMaterials' => $newMaterials,  'status'=>$status]);
     }
@@ -235,7 +238,12 @@ class AllRequestMaterialController extends Controller
                 $data->inserted_at =  Carbon::now();
                 $data->save();
 
-                return  redirect()->route('request-new-material.list', $status )->with('message',   'The Material has been successfully received by the departement clerck & added to the product list !');
+                //  update the status NewMaterial is delivered  to the clerk
+                NewMaterial::where('id' ,$id)->update(['is_processed_by_clerk'=>3]);
+
+                // dd($materialID);
+
+                return  redirect()->route('request-new-material.list', $status )->with('message',  'The Material has been successfully received by the departement clerck & added to the product list !');
 
             } catch(\Exception $ex){
                 return redirect()->back()->with('error','Something Went Wrong  - '.$ex->getMessage());
