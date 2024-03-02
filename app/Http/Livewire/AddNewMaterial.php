@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\NewMaterial;
 use App\Models\Product;
 use App\Models\RequestMaterialProduct;
+use App\Models\StockDetail;
 use App\Models\Unit;
 use Livewire\Component;
 use Carbon\Carbon;
@@ -38,6 +39,8 @@ class AddNewMaterial extends Component
     public $model;
     public $unit_id;
     public $quantity;
+    public $stock_detail_id;
+    public $currentquantity =[];
 
     // Show  or Hide forms
     public $fileUploaded = false;
@@ -45,8 +48,16 @@ class AddNewMaterial extends Component
     public function render()
     {
         $departments = Department::select('dept_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
-        $categories = Catagories::select('catagories_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
 
+        // get all StockDetail  and Category for select option in form
+        $currentstock =  StockDetail::pluck('catagories_id');
+        // dd($currentstock);
+        // ==== Catagories check in StockDetail table  and return the result to view page.
+        $categories = Catagories::select('catagories_name', 'id')
+                                    ->whereIn('id',  $currentstock)
+                                    ->whereNull('deleted_at')
+                                    ->orderByDesc('id')
+                                    ->get();
         return view('livewire.add-new-material', ['departments' => $departments, 'categories'=> $categories]);
     }
 
@@ -91,6 +102,7 @@ class AddNewMaterial extends Component
             if (!empty($value)) :
 
                 RequestMaterialProduct::create([
+                    "stock_id"  => $this->stock_id[$key],
                     "new_material_id" => $newMaterial->id ,
                     "catagories_id" =>  $value,
                     "product_id" =>  $this->product_id[$key],
@@ -120,11 +132,12 @@ class AddNewMaterial extends Component
     // ======= GET PRODUCT CATRGORYWISE
     public function updatedCategoriesId($val, $key)
     {
-        $products = Product::where("catagories_id", $this->categories_id[$key])
+        // get all StockDetail and Product for select option in form
+        $this->categories_id[$key] =  StockDetail::pluck('catagories_id');
+        $products = Product::whereIn("catagories_id", $this->categories_id[$key])
                         ->whereNull('deleted_at')
                         ->orderByDesc('id')
                         ->select("id", "name")->get();
-
         if($products)
         {
             $this->loop_products[$key] = $products;
@@ -134,16 +147,29 @@ class AddNewMaterial extends Component
     // ======= GET PRODUCT DETAILS PRODUCTIDWISE
     public function updatedProductId($val, $key)
     {
+        $this->product_id[$key] =  StockDetail::pluck('product_id')
+                                                ->whereNull('deleted_at')
+                                                ->contains($val)?$val:null;
+
+        $stockDetails = StockDetail::where('product_id',$val)->first();
+
+        // === null  value check  then set default
+        $this->name[$key]      =  isset($stockDetails->product->name) ? $stockDetails->product->name : '';
+        $this->unit_id[$key]   =  isset($stockDetails->product->unit_id) ? $stockDetails->product->unit_id : '';
+        $this->brand[$key]     =  isset($stockDetails->brand) ? $stockDetails->brand : '';
+        $this->model[$key]     =  isset($stockDetails->model_no) ? $stockDetails->model_no: '';
+        $this->currentquantity[$key]  = isset($stockDetails['quantity'])?$stockDetails['quantity']:"";
+
         $prod = Product::where("id", $this->product_id[$key])
                         ->whereNull('deleted_at')
                         ->orderByDesc('id')
                         ->select("id", "name", 'unit_id', 'brand', 'model_no')->first();
-
         if($prod)
         {
             $this->brand[$key] = $prod->brand;
             $this->model[$key] = $prod->model_no;
             $this->unit_id[$key] = $prod->unit_id;
+
 
             $units = Unit::whereNull('deleted_at')->get();
             if($units)
@@ -165,6 +191,7 @@ class AddNewMaterial extends Component
             $this->brand[$this->formCounts] = [];
             $this->model[$this->formCounts] = [];
             $this->unit_id[$this->formCounts] = [];
+            $this->currentquantity[$this->formCounts] = [];
             $this->loop_products[$this->formCounts] = [];
             $this->loop_units[$this->formCounts] = [];
         }
@@ -194,13 +221,16 @@ class AddNewMaterial extends Component
             $fieldArray['model.'.$i] = 'required|unique:request_material_products,model'.','.'id,deleted_at';
             $fieldArray['unit_id.'.$i] = 'required|unique:request_material_products,unit_id,NULL,id,deleted_at,NULL';
             $fieldArray['quantity.'.$i] = 'required';
+            $fieldArray['currentquantity.'.$i] = 'required';
+
 
             $messageArray['categories_id.'.$i . '.required'] = 'Please select any category';
             $messageArray['product_id.' . $i . '.required'] = 'Please select a product';
             $messageArray['brand.' . $i . '.required'] = 'Brand is required';
             $messageArray['model.' . $i . '.required'] = "Model is required";
             $messageArray['unit_id.' . $i . '.required'] = 'Unit is required';
-            $messageArray['quantity.' . $i . '.required'] = 'Quantity is required';
+            $messageArray['quantity.' . $i . '.required'] = 'Quantity in Stock is required';
+            $messageArray['currentquantity.' . $i . '.required'] = 'Quantity Requested is required';
         }
 
         $fieldArray['name'] = 'required';
@@ -237,6 +267,7 @@ class AddNewMaterial extends Component
                             'model' => $this->model,
                             'unit_id' => $this->unit_id,
                             'quantity' => $this->quantity,
+                            'currentquantity' => $this->currentquantity,
                             'name' => $this->name,
                             'department_id' =>  $this->department_id,
                             'mobile_no' => $this->mobile_no,

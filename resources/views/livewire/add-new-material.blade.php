@@ -96,11 +96,13 @@
                         <th>Model</th>
                         <th>Unit</th>
                         <th>Quantity in Stock</th>
+                        <th>Quantity Requested</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @for ($i=1; $i <= $formCounts; $i++) <tr>
+                    @for ($i=1; $i <= $formCounts; $i++)
+                    <tr>
                         <td>
                             <select class="form-control categories_id @if ($errors->has('categories_id.'.$i)) 'is-invalid' @endif" wire:model="categories_id.{{$i}}">
                                 <option value="">Select Catagory Name</option>
@@ -153,6 +155,14 @@
                             @if ($errors->has('unit_id.'.$i))
                             <span class="invalid-feedback d-block" role="alert">
                                 <strong>{{ $errors->first('unit_id.'.$i) }}</strong>
+                            </span>
+                            @endif
+                        </td>
+                        <td>
+                            <input type="text" wire:model="currentquantity.{{$i}}" class="form-control currentquantity @if ($errors->has('currentquantity.'.$i)) 'is-invalid' @endif" readonly placeholder="Enter current quantity">
+                            @if ($errors->has('currentquantity.'.$i))
+                            <span class="invalid-feedback d-block" role="alert">
+                                <strong>{{ $errors->first('currentquantity.'.$i) }}</strong>
                             </span>
                             @endif
                         </td>

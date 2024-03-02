@@ -24,6 +24,7 @@ use App\Http\Controllers\VendorsController;
 // ==== Request for new materals and supplies
 use App\Http\Controllers\NewMaterialController;
 use App\Http\Controllers\AllRequestMaterialController;
+use App\Http\Controllers\ReplaceOldMaterialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -188,6 +189,18 @@ Route::group(['prefix' => 'it_assets_management','middleware'=>['auth', 'prevent
             // Download new  material request file
             Route::get('{id}/{status}/download', [AllRequestMaterialController::class,'download'])->name('request-new-material.download');
         });
+
+        // =============== Replace  old materials with new ones
+         Route::resource('replace-old-material',ReplaceOldMaterialController::class)
+        ->names([
+            'index'=>'replace-old-material.index',
+            'create'=>'replace-old-material.create',
+            'store'=>'replace-old-material.store',
+            'show'=>'replace-old-material.show',
+            'edit'=>'replace-old-material.edit',
+            'update'=>'replace-old-material.update',
+            'destroy'=>'replace-old-material.destroy'
+        ]);
 
 });
 

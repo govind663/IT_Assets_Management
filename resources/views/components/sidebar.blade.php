@@ -113,6 +113,9 @@
                             <li class="nav-item">
                                 <a href="{{ route('request-new-material.index') }}" class="nav-link" data-key="department"><b>New Request List</b></a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('replace-old-material.index') }}" class="nav-link" data-key="department"><b>Replace Product List</b></a>
+                            </li>
                         </ul>
                     </div>
                 </li>
