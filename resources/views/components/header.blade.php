@@ -62,7 +62,10 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
-                        <h6 class="dropdown-header"><b>{{ Auth::user()->email }}</b></h6>
+                        <h6 class="dropdown-header">
+                            <b>{{ ucwords(Auth::user()->f_name) }}{{ ucwords(Auth::user()->m_name) }}{{ ucwords(Auth::user()->l_name) }}</b><br>
+                            <b>{{ Auth::user()->email }}</b>
+                        </h6>
 
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                             <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>

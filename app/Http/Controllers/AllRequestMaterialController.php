@@ -26,11 +26,11 @@ class AllRequestMaterialController extends Controller
                  ->orderBy('id', 'desc');
 
 
-        if (Auth::user()->role_id == 1) {  // === Departmental Head
+        if (Auth::user()->role_id == 2 && Auth::user()->department_id != 1) {  // === Other Departmental HOD
             $query->where('status', $status);
-        } elseif (Auth::user()->role_id == 2) {  // === Departmental HOD
+        } elseif (Auth::user()->role_id == 2 || Auth::user()->role_id == 3 && $status == 6 && Auth::user()->department_id == 1) {  //=== Departmental Clerk
             $query->where('status', $status);
-        } elseif (Auth::user()->role_id == 3 && $status == 6) {  //=== Departmental Clerk
+        } elseif (Auth::user()->role_id == 2 || Auth::user()->role_id == 3 && $status == 3 && Auth::user()->department_id == 1) {  //=== Departmental Clerk
             $query->where('status', $status);
         }
 
@@ -88,7 +88,7 @@ class AllRequestMaterialController extends Controller
      */
     public function approveRequestMaterial($id, $status)
     {
-        if (Auth::user()->role_id == 2 && Auth::user()->department_id == 1 ) {
+        if (Auth::user()->role_id == 2 && Auth::user()->department_id != 1 ) {
             $update = [
                 'status' => 6, // ==== form go to clerck  for approval
                 'is_checked_by_hod' => 1, // === checked and approved by HOD
@@ -100,12 +100,21 @@ class AllRequestMaterialController extends Controller
 
         } elseif (Auth::user()->role_id == 3 && Auth::user()->department_id == 1){
             $update = [
-                'status' => 3, // ==== form go to IT Department for appproval
-                'is_processed_by_clerk' => 1, // === checked and approved by Clerk
+                'status' => 7,
+                'is_processed_by_clerk' => 1, // === checked and approved by It Dept clerk
                 'checked_by_clerk_at' => date("Y-m-d H:i:s"),
             ];
             NewMaterial::where('id', $id)->where('status', $status)->update($update);
             return redirect()->route('request-new-material.processslist', 1)->with('message', 'The request for material has been reviewed and endorsed by the department clerk.');
+
+        } elseif (Auth::user()->role_id == 2 && Auth::user()->department_id == 1){
+            $update = [
+                'status' => 7,
+                'is_processed_by_it' => 1, // === checked and approved by It Dept clerk
+                'sent_to_it_at' => date("Y-m-d H:i:s"),
+            ];
+            NewMaterial::where('id', $id)->where('status', $status)->update($update);
+            return redirect()->route('request-new-material.processslist', 1)->with('message', 'The request for material has been reviewed and endorsed by the department HOD.');
         }
 
     }
@@ -118,7 +127,7 @@ class AllRequestMaterialController extends Controller
      */
     public function rejectRequestMaterial(RemarksRequest $request, $id, $status)
     {
-        if (Auth::user()->role_id == 2 && Auth::user()->department_id == 1 ) {
+        if (Auth::user()->role_id == 2 && Auth::user()->department_id != 1) {
             $update = [
                 'status' => 2, // === Rejected
                 'is_checked_by_hod' => 2, // ===== checked and rejected  by HOD
@@ -129,8 +138,7 @@ class AllRequestMaterialController extends Controller
             NewMaterial::where('id', $id)->where('status', $status)->update($update);
             return redirect()->route('request-new-material.processslist', 2)->with('message', 'The request for material has been reviewed and rejected by the department HOD.');
 
-
-        } elseif (Auth::user()->role_id == 3 && Auth::user()->department_id == 1) {
+        } elseif (Auth::user()->role_id == 2 && Auth::user()->department_id == 1) {
             $update = [
                 'status' => 2, // === Rejected
                 'is_processed_by_clerk' => 2, // ===== material processing was rejected by clerk
@@ -141,6 +149,16 @@ class AllRequestMaterialController extends Controller
             NewMaterial::where('id', $id)->where('status', $status)->update($update);
             return redirect()->route('request-new-material.processslist', 2)->with('message', 'The request for material has been reviewed and rejected by the department clerk.');
 
+        } elseif (Auth::user()->role_id == 3 && Auth::user()->department_id == 1) {
+            $update = [
+                'status' => 2, // === Rejected
+                'is_processed_by_it' => 2, // ===== material processing was rejected by clerk
+                'rejection_reason_by_it' => $request->get('rejection_reason_by_it'),
+                'sent_to_it_at' => date("Y-m-d H:i:s"),
+            ];
+
+            NewMaterial::where('id', $id)->where('status', $status)->update($update);
+            return redirect()->route('request-new-material.processslist', 2)->with('message', 'The request for material has been reviewed and rejected by the department clerk.');
 
         }
     }
@@ -157,22 +175,35 @@ class AllRequestMaterialController extends Controller
                  ->whereNull('deleted_at')
                  ->orderBy('id', 'desc');
 
-        if (Auth::user()->role_id == 2) {  // === Departmental HOD
+        if (Auth::user()->role_id == 2 && Auth::user()->department_id != 1) {  // === Departmental HOD
             $query->where('is_checked_by_hod', $status);
-        } elseif (Auth::user()->role_id == 3) {  //=== Departmental Clerk
+        } elseif (Auth::user()->role_id == 3 && Auth::user()->department_id == 1) {  //=== Departmental Clerk
                 $query->where('is_processed_by_clerk', $status);
 
                 // == check for recived  action from Hod to clerk is_confirmed = 1 and status=3 and
-                $actionQuery = ReceiveActionMaterial::select('new_material_id')
-                                                        ->orWhere('is_confirmed','=', 1)
-                                                        ->where('inserted_by', Auth::user()->id)
-                                                        ->get();
-                $ids=[];
-                foreach ($actionQuery as $item){
-                    array_push($ids,$item->new_material_id);
-                }
-                $query->whereIn('id' , $ids)
-                ->where('is_processed_by_clerk', $status);
+                // $actionQuery = ReceiveActionMaterial::select('new_material_id')
+                //                                         ->orWhere('is_confirmed','=', 1)
+                //                                         ->where('inserted_by', Auth::user()->id)
+                //                                         ->get();
+                // $ids=[];
+                // foreach ($actionQuery as $item){
+                //     array_push($ids,$item->new_material_id);
+                // }
+                // $query->whereIn('id' , $ids)->where('is_processed_by_clerk', $status);
+
+        } elseif (Auth::user()->role_id == 2 && Auth::user()->department_id == 1) {  //=== Departmental Clerk
+            $query->where('is_processed_by_it', $status);
+
+            // == check for recived  action from Hod to clerk is_confirmed = 1 and status=3 and
+            // $actionQuery = ReceiveActionMaterial::select('new_material_id')
+            //                                         ->orWhere('is_confirmed','=', 1)
+            //                                         ->where('inserted_by', Auth::user()->id)
+            //                                         ->get();
+            // $ids=[];
+            // foreach ($actionQuery as $item){
+            //     array_push($ids,$item->new_material_id);
+            // }
+            // $query->whereIn('id' , $ids)->where('is_processed_by_it', $status);
 
         }
 
@@ -223,7 +254,7 @@ class AllRequestMaterialController extends Controller
     public function receiveMaterial(Request $request, $id, $status ){
 
         // ==== only  for department clerk with  status "Approved"
-        if (Auth::user()->role_id ==  3  &&  Auth::user()->department_id == 1 ) {
+        if (Auth::user()->role_id ==  2 && Auth::user()->department_id == 1 ) {
             try {
                 $data = new ReceiveActionMaterial();
                 $data->new_material_id = $id;
@@ -239,11 +270,32 @@ class AllRequestMaterialController extends Controller
                 $data->save();
 
                 //  update the status NewMaterial is delivered  to the clerk
-                NewMaterial::where('id' ,$id)->update(['is_processed_by_clerk'=>3]);
+                NewMaterial::where('id' ,$id)->update(['is_processed_by_it'=>3, 'status'=>3]);
 
-                // dd($materialID);
+                return  redirect()->route('request-new-material.processslist', $status )->with('message',  'The Material has been successfully received by the departement clerck & added to the product list !');
 
-                return  redirect()->route('request-new-material.list', $status )->with('message',  'The Material has been successfully received by the departement clerck & added to the product list !');
+            } catch(\Exception $ex){
+                return redirect()->back()->with('error','Something Went Wrong  - '.$ex->getMessage());
+            }
+        } elseif (Auth::user()->role_id ==  3 &&  Auth::user()->department_id == 1 ) {
+            try {
+                $data = new ReceiveActionMaterial();
+                $data->new_material_id = $id;
+                $data->name =  Auth::user()->f_name.' '. Auth::user()->m_name. ' '. Auth::user()->l_name;
+                $data->mobile_no =  Auth::user()->phone_number;
+                $data->department_id = Auth::user()->department_id;
+                $data->gender = Auth::user()->gender;
+                $data->role_id =  Auth::user()->role_id;
+                $data->date_time_of_receive =  Carbon::now();
+                $data->is_confirmed = 1 ;
+                $data->inserted_by =  Auth::user()->id;
+                $data->inserted_at =  Carbon::now();
+                $data->save();
+
+                //  update the status NewMaterial is delivered  to the clerk
+                NewMaterial::where('id' ,$id)->update(['is_processed_by_clerk'=>3, 'status'=>3]);
+
+                return  redirect()->route('request-new-material.processslist', $status )->with('message',  'The Material has been successfully received by the departement clerck & added to the product list !');
 
             } catch(\Exception $ex){
                 return redirect()->back()->with('error','Something Went Wrong  - '.$ex->getMessage());

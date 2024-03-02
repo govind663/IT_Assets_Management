@@ -79,7 +79,7 @@
                                             @foreach ($users as $key=>$value)
                                             <tr>
                                                 <td>{{ $key+1 }}</td>
-                                                <td>{{ ucwords($value->f_name ?: '') }} &nbsp; {{ ucwords($value->m_name) }} &nbsp; {{ ucwords($value->l_name) }}</td>
+                                                <td>{{ ucwords($value->f_name ?: '') }} {{ ucwords($value->m_name) }} {{ ucwords($value->l_name) }}</td>
                                                 <td>{{ strtolower($value->email ?: '') }}</td>
                                                 <td>{{ $value->phone_number ?: '' }}</td>
                                                 <td>{{ $value->department?->dept_name ?: '' }}</td>

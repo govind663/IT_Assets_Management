@@ -129,14 +129,57 @@ New Request | View
                         </table>
                     </div>
 
+                    @if( Auth:: user()->role_id == 2 || Auth:: user()->role_id == 3 && $status == 3  && Auth:: user()->department_id == 1 && $materials['receiveActions']->is_confirmed == 1)
+                    <br>
+                    <div class="row form-group align-items-center">
+                        <h6 class="page-title-box mb-sm-0 text-primary text-capitalize"><b>Action  Taken By Clerk :</b> </h6>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="mb-3">
+                                <label for="Nameinput" class="form-label"><b>Name :</b></label>
+                                <input type="text" readonly class="form-control"  value="{{ $materials['new_material']->name }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <div class="mb-3">
+                                <label for="DepartmentName" class="form-label"><b>Department Name :</b></label>
+                                <input type="text" readonly class="form-control"  value="{{ $materials['new_material']->department?->dept_name }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <div class="mb-3">
+                                <label for="MobileNoinput" class="form-label"><b>Mobile No :</b></label>
+                                <input type="text" readonly class="form-control"  value="{{ $materials['new_material']->mobile_no }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <div class="mb-3">
+                                <label for="EmailIdinput" class="form-label"><b>Email Id :</b></label>
+                                <input type="text" readonly class="form-control"  value="{{ $materials['new_material']->email }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <div class="mb-3">
+                                <label for="Dateinput" class="form-label"><b>Material Request Date :</b></label>
+                                <input type="text" readonly class="form-control"  value="{{ $materials['new_material']->requested_at }}">
+                            </div>
+                        </div>
+
+                    </div>
+                    @endif
+
                     <div class="col-lg-11 m-5">
                         <div class="text-end">
                             <a href="{{ route('request-new-material.processslist', $status) }}" class="btn btn-danger">Cancel</a>&nbsp;
 
+                            @if (Auth:: user()->role_id == 2 || Auth:: user()->role_id == 3 && Auth::user()->department_id == '1' && $status == '3' && $materials['new_material']->is_processed_by_clerk == 1 || $materials['new_material']->is_processed_by_it == 1)
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actionTakenByClerkModal_{{ $materials['new_material']->id }}_{{ $materials['new_material']->status }}">
                                 Action taken  by clerk
                             </button>
-
+                            @endif
                         </div>
                     </div>
                 </div>

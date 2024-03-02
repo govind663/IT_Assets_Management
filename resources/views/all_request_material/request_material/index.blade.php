@@ -38,11 +38,11 @@ Request For Material | List
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
-                            @if($status = 0)
+                            @if($status == 0)
                             <h4 class="mb-sm-0 text-primary text-capitalize">All New Pending Request List</h4>
-                            @elseif ($status = 6)
+                            @elseif ($status == 6)
                             <h4 class="mb-sm-0 text-primary text-capitalize">All New Pending Request List</h4>
-                            @elseif ($status = 3)
+                            @elseif ($status == 3)
                             <h4 class="mb-sm-0 text-primary text-capitalize">All New Delivered Request List</h4>
                             @endif
 
@@ -127,6 +127,9 @@ Request For Material | List
                                                 @elseif($newMaterial->status == 2 && $newMaterial->is_processed_by_clerk == 2)
                                                 <td>{{ $newMaterial->rejection_reason_by_clerk }}</td>
                                                 <td>{{ date("d-m-Y", strtotime($newMaterial->checked_by_clerk_at)) }}</td>
+                                                @elseif($newMaterial->status == 2 && $newMaterial->is_processed_by_it == 2)
+                                                <td>{{ $newMaterial->rejection_reason_by_it }}</td>
+                                                <td>{{ date("d-m-Y", strtotime($newMaterial->sent_to_it_at)) }}</td>
                                                 @endif
 
                                                 <td>
@@ -136,13 +139,6 @@ Request For Material | List
                                                             <b><i class="ri-eye-line"></i> View</b>
                                                         </button>
                                                     </a>
-                                                    @if($newMaterial->status == 3)
-                                                    <a href="{{ route('request-new-material.download', [ 'id'=>$newMaterial->id, 'status'=>$newMaterial->status ] ) }}">
-                                                        <button class="btn btn-sm btn-primary" >
-                                                            <b><i class="ri-file-pdf-line"></i> Download</b>
-                                                        </button>
-                                                    </a>
-                                                    @endif
                                                 </td>
                                             </tr>
                                             @endforeach
