@@ -165,7 +165,6 @@
 
                         <td>
                             <input type="text" wire:model="currentquantity.{{$i}}" class="form-control currentquantity" readonly >
-
                         </td>
                         <td>
                             <input type="text" wire:model="quantity.{{$i}}" class="form-control quantity @if ($errors->has('quantity.'.$i)) 'is-invalid' @endif" placeholder="Enter Quantity">

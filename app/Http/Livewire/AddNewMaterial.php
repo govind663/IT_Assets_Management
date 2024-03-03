@@ -45,7 +45,7 @@ class AddNewMaterial extends Component
     public $currentquantity = [];
     public $work_order_no;
 
-    // Show  or Hide forms
+    // Show or Hide forms
     public $fileUploaded = false;
 
     public function render()
@@ -101,31 +101,35 @@ class AddNewMaterial extends Component
         NewMaterial::where('id', $newMaterial->id)->update($update);
 
         //  === save new material product details   into db ===
-        foreach ($this->categories_id as $key=>$value) :
+        foreach ($this->categories_id  as $key=>$value) :
             if (!empty($value)) :
 
                 RequestMaterialProduct::create([
-                    "new_material_id" => $newMaterial->id ,
-                    "catagories_id" =>  $value,
-                    "product_id" =>  $this->product_id[$key],
-                    "brand" =>  $this->brand[$key],
-                    "model" =>  $this->model[$key],
-                    "unit_id" => $this->unit_id[$key],
-                    "quantity" => $this->quantity[$key],
-                    "inserted_by" => Auth::user()->id,
-                    "created_at" => Carbon::now(),
+                    'new_material_id' => $newMaterial->id ,
+                    'catagories_id' => $this->categories_id[$key],
+                    'product_id' =>  $this->product_id[$key],
+                    'brand' =>  $this->brand[$key],
+                    'model' =>  $this->model[$key],
+                    'unit_id' => $this->unit_id[$key],
+                    'quantity' => $this->quantity[$key],
+                    'inserted_by' => Auth::user()->id,
+                    'created_at' => Carbon::now(),
                 ]);
             endif;
 
             // ==== get last inserted  id for next data
             $lastId = RequestMaterialProduct::latest()->first()->id;
 
-            // ==== Generate  unique SKU for each Product
-            $sku_id = "PMC_SKU-" . substr(md5(time()), rand(0, 26), 6) .  sprintf("%06d", $this->product_id[$key]);
-            $skuUpdate = [
-                "product_code" => $sku_id,
+            // ==== Update Product Code, stock id
+            $updateRequestMaterialProduct = [
+                'product_code' => $this->product_code[$key] ?? NULL,
+                'stock_id' => $this->stock_id[$key] ?? NULL,
+                'work_order_no'  => $this->work_order_no[$key] ?? NULL,
+                'currentquantity'  => $this->currentquantity[$key] ?? NULL,
             ];
-            RequestMaterialProduct::where('product_id', $this->product_id[$key])->update($skuUpdate);
+            RequestMaterialProduct::where('product_id', $this->product_id[$key])->update($updateRequestMaterialProduct);
+
+            // ==== update quantity in stock detail  table  when  productcode is available
         endforeach;
 
         return redirect()->route('request-new-material.index')->with('message','Your request for new material has been submitted successfully.');

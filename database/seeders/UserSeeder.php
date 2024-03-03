@@ -22,6 +22,7 @@ class UserSeeder extends Seeder
             'l_name' => 'Singh',
             'role_id' => '2',
             'department_id' => '1',
+            'gender' => '1',
             'phone_number' => '1234565890',
             'email' => 'hod@gmail.com',
             'password' => Hash::make('1234567890'),
@@ -36,8 +37,39 @@ class UserSeeder extends Seeder
             'l_name' => 'Yadav',
             'role_id' => '3',
             'department_id' => '1',
+            'gender' => '1',
             'phone_number' => '1234568890',
             'email' => 'cleark@gmail.com',
+            'password' => Hash::make('1234567890'),
+            'created_by' => '1',
+            'created_at' => Carbon::now()
+        ]);
+
+        //  Create a new user with all permissions and assign it to hod role
+        User::create([
+            'f_name' => 'Amira',
+            'm_name' => 'M',
+            'l_name' => 'L',
+            'role_id' => '2',
+            'department_id' => '2',
+            'gender' => '2',
+            'phone_number' => '1234565833',
+            'email' => 'pwd_hod@gmail.com',
+            'password' => Hash::make('1234567890'),
+            'created_by' => '1',
+            'created_at' => Carbon::now()
+        ]);
+
+        //  Create a new user with all permissions and assign it to cleark role
+        User::create([
+            'f_name' => 'Arvind',
+            'm_name' => 'M',
+            'l_name' => 'L',
+            'role_id' => '3',
+            'department_id' => '2',
+            'gender' => '1',
+            'phone_number' => '1234568888',
+            'email' => 'pwd_cleark@gmail.com',
             'password' => Hash::make('1234567890'),
             'created_by' => '1',
             'created_at' => Carbon::now()

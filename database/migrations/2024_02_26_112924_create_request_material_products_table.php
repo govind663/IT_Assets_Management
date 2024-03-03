@@ -4,6 +4,7 @@ use App\Models\Catagories;
 use App\Models\NewMaterial;
 use App\Models\Product;
 use App\Models\RequestMaterialProduct;
+use App\Models\Stock;
 use App\Models\Unit;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -19,12 +20,15 @@ return new class extends Migration
         Schema::create('request_material_products', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(NewMaterial::class)->index()->nullable()->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Stock::class)->index()->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(Catagories::class)->index()->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(Product::class)->index()->nullable()->constrained()->onDelete('cascade');
-            $table->string('product_code')->unique()->nullable();
+            $table->string('product_code')->unique()->nullable()->comment('product code from supplier');
+            $table->string('work_order_no')->nullable()->nullable('Work Order Number in  Supplier System');
             $table->string('brand')->nullable();
             $table->string('model')->nullable();
             $table->foreignIdFor(Unit::class)->index()->nullable()->constrained()->onDelete('cascade');
+            $table->string('currentquantity')->nullable()->comment('Current quantity in stock');
             $table->string('quantity')->nullable();
             $table->integer('inserted_by')->nullable();
             $table->timestamp('created_at')->nullable();
