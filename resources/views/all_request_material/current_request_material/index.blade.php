@@ -86,8 +86,9 @@ Request For Material | List
                                                 @if($status == 2)
                                                 <th>Remarks for rejection</th>
                                                 <th>Date for rejection</th>
-                                                @endif
+                                                @else
                                                 <th>Action</th>
+                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody>

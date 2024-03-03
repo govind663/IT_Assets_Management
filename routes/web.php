@@ -186,12 +186,12 @@ Route::group(['prefix' => 'it_assets_management','middleware'=>['auth', 'prevent
             // Approve The Material by Clerk
             Route::post('{id}/{status}/receive', [AllRequestMaterialController::class,'receiveMaterial'])->name('request-new-material.receive');
 
-            // Download new  material request file
+            // Download new material request file
             Route::get('{id}/{status}/download', [AllRequestMaterialController::class,'download'])->name('request-new-material.download');
         });
 
         // =============== Replace  old materials with new ones
-         Route::resource('replace-old-material',ReplaceOldMaterialController::class)
+        Route::resource('replace-old-material',ReplaceOldMaterialController::class)
         ->names([
             'index'=>'replace-old-material.index',
             'create'=>'replace-old-material.create',

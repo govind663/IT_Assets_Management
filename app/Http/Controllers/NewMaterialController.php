@@ -20,7 +20,12 @@ class NewMaterialController extends Controller
                                                ->orderByDesc('id')
                                                ->first( 'status' );
         // dd($currentMaterialStatus);
-        return view('new_request_material.index', ['newMaterials' => $newMaterials, 'currentMaterialStatus' => $currentMaterialStatus]);
+        if ( isset( $currentMaterialStatus ) && !is_null( $currentMaterialStatus->status ) ) {
+            $materialStatus = $currentMaterialStatus->status;
+        } else {
+            $materialStatus =  "null";
+        };
+        return view('new_request_material.index', ['newMaterials' => $newMaterials, 'materialStatus' => $materialStatus]);
     }
 
     public function create()

@@ -158,13 +158,14 @@
                             </span>
                             @endif
                         </td>
+
+                        <input type="hidden" wire:model="stock_id.{{$i}}" class="form-control stock_id" readonly>
+                        <input type="hidden" wire:model="product_code.{{$i}}" class="form-control product_code" readonly>
+                        <input type="hidden" wire:model="work_order_no.{{$i}}" class="form-control work_order_no" readonly>
+
                         <td>
-                            <input type="text" wire:model="currentquantity.{{$i}}" class="form-control currentquantity @if ($errors->has('currentquantity.'.$i)) 'is-invalid' @endif" readonly placeholder="Enter current quantity">
-                            @if ($errors->has('currentquantity.'.$i))
-                            <span class="invalid-feedback d-block" role="alert">
-                                <strong>{{ $errors->first('currentquantity.'.$i) }}</strong>
-                            </span>
-                            @endif
+                            <input type="text" wire:model="currentquantity.{{$i}}" class="form-control currentquantity" readonly >
+
                         </td>
                         <td>
                             <input type="text" wire:model="quantity.{{$i}}" class="form-control quantity @if ($errors->has('quantity.'.$i)) 'is-invalid' @endif" placeholder="Enter Quantity">
@@ -174,6 +175,7 @@
                             </span>
                             @endif
                         </td>
+
                         <td>
                             @if($i == 1)
                             <button type="button" class="btn btn-success" wire:click="addMore">Add More</button>

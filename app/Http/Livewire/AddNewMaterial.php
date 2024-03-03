@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\NewMaterial;
 use App\Models\Product;
 use App\Models\RequestMaterialProduct;
+use App\Models\Stock;
 use App\Models\StockDetail;
 use App\Models\Unit;
 use Livewire\Component;
@@ -39,8 +40,10 @@ class AddNewMaterial extends Component
     public $model;
     public $unit_id;
     public $quantity;
-    public $stock_detail_id;
-    public $currentquantity =[];
+    public $stock_id;
+    public $product_code;
+    public $currentquantity = [];
+    public $work_order_no;
 
     // Show  or Hide forms
     public $fileUploaded = false;
@@ -102,7 +105,6 @@ class AddNewMaterial extends Component
             if (!empty($value)) :
 
                 RequestMaterialProduct::create([
-                    "stock_id"  => $this->stock_id[$key],
                     "new_material_id" => $newMaterial->id ,
                     "catagories_id" =>  $value,
                     "product_id" =>  $this->product_id[$key],
@@ -134,6 +136,7 @@ class AddNewMaterial extends Component
     {
         // get all StockDetail and Product for select option in form
         $this->categories_id[$key] =  StockDetail::pluck('catagories_id');
+
         $products = Product::whereIn("catagories_id", $this->categories_id[$key])
                         ->whereNull('deleted_at')
                         ->orderByDesc('id')
@@ -147,23 +150,30 @@ class AddNewMaterial extends Component
     // ======= GET PRODUCT DETAILS PRODUCTIDWISE
     public function updatedProductId($val, $key)
     {
+        $stockDetails = StockDetail::where('product_id',$val)->first();
+
+        // === null value check then set default
+        $this->product_id[$key]       =  isset($stockDetails->product->name) ? $stockDetails->product->name : '';
+        $this->unit_id[$key]          =  isset($stockDetails->product->unit_id) ? $stockDetails->product->unit_id : '';
+        $this->brand[$key]            =  isset($stockDetails->brand) ? $stockDetails->brand : '';
+        $this->model[$key]            =  isset($stockDetails->model_no) ? $stockDetails->model_no: '';
+        $this->currentquantity[$key]  =  isset($stockDetails->quantity) ? $stockDetails->quantity:"";
+        $this->stock_id[$key]         =  isset($stockDetails->stock_id) ? $stockDetails->stock_id : "";
+        $this->product_code[$key]     =  isset($stockDetails->product_code) ? $stockDetails->product_code : "";
+
+        // === get stocks work_order_no by stock_id
+        $stock = Stock::where('id' , $this->stock_id[$key])->select('work_order_no')->first();
+        $this->work_order_no[$key]   = isset($stock->work_order_no)? $stock->work_order_no:'';
+
         $this->product_id[$key] =  StockDetail::pluck('product_id')
                                                 ->whereNull('deleted_at')
                                                 ->contains($val)?$val:null;
 
-        $stockDetails = StockDetail::where('product_id',$val)->first();
-
-        // === null  value check  then set default
-        $this->name[$key]      =  isset($stockDetails->product->name) ? $stockDetails->product->name : '';
-        $this->unit_id[$key]   =  isset($stockDetails->product->unit_id) ? $stockDetails->product->unit_id : '';
-        $this->brand[$key]     =  isset($stockDetails->brand) ? $stockDetails->brand : '';
-        $this->model[$key]     =  isset($stockDetails->model_no) ? $stockDetails->model_no: '';
-        $this->currentquantity[$key]  = isset($stockDetails['quantity'])?$stockDetails['quantity']:"";
-
         $prod = Product::where("id", $this->product_id[$key])
                         ->whereNull('deleted_at')
                         ->orderByDesc('id')
-                        ->select("id", "name", 'unit_id', 'brand', 'model_no')->first();
+                        ->select("id", "name", 'unit_id', 'brand', 'model_no')
+                        ->first();
         if($prod)
         {
             $this->brand[$key] = $prod->brand;
@@ -192,6 +202,8 @@ class AddNewMaterial extends Component
             $this->model[$this->formCounts] = [];
             $this->unit_id[$this->formCounts] = [];
             $this->currentquantity[$this->formCounts] = [];
+            $this->stock_id[$this->formCounts] = [];
+            $this->product_code[$this->formCounts] = [];
             $this->loop_products[$this->formCounts] = [];
             $this->loop_units[$this->formCounts] = [];
         }

@@ -78,12 +78,13 @@ Request For Material | List
                                                 <th>Request Date & Time</th>
                                                 <th>Material's Document</th>
                                                 <th>Material's Status</th>
-                                                @if(!empty($currentMaterialStatus->status == 2))
+                                                @if($materialStatus == '2')
                                                 <th>Remarks for rejection</th>
                                                 <th>Date for rejection</th>
-                                                @else
-                                                @endif
+                                                @elseif ($materialStatus == 'null' )
                                                 <th>Action</th>
+                                                @endif
+
                                             </tr>
                                         </thead>
                                         <tbody>

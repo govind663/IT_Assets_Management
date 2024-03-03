@@ -15,37 +15,25 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        //  Create a new user with all permissions and assign it to hod role
         User::create([
-            'f_name' => 'Admin',
-            'm_name' => 'M',
-            'l_name' => 'L',
-            'role_id' => '1',
-            'department_id' => '1',
-            'gender' => '1',
-            'email' => 'admin@gmail.com',
-            'phone_number' => '1234567890',
-            'password' => Hash::make('1234567890'),
-            'created_by' => '1',
-            'created_at' => Carbon::now()
-        ]);
-
-        User::create([
-            'f_name' => 'HOD',
-            'm_name' => 'M',
-            'l_name' => 'L',
+            'f_name' => 'Shiv',
+            'm_name' => 'Santosh',
+            'l_name' => 'Singh',
             'role_id' => '2',
             'department_id' => '1',
-            'email' => 'hod@gmail.com',
             'phone_number' => '1234565890',
+            'email' => 'hod@gmail.com',
             'password' => Hash::make('1234567890'),
             'created_by' => '1',
             'created_at' => Carbon::now()
         ]);
 
+        //  Create a new user with all permissions and assign it to cleark role
         User::create([
-            'f_name' => 'Cleark',
-            'm_name' => 'M',
-            'l_name' => 'L',
+            'f_name' => 'Arvind',
+            'm_name' => 'Rohit',
+            'l_name' => 'Yadav',
             'role_id' => '3',
             'department_id' => '1',
             'phone_number' => '1234568890',

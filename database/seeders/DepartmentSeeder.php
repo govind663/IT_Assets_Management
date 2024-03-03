@@ -21,5 +21,12 @@ class DepartmentSeeder extends Seeder
             'inserted_at' => Carbon::now()
         ]);
 
+        Department::create([
+            'dept_name' => 'Public Works Department',
+            'dep_code' => 'PWD',
+            'inserted_by' => '1',
+            'inserted_at' => Carbon::now()
+        ]);
+
     }
 }
