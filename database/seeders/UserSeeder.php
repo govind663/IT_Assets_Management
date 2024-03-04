@@ -47,12 +47,12 @@ class UserSeeder extends Seeder
 
         //  Create a new user with all permissions and assign it to hod role
         User::create([
-            'f_name' => 'Amira',
-            'm_name' => 'M',
-            'l_name' => 'L',
+            'f_name' => 'Advitiya',
+            'm_name' => 'Amrish',
+            'l_name' => 'Sujeet',
             'role_id' => '2',
             'department_id' => '2',
-            'gender' => '2',
+            'gender' => '1',
             'phone_number' => '1234565833',
             'email' => 'pwd_hod@gmail.com',
             'password' => Hash::make('1234567890'),
@@ -63,8 +63,8 @@ class UserSeeder extends Seeder
         //  Create a new user with all permissions and assign it to cleark role
         User::create([
             'f_name' => 'Arvind',
-            'm_name' => 'M',
-            'l_name' => 'L',
+            'm_name' => 'Devasru',
+            'l_name' => 'Subramanyan',
             'role_id' => '3',
             'department_id' => '2',
             'gender' => '1',

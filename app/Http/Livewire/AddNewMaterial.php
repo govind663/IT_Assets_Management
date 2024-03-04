@@ -40,10 +40,8 @@ class AddNewMaterial extends Component
     public $model;
     public $unit_id;
     public $quantity;
-    public $stock_id;
     public $product_code;
-    public $currentquantity = [];
-    public $work_order_no;
+    public $currentquantity;
 
     // Show or Hide forms
     public $fileUploaded = false;
@@ -102,12 +100,13 @@ class AddNewMaterial extends Component
 
         //  === save new material product details   into db ===
         foreach ($this->categories_id  as $key=>$value) :
+            $arr = implode(',', $value);
             if (!empty($value)) :
-
+                // dd( $this->stock_id[$key]);
                 RequestMaterialProduct::create([
                     'new_material_id' => $newMaterial->id ,
-                    'catagories_id' => $this->categories_id[$key],
-                    'product_id' =>  $this->product_id[$key],
+                    'catagories_id' =>  $arr,
+                    'product_id' => $this->product_id[$key],
                     'brand' =>  $this->brand[$key],
                     'model' =>  $this->model[$key],
                     'unit_id' => $this->unit_id[$key],
@@ -116,20 +115,14 @@ class AddNewMaterial extends Component
                     'created_at' => Carbon::now(),
                 ]);
             endif;
+            //==== get last  inserted id for foreign key reference ==========
+            $lastId = RequestMaterialProduct::latest()->first();
 
-            // ==== get last inserted  id for next data
-            $lastId = RequestMaterialProduct::latest()->first()->id;
-
-            // ==== Update Product Code, stock id
-            $updateRequestMaterialProduct = [
-                'product_code' => $this->product_code[$key] ?? NULL,
-                'stock_id' => $this->stock_id[$key] ?? NULL,
-                'work_order_no'  => $this->work_order_no[$key] ?? NULL,
-                'currentquantity'  => $this->currentquantity[$key] ?? NULL,
+            // === update RequestMaterialProduct  table with product_code ===
+            $update = [
+                'product_code' => $this->product_code[$key],
             ];
-            RequestMaterialProduct::where('product_id', $this->product_id[$key])->update($updateRequestMaterialProduct);
-
-            // ==== update quantity in stock detail  table  when  productcode is available
+            RequestMaterialProduct::whereId($lastId)->update($update);
         endforeach;
 
         return redirect()->route('request-new-material.index')->with('message','Your request for new material has been submitted successfully.');
@@ -154,20 +147,16 @@ class AddNewMaterial extends Component
     // ======= GET PRODUCT DETAILS PRODUCTIDWISE
     public function updatedProductId($val, $key)
     {
-        $stockDetails = StockDetail::where('product_id',$val)->first();
+        $stockDetails = StockDetail::where("product_id","=", $this->product_id[$key])->first();
 
         // === null value check then set default
         $this->product_id[$key]       =  isset($stockDetails->product->name) ? $stockDetails->product->name : '';
         $this->unit_id[$key]          =  isset($stockDetails->product->unit_id) ? $stockDetails->product->unit_id : '';
         $this->brand[$key]            =  isset($stockDetails->brand) ? $stockDetails->brand : '';
-        $this->model[$key]            =  isset($stockDetails->model_no) ? $stockDetails->model_no: '';
-        $this->currentquantity[$key]  =  isset($stockDetails->quantity) ? $stockDetails->quantity:"";
-        $this->stock_id[$key]         =  isset($stockDetails->stock_id) ? $stockDetails->stock_id : "";
+        $this->model[$key]            =  isset($stockDetails->model_no) ? $stockDetails->model_no : '';
+        $this->currentquantity[$key]  =  isset($stockDetails->quantity) ? $stockDetails->quantity : '';
         $this->product_code[$key]     =  isset($stockDetails->product_code) ? $stockDetails->product_code : "";
 
-        // === get stocks work_order_no by stock_id
-        $stock = Stock::where('id' , $this->stock_id[$key])->select('work_order_no')->first();
-        $this->work_order_no[$key]   = isset($stock->work_order_no)? $stock->work_order_no:'';
 
         $this->product_id[$key] =  StockDetail::pluck('product_id')
                                                 ->whereNull('deleted_at')
@@ -206,10 +195,10 @@ class AddNewMaterial extends Component
             $this->model[$this->formCounts] = [];
             $this->unit_id[$this->formCounts] = [];
             $this->currentquantity[$this->formCounts] = [];
-            $this->stock_id[$this->formCounts] = [];
-            $this->product_code[$this->formCounts] = [];
             $this->loop_products[$this->formCounts] = [];
             $this->loop_units[$this->formCounts] = [];
+        } else {
+            $this->emit('alert', ['type' => 'error', 'message' => 'You can not add more than 10 items']);
         }
     }
 
@@ -237,7 +226,6 @@ class AddNewMaterial extends Component
             $fieldArray['model.'.$i] = 'required|unique:request_material_products,model'.','.'id,deleted_at';
             $fieldArray['unit_id.'.$i] = 'required|unique:request_material_products,unit_id,NULL,id,deleted_at,NULL';
             $fieldArray['quantity.'.$i] = 'required';
-            $fieldArray['currentquantity.'.$i] = 'required';
 
 
             $messageArray['categories_id.'.$i . '.required'] = 'Please select any category';
@@ -246,7 +234,6 @@ class AddNewMaterial extends Component
             $messageArray['model.' . $i . '.required'] = "Model is required";
             $messageArray['unit_id.' . $i . '.required'] = 'Unit is required';
             $messageArray['quantity.' . $i . '.required'] = 'Quantity in Stock is required';
-            $messageArray['currentquantity.' . $i . '.required'] = 'Quantity Requested is required';
         }
 
         $fieldArray['name'] = 'required';
@@ -283,7 +270,6 @@ class AddNewMaterial extends Component
                             'model' => $this->model,
                             'unit_id' => $this->unit_id,
                             'quantity' => $this->quantity,
-                            'currentquantity' => $this->currentquantity,
                             'name' => $this->name,
                             'department_id' =>  $this->department_id,
                             'mobile_no' => $this->mobile_no,

@@ -102,6 +102,7 @@
                         <th>Model</th>
                         <th>Unit</th>
                         <th>Quantity in Stock</th>
+                        <th>Quantity in Stock</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -161,6 +162,11 @@
                                 <strong>{{ $errors->first('unit_id.'.$i) }}</strong>
                             </span>
                             @endif
+                        </td>
+                        <input type="hidden" wire:model="product_code.{{$i}}" class="form-control product_code" readonly>
+
+                        <td>
+                            <input type="text" wire:model="currentquantity.{{$i}}" class="form-control currentquantity" readonly >
                         </td>
                         <td>
                             <input type="text" wire:model="quantity.{{$i}}" class="form-control quantity @if ($errors->has('quantity.'.$i)) 'is-invalid' @endif" placeholder="Enter Quantity">
