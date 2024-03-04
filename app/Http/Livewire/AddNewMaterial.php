@@ -107,6 +107,7 @@ class AddNewMaterial extends Component
                     'new_material_id' => $newMaterial->id ,
                     'catagories_id' =>  $arr,
                     'product_id' => $this->product_id[$key],
+                    'product_code' => $this->product_code[$key],
                     'brand' =>  $this->brand[$key],
                     'model' =>  $this->model[$key],
                     'unit_id' => $this->unit_id[$key],
@@ -115,14 +116,6 @@ class AddNewMaterial extends Component
                     'created_at' => Carbon::now(),
                 ]);
             endif;
-            //==== get last  inserted id for foreign key reference ==========
-            $lastId = RequestMaterialProduct::latest()->first();
-
-            // === update RequestMaterialProduct  table with product_code ===
-            $update = [
-                'product_code' => $this->product_code[$key],
-            ];
-            RequestMaterialProduct::whereId($lastId)->update($update);
         endforeach;
 
         return redirect()->route('request-new-material.index')->with('message','Your request for new material has been submitted successfully.');

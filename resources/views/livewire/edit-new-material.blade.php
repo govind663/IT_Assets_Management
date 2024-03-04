@@ -102,7 +102,7 @@
                         <th>Model</th>
                         <th>Unit</th>
                         <th>Quantity in Stock</th>
-                        <th>Quantity in Stock</th>
+                        <th>Quantity Requested</th>
                         <th>Action</th>
                     </tr>
                 </thead>

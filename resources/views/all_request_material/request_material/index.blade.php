@@ -81,7 +81,7 @@ Request For Material | List
                                                 <th>Request </th>
                                                 <th>Material's Document</th>
                                                 <th>Material's Status</th>
-                                                @if($status == 2)
+                                                @if($status == '2')
                                                 <th>Remarks for rejection</th>
                                                 <th>Date for rejection</th>
                                                 @else

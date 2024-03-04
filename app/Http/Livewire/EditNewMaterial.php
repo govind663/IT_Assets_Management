@@ -114,6 +114,7 @@ class EditNewMaterial extends Component
                     'new_material_id' => $newMaterial->id ,
                     'catagories_id' =>  $arr,
                     'product_id' => $this->product_id[$key],
+                    'product_code' => $this->product_code[$key],
                     'brand' =>  $this->brand[$key],
                     'model' =>  $this->model[$key],
                     'unit_id' => $this->unit_id[$key],
@@ -122,15 +123,6 @@ class EditNewMaterial extends Component
                     'created_at' => Carbon::now(),
                 ]);
             endif;
-
-            //==== get last  inserted id for foreign key reference ==========
-            $lastId = RequestMaterialProduct::latest()->first();
-
-            // === update RequestMaterialProduct  table with product_code ===
-            $update = [
-                'product_code' => $this->product_code[$key],
-            ];
-            RequestMaterialProduct::whereId($lastId)->update($update);
         endforeach;
 
         // === update status when other department clerk is  logged in===//
@@ -151,6 +143,10 @@ class EditNewMaterial extends Component
         $this->product_code = RequestMaterialProduct::where('new_material_id', request()->request_new_material)
                                 ->value('product_code');
 
+        // ===== get the quantity in stock Details
+        $totalcurrentquantity = StockDetail::where("product_code", "=", $this->product_code)->first();
+
+
         $request_material_products = RequestMaterialProduct::with('catagory', 'product', 'unit')
                                     ->where('new_material_id', $this->materialID['id'])
                                     ->orderByDesc('id')
@@ -163,6 +159,7 @@ class EditNewMaterial extends Component
             $this->product_id[$key+1] = $request_material_product['product_id'];
             $this->brand[$key+1] = $request_material_product['brand'];
             $this->model[$key+1] = $request_material_product['model'];
+            $this->currentquantity[$key+1] = $totalcurrentquantity['quantity'];
             $this->quantity[$key+1] = $request_material_product['quantity'];
             $this->unit_id[$key+1] = $request_material_product['unit_id'];
 
@@ -212,7 +209,8 @@ class EditNewMaterial extends Component
     // ======= GET PRODUCT DETAILS PRODUCTIDWISE
     public function updatedProductId($val, $key)
     {
-        $stockDetails = StockDetail::where("product_id","=", $this->product_id[$key])->first();
+        $stockDetails = StockDetail::where("product_id", $this->product_id[$key])->first();
+        // dd($stockDetails);
 
         // === null value check then set default
         $this->product_id[$key]       =  isset($stockDetails->product->name) ? $stockDetails->product->name : '';
@@ -221,7 +219,6 @@ class EditNewMaterial extends Component
         $this->model[$key]            =  isset($stockDetails->model_no) ? $stockDetails->model_no : '';
         $this->currentquantity[$key]  =  isset($stockDetails->quantity) ? $stockDetails->quantity : '';
         $this->product_code[$key]     =  isset($stockDetails->product_code) ? $stockDetails->product_code : "";
-
 
         $this->product_id[$key] =  StockDetail::pluck('product_id')
                                                 ->whereNull('deleted_at')
