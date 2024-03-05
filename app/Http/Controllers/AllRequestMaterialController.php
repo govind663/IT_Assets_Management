@@ -6,6 +6,7 @@ use App\Http\Requests\RemarksRequest;
 use App\Models\NewMaterial;
 use App\Models\ReceiveActionMaterial;
 use App\Models\RequestMaterialProduct;
+use App\Models\StockDetail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -180,31 +181,8 @@ class AllRequestMaterialController extends Controller
         } elseif (Auth::user()->role_id == 3 && Auth::user()->department_id == 1) {  //=== Departmental Clerk
                 $query->where('is_processed_by_clerk', $status);
 
-                // == check for recived  action from Hod to clerk is_confirmed = 1 and status=3 and
-                // $actionQuery = ReceiveActionMaterial::select('new_material_id')
-                //                                         ->orWhere('is_confirmed','=', 1)
-                //                                         ->where('inserted_by', Auth::user()->id)
-                //                                         ->get();
-                // $ids=[];
-                // foreach ($actionQuery as $item){
-                //     array_push($ids,$item->new_material_id);
-                // }
-                // $query->whereIn('id' , $ids)->where('is_processed_by_clerk', $status);
-
         } elseif (Auth::user()->role_id == 2 && Auth::user()->department_id == 1) {  //=== Departmental Clerk
             $query->where('is_processed_by_it', $status);
-
-            // == check for recived  action from Hod to clerk is_confirmed = 1 and status=3 and
-            // $actionQuery = ReceiveActionMaterial::select('new_material_id')
-            //                                         ->orWhere('is_confirmed','=', 1)
-            //                                         ->where('inserted_by', Auth::user()->id)
-            //                                         ->get();
-            // $ids=[];
-            // foreach ($actionQuery as $item){
-            //     array_push($ids,$item->new_material_id);
-            // }
-            // $query->whereIn('id' , $ids)->where('is_processed_by_it', $status);
-
         }
 
         $newMaterials = $query->get();
@@ -228,10 +206,13 @@ class AllRequestMaterialController extends Controller
                  ->orderBy('id', 'desc');
 
 
-        if (Auth::user()->role_id == 2) {  // === Departmental HOD
+        if (Auth::user()->role_id == 2 && Auth::user()->department_id != 1) {  // === Departmental HOD
             $query->where('id', $id)
                   ->where('is_checked_by_hod', $status);
-        } elseif (Auth::user()->role_id == 3) {  //=== Departmental Clerk
+        } elseif (Auth::user()->role_id == 2 && Auth::user()->department_id == 1) {  //=== Departmental Clerk
+            $query->where('id', $id)
+                  ->where('is_processed_by_it', $status);
+        } elseif (Auth::user()->role_id == 3 && Auth::user()->department_id == 1) {  //=== Departmental Clerk
             $query->where('id', $id)
                   ->where('is_processed_by_clerk', $status);
         }
@@ -246,6 +227,10 @@ class AllRequestMaterialController extends Controller
                                                 ->get();
         }
         // return $materials['requested_products'];
+
+        // ==== ReceiveActionMaterial  Module Start Here=====
+        $materials['receiveActions'] = ReceiveActionMaterial::where('is_confirmed', 1)->where('new_material_id',$id)->first();
+        // return($receiveActions);
 
         return view('all_request_material.current_request_material.view', ['materials' => $materials,  'status'=>$status]);
     }
@@ -270,7 +255,17 @@ class AllRequestMaterialController extends Controller
                 $data->save();
 
                 //  update the status NewMaterial is delivered  to the clerk
-                NewMaterial::where('id' ,$id)->update(['is_processed_by_it'=>3, 'status'=>3]);
+                NewMaterial::where('id' ,$id)->update(['is_processed_by_it'=> 3, 'status'=> 3]);
+
+                $totalQuantity = 0;
+                $currentQuantity = $request->input('current_quantity');
+                $actualQuantity = StockDetail::where('product_id', $request->input('product_id'))->value('quantity');
+                $totalQuantity  = $actualQuantity - $currentQuantity;
+                // dd($totalQuantity);
+                $update = [
+                    'quantity' => $totalQuantity,
+                ];
+                StockDetail::where([ ['product_code', '=', $request->input("product_code")] ])->update($update);
 
                 return  redirect()->route('request-new-material.processslist', $status )->with('message',  'The Material has been successfully received by the departement clerck & added to the product list !');
 
@@ -294,6 +289,16 @@ class AllRequestMaterialController extends Controller
 
                 //  update the status NewMaterial is delivered  to the clerk
                 NewMaterial::where('id' ,$id)->update(['is_processed_by_clerk'=>3, 'status'=>3]);
+
+                $totalQuantity = 0;
+                $currentQuantity = $request->input('current_quantity');
+                $actualQuantity = StockDetail::where('product_id', $request->input('product_id'))->value('quantity');
+                $totalQuantity  = $actualQuantity - $currentQuantity;
+                // dd($totalQuantity);
+                $update = [
+                    'quantity' => $totalQuantity,
+                ];
+                StockDetail::where([ ['product_code', '=', $request->input("product_code")] ])->update($update);
 
                 return  redirect()->route('request-new-material.processslist', $status )->with('message',  'The Material has been successfully received by the departement clerck & added to the product list !');
 

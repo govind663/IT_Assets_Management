@@ -116,7 +116,7 @@ New Request | View
                                     <th>Brand</th>
                                     <th>Model</th>
                                     <th>Unit</th>
-                                    <th>Quantity in Stock</th>
+                                    <th>Quantity Requested</th>
                                 </tr>
                             </thead>
                             <tbody>

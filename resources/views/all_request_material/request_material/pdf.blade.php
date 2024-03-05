@@ -18,10 +18,6 @@
 </head>
 
 <style  type="text/css">
-    * {
-        font-family:Verdana, Geneva, Tahoma, sans-serif;
-        font-size: 15.5px;
-    }
     h2 {
         text-align: center;
         background: #09627e;
@@ -42,11 +38,6 @@
         width: 250px;
         /*height: 4.6rem;*/
         /*width: 8.6rem;*/
-    }
-    .header {
-        text-align: left;
-        font-size: 16px !important;
-        font-style: bold;
     }
     table {
         width: 100%;
@@ -83,7 +74,84 @@
         <div class="card-body p-0">
             <form class="auth-input" style="padding-top: 150px;">
 
-                <h4 class="mb-3"><b>Appication Details :</b></h4>
+                <table class="table table-bordered table-responsive" style="width: 100%;">
+                    <tbody>
+                        <tr>
+                            <td colspan="2"><b>Appication Date :</b> {{ date("d-M-Y") }}</td>
+                            <td colspan="6"><b>Request Id :</b> {{ $materials['new_material']->request_no }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 class="mb-3"><b>Vendors Details :</b></h4>
+                <table class="table table-bordered table-responsive" style="width: 100%;">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Name : </th>
+                            <td colspan="3">{{ $materials['new_material']->name }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Department Name : </th>
+                            <td colspan="3">{{ $materials['new_material']->department?->dept_name }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Mobile No : </th>
+                            <td colspan="3">{{ $materials['new_material']->mobile_no }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Email Id : </th>
+                            <td colspan="3">{{ $materials['new_material']->email }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Material Request Date : </th>
+                            <td colspan="3">{{ $materials['new_material']->requested_at }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Upload Document : </th>
+                            <td colspan="3">
+                                <div  class="form-group">
+                                    {{-- View material  document --}}
+                                    @if ($materials['new_material']->material_doc)
+                                    <a href="{{ asset('/storage/' .$materials['new_material']->material_doc ) }}" target="_blank" type="button"  class="btn btn-sm btn-primary">
+                                        View Document
+                                    </a>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 class="mb-3"><b>Stock Details :</b></h4>
+                <table class="table table-bordered table-responsive" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>Category Name</th>
+                            <th>Product Name</th>
+                            <th>Brand</th>
+                            <th>Model</th>
+                            <th>Unit</th>
+                            <th>Quantity Requested</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach( $materials['requested_products'] as $key =>$value )
+                        <tr>
+                            <td>{{ ++$key }}</td>
+                            <td>{{ $value->catagory?->catagories_name }}</td>
+                            <td>{{ $value->product?->name }}</td>
+                            <td>{{ $value->brand }}</td>
+                            <td>{{ $value->model }}</td>
+                            <td>{{ $value->unit?->unit_name }}</td>
+                            <td>{{ $value->quantity }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+                <div class="page-break"></div>
+                <h4 class="mb-3"><b>Action Taken By Clerk :</b></h4>
                 <table class="table table-bordered table-responsive" style="width: 100%;">
                     <tbody>
                         <tr>
@@ -94,9 +162,41 @@
                             <th scope="row">Appication Date : </th>
                             <td colspan="3">{{ date("d-M-Y") }}</td>
                         </tr>
+                        <tr>
+                            <th scope="row">Name : </th>
+                            <td colspan="3">{{ $materials['new_material']->name }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Department Name : </th>
+                            <td colspan="3">{{ $materials['new_material']->department?->dept_name }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Mobile No : </th>
+                            <td colspan="3">{{ $materials['new_material']->mobile_no }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Email Id : </th>
+                            <td colspan="3">{{ $materials['new_material']->email }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Material Request Date : </th>
+                            <td colspan="3">{{ $materials['new_material']->requested_at }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Upload Document : </th>
+                            <td colspan="3">
+                                <div  class="form-group">
+                                    {{-- View material  document --}}
+                                    @if ($materials['new_material']->material_doc)
+                                    <a href="{{ asset('/storage/' .$materials['new_material']->material_doc ) }}" target="_blank" type="button"  class="btn btn-sm btn-primary">
+                                        View Document
+                                    </a>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-
             </form>
 
         </div>

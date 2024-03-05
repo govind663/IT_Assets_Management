@@ -110,7 +110,7 @@ New Request | View
                                     <th>Brand</th>
                                     <th>Model</th>
                                     <th>Unit</th>
-                                    <th>Quantity in Stock</th>
+                                    <th>Quantity Requested</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -129,7 +129,7 @@ New Request | View
                         </table>
                     </div>
 
-                    @if( Auth:: user()->role_id == 2 || Auth:: user()->role_id == 3 && $status == 3  && Auth:: user()->department_id == 1 && $materials['receiveActions']->is_confirmed == 1)
+                    @if( Auth::user()->role_id == 2 || Auth::user()->role_id == 3 && $status == 3  && Auth::user()->department_id == 1 && $materials['receiveActions']->is_confirmed == 1)
                     <br>
                     <div class="row form-group align-items-center">
                         <h6 class="page-title-box mb-sm-0 text-primary text-capitalize"><b>Action  Taken By Clerk :</b> </h6>
@@ -175,7 +175,7 @@ New Request | View
                         <div class="text-end">
                             <a href="{{ route('request-new-material.processslist', $status) }}" class="btn btn-danger">Cancel</a>&nbsp;
 
-                            @if (Auth:: user()->role_id == 2 || Auth:: user()->role_id == 3 && Auth::user()->department_id == '1' && $status == '3' && $materials['new_material']->is_processed_by_clerk == 1 || $materials['new_material']->is_processed_by_it == 1)
+                            @if (Auth::user()->role_id == 2 || Auth::user()->role_id == 3 && Auth::user()->department_id == '1' && $status == 3 && $materials['new_material']->is_processed_by_clerk == 1 || $materials['new_material']->is_processed_by_it == 1 && $materials['receiveActions']->is_confirmed == 0)
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actionTakenByClerkModal_{{ $materials['new_material']->id }}_{{ $materials['new_material']->status }}">
                                 Action taken  by clerk
                             </button>
@@ -213,6 +213,11 @@ New Request | View
                 <form method="post" action="{{ route('request-new-material.receive', [ 'id'=>$materials['new_material']->id, 'status'=>$materials['new_material']->status ]) }}"  enctype="multipart/form-data">
                     @csrf
 
+                    @foreach( $materials['requested_products'] as $key =>$value )
+                        <input type="hidden" name="product_id" value="{{ $value->product_id }}"/>
+                        <input type="hidden" name="product_code" value="{{ $value->product_code }}"/>
+                        <input type="hidden" name="current_quantity" value="{{ $value->quantity }}"/>
+                    @endforeach
                     <div class="row g-3">
                         <div class="col-md-6 ">
                             <label for="name" class="form-label"><b> Receiver  Name : </b></label>

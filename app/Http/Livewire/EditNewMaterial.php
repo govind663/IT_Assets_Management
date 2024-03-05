@@ -106,22 +106,33 @@ class EditNewMaterial extends Component
         // === store all stock details  in a variable and then clear it. ===
         RequestMaterialProduct::where('new_material_id', $this->materialID)->delete();
 
+        // ==== get product
         //  === save product details into RequestMaterialProduct table.
         foreach ($this->categories_id as $key=>$value) :
-            $arr = implode(',', $value);
+            // $arr = implode(',', $value);
+            // ===== get the product code in stock Details
+            // $products_code = StockDetail::select('product_code')
+            // ->whereIn('catagories_id', [$arr])
+            // ->get();
+
             if (!empty($value)) :
-                RequestMaterialProduct::create([
-                    'new_material_id' => $newMaterial->id ,
-                    'catagories_id' =>  $arr,
-                    'product_id' => $this->product_id[$key],
-                    'product_code' => $this->product_code[$key],
+                // == ==== update  existing record of this material with new values.
+                $productDetails = RequestMaterialProduct::firstOrCreate([
+                    'new_material_id' => $this->materialID['id'],
+                    'catagories_id' => $this->categories_id[$key],
+                    'product_id' =>  $this->product_id[$key],
+                    'product_code' => $this->product_code,
                     'brand' =>  $this->brand[$key],
                     'model' =>  $this->model[$key],
                     'unit_id' => $this->unit_id[$key],
                     'quantity' => $this->quantity[$key],
-                    'inserted_by' => Auth::user()->id,
-                    'created_at' => Carbon::now(),
-                ]);
+                    'modified_by' => Auth::user()->id,
+                    'updated_at' => Carbon::now(),
+                    ], [
+                        'product_code' => $this->product_code,
+                        'created_by' => Auth::user()->id,
+                        'created_at' => Carbon::now(),
+                    ]);
             endif;
         endforeach;
 
