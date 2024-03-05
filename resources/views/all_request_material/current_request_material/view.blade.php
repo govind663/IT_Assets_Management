@@ -175,7 +175,7 @@ New Request | View
                         <div class="text-end">
                             <a href="{{ route('request-new-material.processslist', $status) }}" class="btn btn-danger">Cancel</a>&nbsp;
 
-                            @if (Auth::user()->role_id == 2 || Auth::user()->role_id == 3 && Auth::user()->department_id == '1' && $status == 3 && $materials['new_material']->is_processed_by_clerk == 1 || $materials['new_material']->is_processed_by_it == 1 && $materials['receiveActions']->is_confirmed == 0)
+                            @if (Auth::user()->department_id == '1' && $status == 3 && $materials['new_material']->is_processed_by_clerk == 1 || $materials['new_material']->is_processed_by_it == 1 && $materials['receiveActions']->is_confirmed == 0)
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actionTakenByClerkModal_{{ $materials['new_material']->id }}_{{ $materials['new_material']->status }}">
                                 Action taken  by clerk
                             </button>

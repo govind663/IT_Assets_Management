@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RequestMaterialProduct;
 use Illuminate\Http\Request;
 
 class ReplaceOldMaterialController extends Controller
@@ -19,7 +20,10 @@ class ReplaceOldMaterialController extends Controller
      */
     public function create()
     {
-        return view('replace-old-material.create');
+        // === get product_code in RequestMaterialProduct
+        $productCode = RequestMaterialProduct::select('id','product_code')->whereNull('deleted_at')->orderBy('id', 'desc')->get();
+        // dd($productCode);
+        return view('replace-old-material.create', ['productCode' => $productCode]);
     }
 
     /**
