@@ -202,5 +202,7 @@ Route::group(['prefix' => 'it_assets_management','middleware'=>['auth', 'prevent
             'destroy'=>'replace-old-material.destroy'
         ]);
 
+        // ======== fetch-order-details to show in select2 dropdown  in create replace form
+        Route::post('fetch-orders-details', [ReplaceOldMaterialController::class,'fetchOrders'])->name('fetch_order_details');
 });
 

@@ -45,34 +45,12 @@ Replace Product | Add
                             <div class="row">
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
-                                        <label for="SerialNumber" class="form-label"><b>Serial Number : <span class="text-danger">*</span></b></label>
-                                        <select class="form-control js-example-basic-multiple @error('serial_no_id') is-invalid @enderror" id="serial_no_id" name="serial_no_id[]" multiple="multiple">
-                                            <option value="">Select Serial Number</option>
-                                            @foreach($productCode as $key => $productCodes)
-                                            <option value="{{ $productCodes->id }}"  {{ (old("serial_no_id") == $productCodes->id ? "selected":"") }} >{{ $productCodes->product_code }}</option>
-                                            @endforeach
-
-                                        </select>
-                                        @error('serial_no_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="mb-3">
                                         <label for="ProductName" class="form-label"><b>Product Name : <span class="text-danger">*</span></b></label>
-                                        <select class="form-control js-example-basic-multiple @error('product_id') is-invalid @enderror" id="product_id" name="product_id[]" multiple="multiple">
+                                        <select class="form-control js-example-basic-single @error('product_id') is-invalid @enderror" id="product_id" name="product_id">
                                             <option value="">Select Product Name</option>
-                                            <option value="1"  {{ (old("product_id") == "1" ? "selected":"") }} >value 1</option>
-                                            <option value="2"  {{ (old("product_id") == "2" ? "selected":"") }} >value 2</option>
-                                            <option value="3"  {{ (old("product_id") == "3" ? "selected":"") }} >value 3</option>
-                                            <option value="4"  {{ (old("product_id") == "4" ? "selected":"") }} >value 4</option>
-                                            <option value="5"  {{ (old("product_id") == "5" ? "selected":"") }} >value 5</option>
-                                            <option value="6"  {{ (old("product_id") == "6" ? "selected":"") }} >value 6</option>
-                                            <option value="7"  {{ (old("product_id") == "7" ? "selected":"") }} >value 7</option>
-                                            <option value="8"  {{ (old("product_id") == "8" ? "selected":"") }} >value 8</option>
+                                            @foreach($products as $key => $product)
+                                            <option value="{{ $product->id }}"  {{ (old("product_id") == $product->id ? "selected":"") }} >{{ $product->name }}</option>
+                                            @endforeach
                                         </select>
                                         @error('product_id')
                                             <span class="invalid-feedback" role="alert">
@@ -81,13 +59,24 @@ Replace Product | Add
                                         @enderror
                                     </div>
                                 </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="SerialNumber" class="form-label"><b>Serial Number : <span class="text-danger">*</span></b></label>
+                                        <input type="text" id="serial_no_id" name="serial_no_id" class="form-control @error('serial_no_id') is-invalid @enderror" value="{{ old('serial_no_id') }}" value="{{ old('serial_no_id') }}" >
+                                        @error('serial_no_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
                                         <label for="Department" class="form-label"><b>Department : <span class="text-danger">*</span></b></label>
-                                        <select class="form-control js-example-basic-multiple @error('department_id') is-invalid @enderror" id="department_id" name="department_id[]" multiple="multiple">
-                                            <option value="">Select Department</option>
-                                            <option value="1"  {{ (old("department_id") == "1" ? "selected":"") }} >value 1</option>
-                                        </select>
+                                        <input type="text" id="serial_no_id" name="department_id" class="form-control @error('department_id') is-invalid @enderror" value="{{ old('department_id') }}" value="{{ old('department_id') }}" >
                                         @error('department_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -98,8 +87,20 @@ Replace Product | Add
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
                                         <label for="WorkOrderNumber" class="form-label"><b>Work Order Number : <span class="text-danger">*</span></b></label>
-                                        <input type="text" id="f_name" name="f_name" class="form-control @error('f_name') is-invalid @enderror" value="{{ old('f_name') }}" placeholder="Enter Work Order Number" >
-                                        @error('f_name')
+                                        <input type="text" id="work_order_no" name="work_order_no" class="form-control @error('work_order_no') is-invalid @enderror" value="{{ old('work_order_no') }}" value="{{ old('work_order_no') }}" >
+                                        @error('work_order_no')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="SupplyDate" class="form-label"><b>Product Supply Date : <span class="text-danger">*</span></b></label>
+                                        <input type="date" id="supply_dt" name="supply_dt" class="form-control @error('supply_dt') is-invalid @enderror" value="{{ old('supply_dt') }}" value="{{ old('supply_dt') }}" >
+                                        @error('supply_dt')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -110,20 +111,8 @@ Replace Product | Add
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
                                         <label for="ProductOrderDate" class="form-label"><b>Product Order Date : <span class="text-danger">*</span></b></label>
-                                        <input type="date" id="m_name" name="m_name" class="form-control @error('m_name') is-invalid @enderror" value="{{ old('m_name') }}" >
-                                        @error('m_name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="mb-3">
-                                        <label for="SupplyDate" class="form-label"><b>Supply Date : <span class="text-danger">*</span></b></label>
-                                        <input type="date" id="l_name" name="l_name" class="form-control @error('l_name') is-invalid @enderror" value="{{ old('l_name') }}" >
-                                        @error('l_name')
+                                        <input type="date" id="order_dt" name="order_dt" class="form-control @error('order_dt') is-invalid @enderror" value="{{ old('order_dt') }}" value="{{ old('order_dt') }}" >
+                                        @error('order_dt')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -134,8 +123,8 @@ Replace Product | Add
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
                                         <label for="ProductReturnDate" class="form-label"><b>Product Return Date : <span class="text-danger">*</span></b></label>
-                                        <input type="date" id="phone_number" name="phone_number" class="form-control @error('l_name') is-invalid @enderror" value="{{ old('l_name') }}" value="{{ old('phone_number') }}" >
-                                        @error('phone_number')
+                                        <input type="date" id="return_dt" name="return_dt" class="form-control @error('return_dt') is-invalid @enderror" value="{{ old('return_dt') }}" value="{{ old('return_dt') }}" >
+                                        @error('return_dt')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -146,8 +135,8 @@ Replace Product | Add
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
                                         <label for="ProductReturnDate" class="form-label"><b>Reason : <span class="text-danger">*</span></b></label>
-                                        <textarea type="text" id="phone_number" name="phone_number" class="form-control @error('l_name') is-invalid @enderror" value="{{ old('l_name') }}"  value="{{ old('phone_number') }}" placeholder="Enter Reason" >{{ old('phone_number') }}</textarea>
-                                        @error('phone_number')
+                                        <textarea type="text" id="reason" name="reason" class="form-control @error('reason') is-invalid @enderror" value="{{ old('reason') }}" placeholder="Enter Reason" >{{ old('reason') }}</textarea>
+                                        @error('reason')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -181,6 +170,30 @@ Replace Product | Add
     <!-- end main content-->
 @endsection
 @push('scripts')
+<script>
+    $(document).ready(function () {
+        $('#product_id').on('change', function () {
+            var productId = this.value;
+            $("#serial_no_id").html('');
+            $.ajax({
+                url: "{{ route('fetch_order_details') }}",
+                method:'POST',
+                dataType: 'json',
 
+                data: {
+                    product_id: productId,
+                    _token: '{{csrf_token()}}'
+                },
+                success: function (data) {
+                    $('#serial_no_id').html('<option value="">Select </option>');
+                    $.each(data.orderDetails, function (i, val) {
+                        // Append the input value to the output element
+
+                    });
+                }
+            });
+        });
+    });
+</script>
 @endpush
 

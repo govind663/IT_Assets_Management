@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
+use App\Models\Product;
 use App\Models\RequestMaterialProduct;
+use App\Models\StockDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReplaceOldMaterialController extends Controller
 {
@@ -21,9 +25,10 @@ class ReplaceOldMaterialController extends Controller
     public function create()
     {
         // === get product_code in RequestMaterialProduct
-        $productCode = RequestMaterialProduct::select('id','product_code')->whereNull('deleted_at')->orderBy('id', 'desc')->get();
+        $products = Product::select('id','name')->whereNull('deleted_at')->orderBy('id', 'desc')->get();
         // dd($productCode);
-        return view('replace-old-material.create', ['productCode' => $productCode]);
+
+        return view('replace-old-material.create', ['products' => $products]);
     }
 
     /**
@@ -64,5 +69,16 @@ class ReplaceOldMaterialController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    //=== fetchOrders
+    public  function fetchOrders(Request $request){
+        $data['orderDetails'] = RequestMaterialProduct::select('request_material_products.id', 'request_material_products.product_code')
+                                        ->whereIn('request_material_products.product_id', $request->product_id)
+                                        ->whereNull('request_material_products.deleted_at')
+                                        ->orderBy('request_material_products.id', 'desc')
+                                        ->get();
+
+        return response()->json($data);
     }
 }
