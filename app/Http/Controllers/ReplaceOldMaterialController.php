@@ -8,6 +8,7 @@ use App\Models\RequestMaterialProduct;
 use App\Models\StockDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ReplaceOldMaterialController extends Controller
 {
@@ -72,13 +73,21 @@ class ReplaceOldMaterialController extends Controller
     }
 
     //=== fetchOrders
-    public  function fetchOrders(Request $request){
-        $data['orderDetails'] = RequestMaterialProduct::select('request_material_products.id', 'request_material_products.product_code')
-                                        ->whereIn('request_material_products.product_id', $request->product_id)
+    public  function fetchOrders(Request $request)
+    {
+        $data['orderDetails'] = RequestMaterialProduct::select('request_material_products.id', 'request_material_products.product_code', 'new_materials.requested_at')
+                                        ->leftJoin('new_materials', 'new_materials.id', '=', 'request_material_products.new_material_id')
+                                        ->where('request_material_products.product_id', $request->product_id)
                                         ->whereNull('request_material_products.deleted_at')
                                         ->orderBy('request_material_products.id', 'desc')
                                         ->get();
 
+        $data['supplyDetails'] = StockDetail::select('stocks.inward_dt', 'stocks.work_order_no')
+                                            ->leftJoin('stocks', 'stocks.id', '=', 'stock_details.stock_id')
+                                            ->whereIn('stock_details.product_id', $request->product_id)
+                                            ->whereNull('stock_details.deleted_at')
+                                            ->orderBy('stock_details.id', 'desc')
+                                            ->get();
         return response()->json($data);
     }
 }
