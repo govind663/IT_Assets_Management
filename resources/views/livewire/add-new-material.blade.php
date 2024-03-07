@@ -160,6 +160,7 @@
                         </td>
 
                         <input type="hidden" wire:model="product_code.{{$i}}" class="form-control product_code" readonly>
+                        <input type="hidden" wire:model="stock_id.{{$i}}" class="form-control stock_id" readonly>
 
                         <td>
                             <input type="text" wire:model="currentquantity.{{$i}}" class="form-control currentquantity" readonly >

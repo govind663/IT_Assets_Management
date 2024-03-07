@@ -42,6 +42,7 @@ class AddNewMaterial extends Component
     public $quantity;
     public $product_code;
     public $currentquantity;
+    public $stock_id;
 
     // Show or Hide forms
     public $fileUploaded = false;
@@ -108,6 +109,7 @@ class AddNewMaterial extends Component
                     'catagories_id' =>  $arr,
                     'product_id' => $this->product_id[$key],
                     'product_code' => $this->product_code[$key],
+                    'stock_id' =>  $this->stock_id[$key],
                     'brand' =>  $this->brand[$key],
                     'model' =>  $this->model[$key],
                     'unit_id' => $this->unit_id[$key],
@@ -149,7 +151,7 @@ class AddNewMaterial extends Component
         $this->model[$key]            =  isset($stockDetails->model_no) ? $stockDetails->model_no : '';
         $this->currentquantity[$key]  =  isset($stockDetails->quantity) ? $stockDetails->quantity : '';
         $this->product_code[$key]     =  isset($stockDetails->product_code) ? $stockDetails->product_code : "";
-
+        $this->stock_id[$key]        =  isset($stockDetails->stock_id) ? $stockDetails->stock_id : '';
 
         $this->product_id[$key] =  StockDetail::pluck('product_id')
                                                 ->whereNull('deleted_at')

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('replace_old_materials', function (Blueprint $table) {
             $table->id();
-            $table->integer('serial_no')->nullable();
+            $table->string('serial_no_id')->nullable();
             $table->foreignIdFor(Product::class)->index()->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(Department::class)->index()->nullable()->constrained()->onDelete('cascade');
             $table->string('work_order_no')->nullable();

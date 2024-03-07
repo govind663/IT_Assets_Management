@@ -25,6 +25,7 @@ use App\Http\Controllers\VendorsController;
 use App\Http\Controllers\NewMaterialController;
 use App\Http\Controllers\AllRequestMaterialController;
 use App\Http\Controllers\ReplaceOldMaterialController;
+use App\Http\Controllers\AllRequestReturnMaterialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -183,7 +184,7 @@ Route::group(['prefix' => 'it_assets_management','middleware'=>['auth', 'prevent
             Route::get('{status}/processs_list', [AllRequestMaterialController::class,'listRequestMaterial'])->name('request-new-material.processslist');
             Route::get('{id}/{status}/processs_view', [AllRequestMaterialController::class,'showRequestMaterial'])->name('request-new-material.processs_view');
 
-            // Approve The Material by Clerk
+            // Approve The Material by Clerk/HOD
             Route::post('{id}/{status}/receive', [AllRequestMaterialController::class,'receiveMaterial'])->name('request-new-material.receive');
 
             // Download new material request file
@@ -204,5 +205,21 @@ Route::group(['prefix' => 'it_assets_management','middleware'=>['auth', 'prevent
 
         // ======== fetch-order-details to show in select2 dropdown  in create replace form
         Route::post('fetch-orders-details', [ReplaceOldMaterialController::class,'fetchOrders'])->name('fetch_order_details');
+
+        // === Handle  the return Material approval of request  from
+        Route::prefix('replace-old-material')->group(function(){
+            Route::get('list/{status}', [AllRequestReturnMaterialController::class,'index'])->name('replace-old-material.list');
+            Route::get('{id}/{status}/view', [AllRequestReturnMaterialController::class,'show'])->name('replace-old-material.view');
+            Route::get('{id}/{status}/approve', [AllRequestReturnMaterialController::class,'approveRequestMaterial'])->name('replace-old-material.approve');
+            Route::post('{id}/{status}/reject', [AllRequestReturnMaterialController::class,'rejectRequestMaterial'])->name('replace-old-material.reject');
+            Route::get('{status}/processs_list', [AllRequestReturnMaterialController::class,'listRequestMaterial'])->name('replace-old-material.processslist');
+            Route::get('{id}/{status}/processs_view', [AllRequestReturnMaterialController::class,'showRequestMaterial'])->name('replace-old-material.processs_view');
+
+            // Approve The Material by Clerk/HOD
+            Route::post('{id}/{status}/receive', [AllRequestReturnMaterialController::class,'receiveMaterial'])->name('replace-old-material.receive');
+
+            // Download new material request file
+            Route::get('{id}/{status}/download', [AllRequestReturnMaterialController::class,'download'])->name('replace-old-material.download');
+        });
 });
 

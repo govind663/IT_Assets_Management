@@ -132,7 +132,7 @@ Request For Material | List
                                                             <b><i class="ri-eye-line"></i> View</b>
                                                         </button>
                                                     </a>
-                                                    @if($newMaterial->status == 0  || $newMaterial->status == 2 )
+                                                    @if($newMaterial->status == 0  || $newMaterial->status == 2)
                                                     &nbsp;
                                                     {{-- Edit --}}
                                                     <a href="{{ route('request-new-material.edit', $newMaterial->id) }}">

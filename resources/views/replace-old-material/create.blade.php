@@ -40,7 +40,7 @@ Replace Product | Add
 
                 <div class="card-body">
                     <div class="live-preview">
-                        <form method="POST" action="{{ route('replace-old-material.create') }}"  enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('replace-old-material.store') }}"  enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-lg-4 col-md-6">
@@ -63,14 +63,10 @@ Replace Product | Add
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
                                         <label for="SerialNumber" class="form-label"><b>Serial Number : <span class="text-danger">*</span></b></label>
-                                        <select class="form-control js-example-basic-single @error('serial_no_id') is-invalid @enderror" id="serial_no_id" name="serial_no_id">
-                                            <option value="">Select Serial Number</option>
-
-                                        </select>
+                                        <input type="text" id="serial_no_id" name="serial_no_id" class="form-control @error('serial_no_id') is-invalid @enderror" value="{{ old('serial_no_id') }}">
                                         @error('serial_no_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
-
                                             </span>
                                         @enderror
                                     </div>
@@ -86,7 +82,7 @@ Replace Product | Add
                                     <div class="mb-3">
                                         <label for="Department" class="form-label"><b>Department : <span class="text-danger">*</span></b></label>
                                         <input type="hidden" id="department_id" name="department_id" class="form-control"  value="{{ Auth::user()->department_id }}" >
-                                        <input type="text" readonly class="form-control @error('department_id') is-invalid @enderror" value="{{ $department->dept_name }}">
+                                        <input type="text" class="form-control @error('department_id') is-invalid @enderror" value="{{ $department->dept_name }}">
                                         @error('department_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -98,7 +94,7 @@ Replace Product | Add
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
                                         <label for="ProductOrderDate" class="form-label"><b>Product Order Date : <span class="text-danger">*</span></b></label>
-                                        <input type="text" id="order_dt" name="order_dt" class="form-control @error('order_dt') is-invalid @enderror" value=" ">
+                                        <input type="text" id="order_dt" name="order_dt" class="form-control @error('order_dt') is-invalid @enderror" value="{{ old('order_dt') }}">
                                         @error('order_dt')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -110,7 +106,7 @@ Replace Product | Add
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
                                         <label for="WorkOrderNumber" class="form-label"><b>Work Order Number : <span class="text-danger">*</span></b></label>
-                                        <input type="text" id="work_order_no" name="work_order_no" class="form-control @error('work_order_no') is-invalid @enderror" >
+                                        <input type="text" id="work_order_no" name="work_order_no" class="form-control @error('work_order_no') is-invalid @enderror" value="{{ old('work_order_no') }}">
                                         @error('work_order_no')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -122,7 +118,7 @@ Replace Product | Add
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
                                         <label for="SupplyDate" class="form-label"><b>Product Supply Date : <span class="text-danger">*</span></b></label>
-                                        <input type="text" id="supply_dt" name="supply_dt" class="form-control @error('supply_dt') is-invalid @enderror">
+                                        <input type="text" id="supply_dt" name="supply_dt" class="form-control @error('supply_dt') is-invalid @enderror" value="{{ old('supply_dt') }}">
                                         @error('supply_dt')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -196,21 +192,25 @@ Replace Product | Add
                     _token: '{{csrf_token()}}'
                 },
                 success: function (data) {
-
                     $.each(data.orderDetails, function (i, val) {
-                        // if old value selected or not
-                        var selectedText = '';
-                        if ($('#serial_no_id'). val() == val.id){
-                            selectedText =  'selected';
-                        }
-                        $('#serial_no_id').append(`<option value='${val.id}' ${selectedText}>${val.product_code}</option>`);
+
+                        $("#serial_no_id").val(val.product_code);
 
                         var d = new Date(val.requested_at);
                         var year = d.getFullYear();
                         var month = ("0" + (d.getMonth() + 1)).slice(-2);
                         var day = ("0" +  d.getDate()).slice(-2);
-                        var datetext = `${day}/${month}/${year}`;
-                        $("#order_dt").val(datetext);
+                        var orderdate = `${day}-${month}-${year}`;
+                        $("#order_dt").val(orderdate);
+
+                        $("#work_order_no").val(val.work_order_no);
+
+                        var d = new Date(val.inward_dt);
+                        var year = d.getFullYear();
+                        var month = ("0" + (d.getMonth() + 1)).slice(-2);
+                        var day = ("0" +  d.getDate()).slice(-2);
+                        var supplydate = `${day}-${month}-${year}`;
+                        $("#supply_dt").val(supplydate);
                     });
                 }
             });

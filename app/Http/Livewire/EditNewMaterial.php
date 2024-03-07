@@ -49,6 +49,7 @@ class EditNewMaterial extends Component
     public $unit_id;
     public $quantity;
     public $currentquantity;
+    public $stock_id;
 
     // Show  or Hide forms
     public $fileUploaded = false;
@@ -109,19 +110,15 @@ class EditNewMaterial extends Component
         // ==== get product
         //  === save product details into RequestMaterialProduct table.
         foreach ($this->categories_id as $key=>$value) :
-            // $arr = implode(',', $value);
-            // ===== get the product code in stock Details
-            // $products_code = StockDetail::select('product_code')
-            // ->whereIn('catagories_id', [$arr])
-            // ->get();
-
+            // dd($this->stock_id);
             if (!empty($value)) :
                 // == ==== update  existing record of this material with new values.
-                $productDetails = RequestMaterialProduct::firstOrCreate([
+                RequestMaterialProduct::firstOrCreate([
                     'new_material_id' => $this->materialID['id'],
                     'catagories_id' => $this->categories_id[$key],
                     'product_id' =>  $this->product_id[$key],
                     'product_code' => $this->product_code,
+                    'stock_id' => $this->stock_id,
                     'brand' =>  $this->brand[$key],
                     'model' =>  $this->model[$key],
                     'unit_id' => $this->unit_id[$key],
@@ -129,8 +126,9 @@ class EditNewMaterial extends Component
                     'modified_by' => Auth::user()->id,
                     'updated_at' => Carbon::now(),
                     ], [
+                        'stock_id' => $this->stock_id,
                         'product_code' => $this->product_code,
-                        'created_by' => Auth::user()->id,
+                        'inserted_by' => Auth::user()->id,
                         'created_at' => Carbon::now(),
                     ]);
             endif;
@@ -153,6 +151,8 @@ class EditNewMaterial extends Component
         $this->materialID = NewMaterial::find(request()->request_new_material)->toArray();
         $this->product_code = RequestMaterialProduct::where('new_material_id', request()->request_new_material)
                                 ->value('product_code');
+        $this->stock_id = RequestMaterialProduct:: where('new_material_id', request()->request_new_material )
+                               ->value('stock_id');
 
         // ===== get the quantity in stock Details
         $totalcurrentquantity = StockDetail::where("product_code", "=", $this->product_code)->first();
@@ -230,6 +230,7 @@ class EditNewMaterial extends Component
         $this->model[$key]            =  isset($stockDetails->model_no) ? $stockDetails->model_no : '';
         $this->currentquantity[$key]  =  isset($stockDetails->quantity) ? $stockDetails->quantity : '';
         $this->product_code[$key]     =  isset($stockDetails->product_code) ? $stockDetails->product_code : "";
+        $this->stock_id[$key]        =  isset($stockDetails->stock_id) ? $stockDetails->stock_id : '';
 
         $this->product_id[$key] =  StockDetail::pluck('product_id')
                                                 ->whereNull('deleted_at')

@@ -11,7 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
-use PSpell\Config;
 
 class AllRequestMaterialController extends Controller
 {
@@ -236,7 +235,8 @@ class AllRequestMaterialController extends Controller
     }
 
     // ==== Receive  Material
-    public function receiveMaterial(Request $request, $id, $status ){
+    public function receiveMaterial(Request $request, $id, $status )
+    {
 
         // ==== only  for department clerk with  status "Approved"
         if (Auth::user()->role_id ==  2 && Auth::user()->department_id == 1 ) {

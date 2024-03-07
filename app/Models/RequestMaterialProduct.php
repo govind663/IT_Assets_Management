@@ -12,6 +12,7 @@ class RequestMaterialProduct extends Model
     protected $fillable = [
         'id',
         'new_material_id',
+        'stock_id',
         'catagories_id',
         'product_id',
         'product_code',
@@ -27,7 +28,7 @@ class RequestMaterialProduct extends Model
         'deleted_at',
     ];
 
-    protected $dates = ['deleted_at', 'created_at', 'updated_at'];
+    protected $dates = ['deleted_at'];
 
     // Relationship with Catagories model.
     public function catagory(){

@@ -262,13 +262,13 @@
                         <ul class="nav nav-sm flex-column">
                             {{-- only show pending request list from Hod --}}
                             <li class="nav-item">
-                                <a href="{{ route('request-new-material.list', 0) }}" class="nav-link" data-key="department"><b>Pending Product List</b></a>
+                                <a href="{{ route('replace-old-material.list', 0) }}" class="nav-link" data-key="department"><b>Pending Product List</b></a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('request-new-material.processslist', 1) }}" class="nav-link" data-key="department"><b>Approve Product List</b></a>
+                                <a href="{{ route('replace-old-material.processslist', 1) }}" class="nav-link" data-key="department"><b>Approve Product List</b></a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('request-new-material.processslist', 2) }}" class="nav-link" data-key="department"><b>Reject Product List</b></a>
+                                <a href="{{ route('replace-old-material.processslist', 2) }}" class="nav-link" data-key="department"><b>Reject Product List</b></a>
                             </li>
                         </ul>
                     </div>

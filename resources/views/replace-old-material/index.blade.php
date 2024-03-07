@@ -67,50 +67,89 @@
                                         <thead  class="bg-primary text-light">
                                             <tr>
                                                 <th>Sr. No.</th>
-                                                <th>Name</th>
-                                                <th>Email Address</th>
-                                                <th>Phone Number</th>
+                                                <th>RequestedID</th>
+                                                <th>Product Name</th>
+                                                <th>Serial Number</th>
                                                 <th>Department</th>
-                                                <th>Designation</th>
+                                                <th>Product Order Date</th>
+                                                <th>Work Order Number</th>
+                                                <th>Product Supply Date</th>
+                                                <th>Product Return Date</th>
+                                                <th>Reason</th>
+                                                <th>Status</th>
+                                                @if($materialStatus == 2)
+                                                <th>Remarks for rejection</th>
+                                                <th>Date for rejection</th>
+                                                @endif
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {{-- @foreach ($users as $key=>$value) --}}
+                                            @foreach ($replaceOldMaterial as $key=>$value)
                                             <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td class="d-flex">
+                                                <td>{{ ++$key }}</td>
+                                                <td class="text-wrap">{{ $value->replaceRequestID }}</td>
+                                                <td class="text-wrap">{{ $value->product?->name }}</td>
+                                                <td class="text-wrap">{{ $value->serial_no_id }}</td>
+                                                <td class="text-wrap">{{ $value->department->dept_name }}</td>
+                                                <td class="text-wrap">{{ $value->work_order_no }}</td>
+                                                <td class="text-wrap">{{ $value->order_dt }}</td>
+                                                <td class="text-wrap">{{ $value->supply_dt }}</td>
+                                                <td class="text-wrap">{{ $value->return_dt }}</td>
+                                                <td class="text-wrap">{{ $value->reason }}</td>
+                                                <td class="text-wrap">
+                                                    {{-- status --}}
+                                                    @if($value->status == 0)
+                                                        <span class="badge bg-warning text-black text-justify">Pending</span>
+                                                    @elseif($value->status == 1)
+                                                        <span class="badge bg-success text-justify">Approved</span>
+                                                    @elseif($value->status == 2)
+                                                        <span class="badge bg-danger text-justify">Reject</span>
+                                                    @elseif($value->status == 5)
+                                                        <span class="badge bg-danger text-justify">Returned</span>
+                                                    @elseif($value->status == 6)
+                                                        <span class="badge bg-info text-justify">checked and approved by HOD</span>
+                                                    @elseif($value->status == 7)
+                                                        <span class="badge bg-primary text-justify">checked and approved by clerk</span>
+                                                    @endif
+                                                </td>
+
+                                                @if($value->status == 2 && $value->is_checked_by_hod == 2)
+                                                <td>{{ $value->rejection_reason_by_hod }}</td>
+                                                <td>{{ date("d-m-Y", strtotime($value->checked_by_hod_at)) }}</td>
+                                                @elseif($value->status == 2 && $value->is_processed_by_clerk == 2)
+                                                <td>{{ $value->rejection_reason_by_clerk }}</td>
+                                                <td>{{ date("d-m-Y", strtotime($value->checked_by_clerk_at)) }}</td>
+                                                @endif
+
+                                                <td class="text-wrap">
                                                     {{-- Read --}}
-                                                    {{-- <a href="{{ route('replace-old-material.show', $value->id) }}">
+                                                    <a href="{{ route('replace-old-material.show', $value->id) }}">
                                                         <button class="btn btn-sm btn-info" >
                                                             <b><i class="ri-eye-line"></i> View</b>
                                                         </button>
                                                     </a>
-                                                    &nbsp; --}}
+                                                    @if($value->status == 0  || $value->status == 2 )
+                                                    &nbsp;
                                                     {{-- Edit --}}
-                                                    {{-- <a href="{{ route('replace-old-material.edit', $value->id) }}">
+                                                    <a href="{{ route('replace-old-material.edit', $value->id) }}">
                                                         <button class="btn btn-sm btn-warning" >
                                                             <b><i class="ri-edit-line"></i> Edit</b>
                                                         </button>
                                                     </a>
-                                                    &nbsp; --}}
+                                                    &nbsp;
                                                     {{-- Delete --}}
-                                                    {{-- <form action="{{ route('replace-old-material.destroy', $value->id) }}" method="post">
+                                                    <form action="{{ route('replace-old-material.destroy', $value->id) }}" method="post">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <input name="_method" type="hidden" value="DELETE">
                                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');">
                                                             <b><i class="ri-delete-bin-line"></i> Delete</b>
                                                         </button>
-                                                    </form> --}}
+                                                    </form>
+                                                    @endif
                                                 </td>
                                             </tr>
-                                            {{-- @endforeach --}}
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
