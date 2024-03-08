@@ -1,0 +1,17 @@
+==========  All User Login  Information =========================
+// ====== IT Department (HOD)
+Email Id : - hod@gmail.com
+Password : - 1234567890
+
+// ====== IT Department (cleark)
+Email Id : - cleark@gmail.com
+Password : - 1234567890
+
+
+// ====== PWD Department (HOD)
+Email Id : - pwd_hod@gmail.com
+Password : - 1234567890
+
+// ====== PWD Department (cleark)
+Email Id : - pwd_cleark@gmail.com
+Password : - 1234567890
