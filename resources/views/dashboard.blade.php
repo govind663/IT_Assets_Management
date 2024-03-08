@@ -55,9 +55,9 @@
                                             <div class="d-flex align-items-end justify-content-between mt-4">
                                                 <div>
                                                     <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                                        <span class="counter-value" data-target="183.35">0</span>M
+                                                        <span class="counter-value" data-target="{{ $total_user }}">0</span>
                                                     </h4>
-                                                    <a href="{{ route('users.index') }}" class="text-decoration-underline">See details</a>
+                                                    <a href="{{ route('users.index') }}" class="text-decoration-underline">See Users</a>
                                                 </div>
                                                 <div class="avatar-sm flex-shrink-0">
                                                     <span class="avatar-title bg-primary-subtle rounded fs-3">
@@ -69,54 +69,19 @@
                                     </div><!-- end card -->
                                 </div><!-- end col -->
 
-
                                 <div class="col-xl-3 col-md-6">
                                     <!-- card -->
                                     <div class="card card-animate">
                                         <div class="card-body">
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-grow-1 overflow-hidden">
-                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Total Earnings</p>
-                                                </div>
-                                                <div class="flex-shrink-0">
-                                                    <h5 class="text-success fs-14 mb-0">
-                                                        <i class="ri-arrow-right-up-line fs-13 align-middle"></i> +16.24 %
-                                                    </h5>
+                                                 <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Total Request Material</p>
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-end justify-content-between mt-4">
                                                 <div>
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4">$<span class="counter-value" data-target="559.25">0</span>k </h4>
-                                                    <a href="" class="text-decoration-underline">View net earnings</a>
-                                                </div>
-                                                <div class="avatar-sm flex-shrink-0">
-                                                    <span class="avatar-title bg-primary-subtle rounded fs-3">
-                                                        <i class="bx bx-dollar-circle text-primary"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div><!-- end card body -->
-                                    </div><!-- end card -->
-                                </div><!-- end col -->
-
-                                <div class="col-xl-3 col-md-6">
-                                    <!-- card -->
-                                    <div class="card card-animate">
-                                        <div class="card-body">
-                                            <div class="d-flex align-items-center">
-                                                <div class="flex-grow-1 overflow-hidden">
-                                                 <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Orders</p>
-                                                </div>
-                                                <div class="flex-shrink-0">
-                                                    <h5 class="text-danger fs-14 mb-0">
-                                                        <i class="ri-arrow-right-down-line fs-13 align-middle"></i> -3.57 %
-                                                    </h5>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex align-items-end justify-content-between mt-4">
-                                                <div>
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="36894">0</span></h4>
-                                                    <a href="" class="text-decoration-underline">View all orders</a>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $requestMaterialProductsCount }}">0</span></h4>
+                                                    <a href="{{ route('request-new-material.index') }}" class="text-decoration-underline">View all Request Material</a>
                                                 </div>
                                                 <div class="avatar-sm flex-shrink-0">
                                                     <span class="avatar-title bg-primary-subtle rounded fs-3">
@@ -134,22 +99,93 @@
                                         <div class="card-body">
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-grow-1 overflow-hidden">
-                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> My Balance</p>
-                                                </div>
-                                                <div class="flex-shrink-0">
-                                                    <h5 class="text-muted fs-14 mb-0">
-                                                        +0.00 %
-                                                    </h5>
+                                                 <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Total Supply Material</p>
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-end justify-content-between mt-4">
                                                 <div>
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4">$<span class="counter-value" data-target="165.89">0</span>k </h4>
-                                                    <a href="" class="text-decoration-underline">Withdraw money</a>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $stockDetailsWithStockId }}">0</span></h4>
+                                                    <a href="{{ route('stocks.index') }}" class="text-decoration-underline">View all Supply Material</a>
                                                 </div>
                                                 <div class="avatar-sm flex-shrink-0">
                                                     <span class="avatar-title bg-primary-subtle rounded fs-3">
-                                                        <i class="bx bx-wallet text-primary"></i>
+                                                        <i class="bx bx-shopping-bag text-primary"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div><!-- end card body -->
+                                    </div><!-- end card -->
+                                </div><!-- end col -->
+
+                                <div class="col-xl-3 col-md-6">
+                                    <!-- card -->
+                                    <div class="card card-animate">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                 <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Total Return Material</p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-end justify-content-between mt-4">
+                                                <div>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $stockDetailsWithStockId }}">0</span></h4>
+                                                    <a href="{{ route('replace-old-material.index') }}" class="text-decoration-underline">View all Return Material</a>
+                                                </div>
+                                                <div class="avatar-sm flex-shrink-0">
+                                                    <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                                        <i class="bx bx-shopping-bag text-primary"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div><!-- end card body -->
+                                    </div><!-- end card -->
+                                </div><!-- end col -->
+
+                                <div class="col-xl-3 col-md-6">
+                                    <!-- card -->
+                                    <div class="card card-animate">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Total Products</p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-end justify-content-between mt-4">
+                                                <div>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                                        <span class="counter-value" data-target="{{ $productCount }}">0</span>
+                                                    </h4>
+                                                    <a href="{{ route('products.index') }}" class="text-decoration-underline">All Products</a>
+                                                </div>
+                                                <div class="avatar-sm flex-shrink-0">
+                                                    <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                                        <i class="bx bx-shopping-bag text-primary"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div><!-- end card body -->
+                                    </div><!-- end card -->
+                                </div><!-- end col -->
+
+                                <div class="col-xl-3 col-md-6">
+                                    <!-- card -->
+                                    <div class="card card-animate">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Total Vendors</p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-end justify-content-between mt-4">
+                                                <div>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                                        <span class="counter-value" data-target="{{ $vendorsCount }}">0</span>
+                                                    </h4>
+                                                    <a href="{{ route('vendors.index') }}" class="text-decoration-underline">All Vendors</a>
+                                                </div>
+                                                <div class="avatar-sm flex-shrink-0">
+                                                    <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                                        <i class="bx bx-user text-primary"></i>
                                                     </span>
                                                 </div>
                                             </div>
