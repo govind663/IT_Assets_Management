@@ -114,9 +114,9 @@ New Request | View
                         <div class="text-end">
                             <a href="{{ route('replace-old-material.processslist', $status) }}" class="btn btn-danger">Cancel</a>&nbsp;
                             @if (Auth::user()->department_id == '1' && $status == 3 && $replaceOldMaterial->is_processed_by_clerk == 1 || $replaceOldMaterial->is_processed_by_it == 1 && $replaceOldMaterial->is_confirmed == 0)
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actionTakenByClerkModal_{{ $replaceOldMaterial->id }}_{{ $replaceOldMaterial->status }}">
+                            {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actionTakenByClerkModal_{{ $replaceOldMaterial->id }}_{{ $replaceOldMaterial->status }}">
                                 Action taken  by clerk
-                            </button>
+                            </button> --}}
                             @endif
                         </div>
                     </div>
@@ -137,7 +137,7 @@ New Request | View
 <!-- end main content-->
 
 {{--Model for Action taken  by clerk --}}
-{{-- <div class="modal fade" id="actionTakenByClerkModal_{{ $replaceOldMaterial->id }}_{{ $replaceOldMaterial->status }}" tabindex="-1" aria-labelledby="exampleModalgridLabel" aria-modal="true">
+<div class="modal fade" id="actionTakenByClerkModal_{{ $replaceOldMaterial->id }}_{{ $replaceOldMaterial->status }}" tabindex="-1" aria-labelledby="exampleModalgridLabel" aria-modal="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -148,14 +148,9 @@ New Request | View
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="post" action="{{ route('request-new-material.receive', [ 'id'=>$materials['new_material']->id, 'status'=>$materials['new_material']->status ]) }}"  enctype="multipart/form-data">
+                <form method="post" action="{{ route('request-new-material.receive', [ 'id'=>$replaceOldMaterial->id, 'status'=>$replaceOldMaterial->status ]) }}"  enctype="multipart/form-data">
                     @csrf
 
-                    @foreach( $materials['requested_products'] as $key =>$value )
-                        <input type="hidden" name="product_id" value="{{ $value->product_id }}"/>
-                        <input type="hidden" name="product_code" value="{{ $value->product_code }}"/>
-                        <input type="hidden" name="current_quantity" value="{{ $value->quantity }}"/>
-                    @endforeach
                     <div class="row g-3">
                         <div class="col-md-6 ">
                             <label for="name" class="form-label"><b> Receiver  Name : </b></label>
@@ -169,7 +164,7 @@ New Request | View
                         <div class="col-md-6">
                             <label for="department_id" class="form-label"><b>Department :</b></label>
                             <div class="input-group">
-                                <input type="text" class="form-control" readonly id="department_id" name="department_id" value="{{ $materials['new_material']->department?->dept_name }}">
+                                <input type="text" class="form-control" readonly id="department_id" name="department_id" value="{{ $replaceOldMaterial->department?->dept_name }}">
                             </div>
                         </div>
 
@@ -214,5 +209,5 @@ New Request | View
             </div>
         </div>
     </div>
-</div> --}}
+</div>
 @endsection

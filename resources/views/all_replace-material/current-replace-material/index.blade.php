@@ -45,7 +45,7 @@ Request For Material | List
                             @elseif ($status == 2)
                             <h4 class="mb-sm-0 text-primary text-capitalize">All New Rejected Request List</h4>
                             @elseif ($status == 3)
-                            <h4 class="mb-sm-0 text-primary text-capitalize">All New Delivered Request List</h4>
+                            <h4 class="mb-sm-0 text-primary text-capitalize">All New Returned Request List</h4>
                             @endif
 
                             <div class="page-title-right">

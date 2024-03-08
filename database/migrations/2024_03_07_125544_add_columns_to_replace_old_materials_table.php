@@ -22,12 +22,12 @@ return new class extends Migration
                                                 7 - Recived and waiting for approval from manager to mark as delivered,
                                             ')->default(0)->after('reason');
           // === status operated  by the HOD ===
-          $table->integer('is_checked_by_hod')->nullable()->default(0)->comment('0 - not checked , 1 - checked and approved, 2 - checked and rejected')->after('status');
+          $table->integer('is_checked_by_hod')->nullable()->default(0)->comment('0 - not checked , 1 - checked and approved, 2 - checked and rejected, 3 - material delivered to the department for further processing')->after('status');
           $table->date('checked_by_hod_at')->nullable()->after('is_checked_by_hod');
           $table->text('rejection_reason_by_hod')->nullable()->after('checked_by_hod_at');
 
           // === status operated  by the IT Department ===
-          $table->integer('is_processed_by_it')->default(0)->comment('0 - not processed yet, 1 - processed  and approved, 2 - processed and rejected')->after('rejection_reason_by_hod');
+          $table->integer('is_processed_by_it')->default(0)->comment('0 - not processed yet, 1 - processed  and approved, 2 - processed and rejected, 3 - material delivered  to the department for further processing')->after('rejection_reason_by_hod');
           $table->date('sent_to_it_at')->nullable()->after('is_processed_by_it');
           $table->text('rejection_reason_by_it')->nullable()->after('sent_to_it_at');
         });

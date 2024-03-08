@@ -162,14 +162,17 @@
                         <ul class="nav nav-sm flex-column">
                             {{-- only show pending request list from Hod --}}
                             <li class="nav-item">
-                                <a href="" class="nav-link" data-key="department"><b>Pending Product List</b></a>
+                                <a href="{{ route('replace-old-material.list', 6) }}" class="nav-link" data-key="department"><b>Pending Material List</b></a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link" data-key="department"><b>Approve Product List</b></a>
+                                <a href="{{ route('replace-old-material.processslist', 1) }}" class="nav-link" data-key="department"><b>Approve Material List</b></a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link" data-key="department"><b>Reject Product List</b></a>
+                                <a href="{{ route('replace-old-material.processslist', 2) }}" class="nav-link" data-key="department"><b>Reject Material List</b></a>
                             </li>
+                            {{-- <li class="nav-item">
+                                <a href="{{ route('replace-old-material.processslist', 3) }}" class="nav-link" data-key="department"><b>Returned Product List</b></a>
+                            </li> --}}
                         </ul>
                     </div>
                 </li>
@@ -213,14 +216,17 @@
                         <ul class="nav nav-sm flex-column">
                             {{-- only show pending request list from Hod --}}
                             <li class="nav-item">
-                                <a href="" class="nav-link" data-key="department"><b>Pending Product List</b></a>
+                                <a href="{{ route('replace-old-material.list', 6) }}" class="nav-link" data-key="department"><b>Pending Material List</b></a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link" data-key="department"><b>Approve Product List</b></a>
+                                <a href="{{ route('replace-old-material.processslist', 1) }}" class="nav-link" data-key="department"><b>Approve Material List</b></a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link" data-key="department"><b>Reject Product List</b></a>
+                                <a href="{{ route('replace-old-material.processslist', 2) }}" class="nav-link" data-key="department"><b>Reject Material List</b></a>
                             </li>
+                            {{-- <li class="nav-item">
+                                <a href="{{ route('replace-old-material.processslist', 3) }}" class="nav-link" data-key="department"><b>Returned Product List</b></a>
+                            </li> --}}
                         </ul>
                     </div>
                 </li>

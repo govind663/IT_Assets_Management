@@ -38,7 +38,7 @@ return new class extends Migration
             $table->text('rejection_reason_by_hod')->nullable();
 
             // === status operated  by the IT Department ===
-            $table->integer('is_processed_by_it')->default(0)->comment('0 - not processed yet, 1 - processed  and approved, 2 - processed and rejected');
+            $table->integer('is_processed_by_it')->default(0)->comment('0 - not processed yet, 1 - processed  and approved, 2 - processed and rejected, 3 - material delivered to the department for further processing');
             $table->date('sent_to_it_at')->nullable();
             $table->text('rejection_reason_by_it')->nullable();
 
