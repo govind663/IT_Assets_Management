@@ -46,6 +46,6 @@ class LoginController extends Controller
         $this->UserLogActivityLogs->logUserLoginActivity('users', 'log Out');
         Session::flush();
         Auth::logout();
-        return redirect()->route('login')->with('message', 'You are logout Successfully.');
+        return redirect()->route('/')->with('message', 'You are logout Successfully.');
     }
 }

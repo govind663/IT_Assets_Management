@@ -70,12 +70,9 @@
                                     <div class="p-lg-5 p-4">
                                         <div class="mb-4" style="text-align: center;">
                                             <a href="{{ route('/') }}" class="d-block">
-                                                <img src="{{ url('/') }}/assets/images/panvel_img/pmc-logo-dark.png" alt="" height="80px">
+                                                <img src="{{ url('/') }}/assets/images/panvel_img/pmc_logo.png" alt="" height="140px">
+                                                <h5 class="text-justify text-center pt-3">लॉगिन मध्ये आपले स्वागत आहे</h5>
                                             </a>
-                                        </div>
-                                        <div>
-                                            <h5 class="text-primary">Welcome Back !</h5>
-                                            <p class="text-muted">Sign in to IT Assets Management System.</p>
                                         </div>
 
                                         <div class="mt-4">
@@ -83,7 +80,7 @@
                                                 @csrf
 
                                                 <div class="mb-3">
-                                                    <label for="email" class="form-label"><b>{{ __('Email Id') }} : <span class="text-danger">*</span></b></label>
+                                                    <label for="email" class="form-label"><b>Email Id / (ई - मेल आयडी) : <span class="text-danger">*</span></b></label>
                                                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" autocomplete="email" autofocus placeholder="Enter Email Id">
                                                     @error('email')
                                                         <span class="invalid-feedback" role="alert">
@@ -93,7 +90,7 @@
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label class="form-label" for="password-input"><b>Password  : <span class="text-danger">*</span></b></label>
+                                                    <label class="form-label" for="password-input"><b>Password / (पासवर्ड)  : <span class="text-danger">*</span></b></label>
                                                     <div class="position-relative auth-pass-inputgroup mb-3">
                                                         <input id="password" type="password" class="form-control pe-5 password-input @error('password') is-invalid @enderror" name="password" autocomplete="current-password" placeholder="Enter Password">
                                                         <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
@@ -107,7 +104,7 @@
 
                                                 <div class="form-check">
                                                     <input type="checkbox" class="form-check-input" name="remember_token" id="auth-remember-check" {{ old('remember') ? 'checked' : '' }} />
-                                                    <label class="form-check-label" for="auth-remember-check">Remember me</label>
+                                                    <label class="form-check-label" for="auth-remember-check">Remember me / (माझी आठवण ठेवा)</label>
 
                                                     {{-- <div class="float-end">
                                                         @if (Route::has('password.request'))

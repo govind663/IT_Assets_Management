@@ -9,7 +9,7 @@
                             <img src="{{ url('/') }}/assets/images/panvel_img/pmc-logo-dark.png" alt="" height="60">
                         </span>
                         <span class="logo-lg">
-                            <img src="{{ url('/') }}/assets/images/panvel_img/pmc-logo-dark.png" alt="" height="60">
+                            <img src="{{ url('/') }}/assets/images/panvel_img/pmc_light_logo.png" alt="" height="60">
                         </span>
                     </a>
 
@@ -18,7 +18,7 @@
                             <img src="{{ url('/') }}/assets/images/panvel_img/pmc-logo-dark.png" alt="" height="60">
                         </span>
                         <span class="logo-lg">
-                            <img src="{{ url('/') }}/assets/images/panvel_img/pmc-logo-dark.png" alt="" height="60">
+                            <img src="{{ url('/') }}/assets/images/panvel_img/pmc_light_logo.png" alt="" height="60">
                         </span>
                     </a>
                 </div>
@@ -36,16 +36,15 @@
             <div class="d-flex align-items-center">
 
                 <div class="ms-1 header-item d-none d-sm-flex">
-                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
-                        data-toggle="fullscreen">
-                        <i class='bx bx-fullscreen fs-22'></i>
+                    <button type="button" class="btn btn-icon text-light btn-topbar btn-ghost-secondary rounded-circle" data-toggle="fullscreen">
+                        <i class='bx bx-fullscreen fs-22' style="color: white;"></i>
                     </button>
                 </div>
 
                 <div class="ms-1 header-item d-none d-sm-flex">
                     <button type="button"
-                        class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode">
-                        <i class='bx bx-moon fs-22'></i>
+                        class="btn btn-icon btn-topbar text-light btn-ghost-secondary rounded-circle light-dark-mode">
+                        <i class='bx bx-moon fs-22' style="color: white;"></i>
                     </button>
                 </div>
 
@@ -62,14 +61,16 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
-                        <h6 class="dropdown-header">
+                        <h6 class="dropdown-header text-dark">
                             <b>{{ ucwords(Auth::user()->f_name) }}{{ ucwords(Auth::user()->m_name) }}{{ ucwords(Auth::user()->l_name) }}</b><br>
                             <b>{{ Auth::user()->email }}</b>
                         </h6>
 
-                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                            <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle" data-key="t-logout">Logout</span>
+                        <a class="dropdown-item text-dark" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                            <b>
+                                <i class="mdi mdi-logout text-dark fs-16 align-middle me-1"></i>
+                                <span class="align-middle text-dark" data-key="t-logout">Logout</span>
+                            </b>
                         </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                             @csrf

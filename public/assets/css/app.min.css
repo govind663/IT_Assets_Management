@@ -46,7 +46,8 @@
 	background-color: var(--vz-header-bg);
 	-webkit-transition: all .1s ease-out;
 	transition: all .1s ease-out;
-	border-bottom: 1px solid var(--vz-header-border)
+	border-bottom: 1px solid var(--vz-header-border);
+    background:#693dbb;
 }
 
 #page-topbar.topbar-shadow {
@@ -119,11 +120,15 @@
 }
 
 .navbar-header .user-name-sub-text {
-	color: var(--vz-header-item-sub-color)
+	color: white;
+	font-weight: bold;
+	white-space: nowrap;
 }
 
 .navbar-header .user-name-text {
-	color: var(--vz-header-item-color)
+	color: white;
+	font-weight: bold;
+	white-space: nowrap;
 }
 
 .app-search {
@@ -228,7 +233,7 @@
 
 @media (min-width:768px) {
 	.topbar-user {
-		background-color: var(--vz-topbar-user-bg)
+		/* background-color: var(--vz-topbar-user-bg) */
 	}
 }
 
@@ -5554,7 +5559,7 @@ button {
 	left: calc(var(--vz-border-width) * -1);
 	top: calc(var(--vz-border-width) * -1);
 	bottom: calc(var(--vz-border-width) * -1);
-	background-color: rgba(255, 255, 255, .1);
+	background-color: rgb(255, 255, 255);
 	font-size: 16px;
 	display: -webkit-box;
 	display: -ms-flexbox;
@@ -5568,7 +5573,7 @@ button {
 }
 
 .btn-label.btn-light .label-icon {
-	background-color: rgba(33, 37, 41, .05)
+	background-color: rgba(250, 250, 250, 0.973)
 }
 
 .btn-label.right {
@@ -18104,7 +18109,7 @@ body::before {
 }
 
 [data-topbar=light] #page-topbar.topbar-shadow {
-	background-color: var(--vz-secondary-bg)
+	background-color: #693dbb;
 }
 
 [data-layout=vertical][data-sidebar-size=sm] .navbar-menu .navbar-nav .nav-item:hover>.menu-dropdown {
