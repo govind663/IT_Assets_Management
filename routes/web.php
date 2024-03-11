@@ -221,5 +221,6 @@ Route::group(['prefix' => 'it_assets_management','middleware'=>['auth', 'prevent
             // Download new material request file
             Route::get('{id}/{status}/download', [AllRequestReturnMaterialController::class,'download'])->name('replace-old-material.download');
         });
+
 });
 
