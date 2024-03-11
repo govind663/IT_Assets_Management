@@ -39,10 +39,10 @@
                 <!-- end page title -->
 
                 <div class="row">
-                    <div class="col-xl-12">
+                    <div class="col-xl-6">
                         <div class="d-flex flex-column h-100">
                             <div class="row">
-                                <div class="col-xl-3 col-md-6">
+                                <div class="col-xl-6 col-md-6">
                                     <!-- card -->
                                     <div class="card card-animate">
                                         <div class="card-body">
@@ -69,7 +69,7 @@
                                     </div><!-- end card -->
                                 </div><!-- end col -->
 
-                                <div class="col-xl-3 col-md-6">
+                                <div class="col-xl-6 col-md-6">
                                     <!-- card -->
                                     <div class="card card-animate">
                                         <div class="card-body">
@@ -93,7 +93,7 @@
                                     </div><!-- end card -->
                                 </div><!-- end col -->
 
-                                <div class="col-xl-3 col-md-6">
+                                <div class="col-xl-6 col-md-6">
                                     <!-- card -->
                                     <div class="card card-animate">
                                         <div class="card-body">
@@ -117,7 +117,7 @@
                                     </div><!-- end card -->
                                 </div><!-- end col -->
 
-                                <div class="col-xl-3 col-md-6">
+                                <div class="col-xl-6 col-md-6">
                                     <!-- card -->
                                     <div class="card card-animate">
                                         <div class="card-body">
@@ -141,7 +141,7 @@
                                     </div><!-- end card -->
                                 </div><!-- end col -->
 
-                                <div class="col-xl-3 col-md-6">
+                                <div class="col-xl-6 col-md-6">
                                     <!-- card -->
                                     <div class="card card-animate">
                                         <div class="card-body">
@@ -167,7 +167,7 @@
                                     </div><!-- end card -->
                                 </div><!-- end col -->
 
-                                <div class="col-xl-3 col-md-6">
+                                <div class="col-xl-6 col-md-6">
                                     <!-- card -->
                                     <div class="card card-animate">
                                         <div class="card-body">
@@ -192,16 +192,123 @@
                                         </div><!-- end card body -->
                                     </div><!-- end card -->
                                 </div><!-- end col -->
-
                             </div>
                             <!--end row-->
                         </div>
                     </div>
                     <!--end col-->
 
+                    <div class="col-xl-6">
+                        <div class="card card-height-100">
+                            <div class="card-body">
+                                <div class="col-lg-12">
+                                    <div class="align-items-center d-flex mb-2">
+                                        <h4 class="card-title mb-0 flex-grow-1">Total Request Material</h4>
+                                        <a class="btn btn-primary btn-sm" href="{{ route('request-new-material.index') }}" role="button">
+                                            <b>View All Request Material</b>
+                                        </a>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                                            <thead  class="bg-primary text-light">
+                                                <tr>
+                                                    <th>Sr. No.</th>
+                                                    <th>Vendor Name</th>
+                                                    <th>Inword Date</th>
+                                                    <th>Work  Order No.</th>
+                                                    <th>Voucher Number</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- .card-->
+                    </div>
+                    <!--end col-->
                 </div>
                 <!--end row-->
 
+                <div class="row mt-4">
+                    <div class="col-xl-6">
+                        <div class="card card-height-100">
+                            <div class="card-body">
+                                <div class="col-lg-12">
+                                    <div class="align-items-center d-flex mb-2">
+                                        <h4 class="card-title mb-0 flex-grow-1">Total Supply Material</h4>
+                                        <a class="btn btn-primary btn-sm" href="{{ route('stocks.index') }}" role="button">
+                                            <b>View All Supply Material</b>
+                                        </a>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table id="example1" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                                            <thead  class="bg-primary text-light">
+                                                <tr>
+                                                    <th>Sr. No.</th>
+                                                    <th>Vendor Name</th>
+                                                    <th>Inword Date</th>
+                                                    <th>Work  Order No.</th>
+                                                    <th>Voucher Number</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- .card-->
+                    </div>
+                    <!--end col-->
+
+                    <div class="col-xl-6">
+                        <div class="card card-height-100">
+                            <div class="card-body">
+                                <div class="col-lg-12">
+                                    <div class="align-items-center d-flex mb-2">
+                                        <h4 class="card-title mb-0 flex-grow-1">Total Return Material</h4>
+                                        <a class="btn btn-primary btn-sm" href="{{ route('replace-old-material.index') }}" role="button">
+                                            <b>View All Return Material</b>
+                                        </a>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table id="example2" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                                            <thead  class="bg-primary text-light">
+                                                <tr>
+                                                    <th>Sr. No.</th>
+                                                    <th>Vendor Name</th>
+                                                    <th>Inword Date</th>
+                                                    <th>Work  Order No.</th>
+                                                    <th>Voucher Number</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- .card-->
+                    </div>
+                    <!--end col-->
+                </div>
             </div>
             <!-- container-fluid -->
         </div>
@@ -214,3 +321,17 @@
     </div>
     <!-- end main content-->
 @endsection
+
+@push('scripts')
+    <script>
+        new DataTable('#example1', {
+            responsive: true
+        });
+    </script>
+
+    <script>
+        new DataTable('#example2', {
+            responsive: true
+        });
+    </script>
+@endpush
