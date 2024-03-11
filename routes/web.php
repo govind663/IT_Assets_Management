@@ -39,7 +39,7 @@ use App\Http\Controllers\AllRequestReturnMaterialController;
 */
 
 Route::get('/', function () {
-    return redirect()->view('auth.login');
+    return view('auth.login');
 })->name('/');
 
 Route::group(['prefix' => 'admin'],function(){
