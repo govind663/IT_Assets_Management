@@ -16,7 +16,7 @@
         <div class="col-lg-4 col-md-6">
             <div class="mb-3">
                 <label for="DepartmentName" class="form-label"><b>Department Name : <span class="text-danger">*</span></b></label>
-                <select class="js-example-basic-single form-control @error('department_id') is-invalid @enderror" wire:model.defer="department_id">
+                <select class="form-control @error('department_id') is-invalid @enderror" wire:model.defer="department_id" >
                     <option value="">Select Department Name</option>
                     @foreach ($departments as $department)
                     <option value="{{ $department->id }}">{{ $department->dept_name }}</option>
@@ -33,7 +33,7 @@
         <div class="col-lg-4 col-md-6">
             <div class="mb-3">
                 <label for="MobileNoinput" class="form-label"><b>Mobile No : <span class="text-danger">*</span></b></label>
-                <input type="text" class="form-control  @error('mobile_no') is-invalid @enderror" wire:model.defer="mobile_no" placeholder="Enter Mobile No">
+                <input type="text" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control @error('mobile_no') is-invalid @enderror" wire:model.defer="mobile_no" placeholder="Enter Mobile No">
                 @error('mobile_no')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -67,9 +67,9 @@
         </div>
 
 
-        <div class="col-lg-4 col-md-6">
+        <div class="col-lg-6 col-md-4">
+            <label for="Documentinput" class="form-label"><b>Upload Document : <span class="text-danger">*</span></b></label>
             <div class="mb-3">
-                <label for="Documentinput" class="form-label"><b>Upload Document : <span class="text-danger">*</span></b></label>
                 <input type="file" class="form-control @error('material_doc') is-invalid @enderror" wire:model.defer="material_doc" wire:keydown="fileUploaded($event)" accept=".jpg, .jpeg, .png, .pdf">
                 <small class="text-dark"><b>Note : The file size should be less than 3MB .</b></small>
                 <br>
@@ -82,20 +82,22 @@
                 @enderror
             </div>
         </div>
+
+
     </div>
 
     @if($fileUploaded == true)
         <div class="row form-group  align-items-center">
             <h6 class="page-title-box mb-sm-0 text-primary text-capitalize"><b>Stock Details :</b> </h6>
-            <table id="dynamicTable" class="table table-bordered  table-nowrap table-striped align-middle" style="width:100%">
+            <table id="dynamicTable" class="table table-bordered table-nowrap table-striped align-middle" style="width:100%">
                 <thead class="bg-primary text-light">
                     <tr>
                         <th>Category Name</th>
                         <th>Product Name</th>
+                        <th>Product Code</th>
                         <th>Brand</th>
                         <th>Model</th>
                         <th>Unit</th>
-                        <th>Quantity in Stock</th>
                         <th>Quantity Requested</th>
                         <th>Action</th>
                     </tr>
@@ -130,6 +132,9 @@
                             @endif
                         </td>
                         <td>
+                            <input type="text" wire:model="product_code.{{$i}}" class="form-control product_code" placeholder="Enter Product Code">
+                        </td>
+                        <td>
                             <input type="text" wire:model="brand.{{$i}}" class="form-control brand @if ($errors->has('brand.'.$i)) 'is-invalid' @endif" placeholder="Enter Brand">
                             @if ($errors->has('brand.'.$i))
                             <span class="invalid-feedback d-block" role="alert">
@@ -137,6 +142,7 @@
                             </span>
                             @endif
                         </td>
+
                         <td>
                             <input type="text" wire:model.defer="model.{{$i}}" class="form-control model @if ($errors->has('model.'.$i)) 'is-invalid' @endif" placeholder="Enter Model">
                             @if ($errors->has('model.'.$i))
@@ -145,6 +151,7 @@
                             </span>
                             @endif
                         </td>
+
                         <td>
                             <select class="form-control unit_id @if ($errors->has('unit_id.'.$i)) 'is-invalid' @endif" wire:model.defer="unit_id.{{$i}}">
                                 <option value="">Select Unit</option>
@@ -159,12 +166,6 @@
                             @endif
                         </td>
 
-                        <input type="hidden" wire:model="product_code.{{$i}}" class="form-control product_code" readonly>
-                        <input type="hidden" wire:model="stock_id.{{$i}}" class="form-control stock_id" readonly>
-
-                        <td>
-                            <input type="text" wire:model="currentquantity.{{$i}}" class="form-control currentquantity" readonly >
-                        </td>
                         <td>
                             <input type="text" wire:model="quantity.{{$i}}" class="form-control quantity @if ($errors->has('quantity.'.$i)) 'is-invalid' @endif" placeholder="Enter Quantity">
                             @if ($errors->has('quantity.'.$i))

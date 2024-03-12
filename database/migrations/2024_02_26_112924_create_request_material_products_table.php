@@ -24,7 +24,6 @@ return new class extends Migration
             $table->foreignIdFor(Catagories::class)->index()->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(Product::class)->index()->nullable()->constrained()->onDelete('cascade');
             $table->string('product_code')->unique()->nullable()->comment('product code from supplier');
-            $table->foreignIdFor(Stock::class)->index()->nullable()->constrained()->onDelete('cascade');
             $table->string('brand')->nullable();
             $table->string('model')->nullable();
             $table->foreignIdFor(Unit::class)->index()->nullable()->constrained()->onDelete('cascade');

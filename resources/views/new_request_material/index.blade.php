@@ -76,6 +76,7 @@ Request For Material | List
                                                 <th>Mobile No.</th>
                                                 <th>Email Id</th>
                                                 <th>Request Date & Time</th>
+                                                <th>Requested Product's Id</th>
                                                 <th>Material's Document</th>
                                                 <th>Material's Status</th>
                                                 @if($materialStatus == 2)
@@ -88,19 +89,33 @@ Request For Material | List
                                         </thead>
                                         <tbody>
                                             @foreach ($newMaterials as $key=>$newMaterial)
+                                            @php
+                                                 $requested_products = DB::table('request_material_products as t1')
+                                                                            ->select('t1.product_code')
+                                                                            ->where('t1.new_material_id'  , '=', $newMaterial->id)
+                                                                            ->get();
+                                            @endphp
                                             <tr>
                                                 <td>{{ ++$key }}</td>
-                                                <td>{{ $newMaterial->request_no }}</td>
-                                                <td>{{ $newMaterial->name }}</td>
-                                                <td>{{ $newMaterial->department?->dept_name }}</td>
-                                                <td>{{ $newMaterial->mobile_no }}</td>
-                                                <td>{{ $newMaterial->email }}</td>
-                                                <td>{{ date("d-m-Y H:i A", strtotime($newMaterial->requested_at)) }}</td>
-                                                <td>
+                                                <td class="text-wrap">{{ $newMaterial->request_no }}</td>
+                                                <td class="text-wrap">{{ $newMaterial->name }}</td>
+                                                <td class="text-wrap">{{ $newMaterial->department?->dept_name }}</td>
+                                                <td class="text-wrap">{{ $newMaterial->mobile_no }}</td>
+                                                <td class="text-wrap">{{ $newMaterial->email }}</td>
+                                                <td class="text-wrap">{{ date("d-m-Y H:i A", strtotime($newMaterial->requested_at)) }}</td>
+
+                                                @foreach ($requested_products as $key=>$value)
+                                                <td class="text-wrap">
+                                                    <span class="badge bg-primary text-justify">{{ $value->product_code }}</span>
+                                                </td>
+                                                <br>
+                                                @endforeach
+                                                <td class="text-wrap">
                                                     <a href="{{ asset('/storage/' .$newMaterial->material_doc ) }}" target="_blank" type="button"  class="btn btn-sm btn-primary">
                                                         View Document
                                                     </a>
                                                 </td>
+
                                                 <td>
                                                     {{-- status --}}
                                                     @if($newMaterial->status == 0)
@@ -125,7 +140,7 @@ Request For Material | List
                                                 <td>{{ $newMaterial->rejection_reason_by_clerk }}</td>
                                                 <td>{{ date("d-m-Y", strtotime($newMaterial->checked_by_clerk_at)) }}</td>
                                                 @endif
-                                                <td >
+                                                <td>
                                                     {{-- Read --}}
                                                     <a href="{{ route('request-new-material.show', $newMaterial->id) }}">
                                                         <button class="btn btn-sm btn-info" >

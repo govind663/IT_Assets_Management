@@ -84,13 +84,15 @@
     </div>
 
     @if($fileUploaded == false)
-        <div class="row form-group  align-items-center">
+        <div class="row form-group  align-items-center table-responsive">
             <h6 class="page-title-box mb-sm-0 text-primary text-capitalize"><b>Stock Details :</b> </h6>
-            <table id="dynamicTable" class="table table-bordered  table-nowrap table-striped align-middle" style="width:100%">
+            <table id="example" class="table table-bordered dt-responsive table-nowrap table-striped align-middle" style="width:100%">
                 <thead class="bg-primary text-light">
                     <tr>
+                        <th>Sr. No.</th>
                         <th>Category Name</th>
                         <th>Product Name</th>
+                        <th>Product Code</th>
                         <th>Brand</th>
                         <th>Model</th>
                         <th>Unit</th>
@@ -99,6 +101,7 @@
                 </thead>
                 <tbody>
                     @for ($i=1; $i <= $formCounts; $i++) <tr>
+                        <td>{{ $i }}</td>
                         <td>
                             <select disabled class="form-control categories_id @if ($errors->has('categories_id.'.$i)) 'is-invalid' @endif" wire:model="categories_id.{{$i}}">
                                 <option value="">Select Catagory Name</option>
@@ -124,6 +127,9 @@
                                 <strong>{{ $errors->first('product_id.'.$i) }}</strong>
                             </span>
                             @endif
+                        </td>
+                        <td class="text-wrap">
+                            <input type="text" readonly wire:model="product_code.{{$i}}" class="form-control product_code" placeholder="Enter Product Code">
                         </td>
                         <td>
                             <input readonly type="text" wire:model="brand.{{$i}}" class="form-control brand @if ($errors->has('brand.'.$i)) 'is-invalid' @endif" placeholder="Enter Brand">

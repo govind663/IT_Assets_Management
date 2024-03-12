@@ -7,6 +7,8 @@ use App\Models\Department;
 use App\Models\NewMaterial;
 use App\Models\Product;
 use App\Models\RequestMaterialProduct;
+use App\Models\Stock;
+use App\Models\StockDetail;
 use App\Models\Unit;
 use Livewire\Component;
 use Carbon\Carbon;
@@ -39,20 +41,22 @@ class AddNewMaterial extends Component
     public $unit_id;
     public $quantity;
     public $product_code;
+    public $currentquantity;
+    public $stock_id;
 
     // Show or Hide forms
     public $fileUploaded = false;
 
     public function render()
     {
-        $departments = Department::select('dept_name', 'id')
-                                  ->whereId(Auth::user()->department_id)
-                                  ->whereNull('deleted_at')
-                                  ->orderByDesc('id')
-                                  ->get();
+        $departments = Department::select('dept_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
 
+        // get all StockDetail  and Category for select option in form
+        $currentstock =  StockDetail::pluck('catagories_id');
+        // dd($currentstock);
         // ==== Catagories check in StockDetail table  and return the result to view page.
         $categories = Catagories::select('catagories_name', 'id')
+                                    ->whereIn('id',  $currentstock)
                                     ->whereNull('deleted_at')
                                     ->orderByDesc('id')
                                     ->get();
@@ -97,12 +101,15 @@ class AddNewMaterial extends Component
 
         //  === save new material product details   into db ===
         foreach ($this->categories_id  as $key=>$value) :
+            $arr = implode(',', $value);
             if (!empty($value)) :
+                // dd( $this->stock_id[$key]);
                 RequestMaterialProduct::create([
                     'new_material_id' => $newMaterial->id ,
-                    'catagories_id' =>  $value,
+                    'catagories_id' =>  $arr,
                     'product_id' => $this->product_id[$key],
                     'product_code' => $this->product_code[$key],
+                    'stock_id' =>  $this->stock_id[$key],
                     'brand' =>  $this->brand[$key],
                     'model' =>  $this->model[$key],
                     'unit_id' => $this->unit_id[$key],
@@ -119,8 +126,10 @@ class AddNewMaterial extends Component
     // ======= GET PRODUCT CATRGORYWISE
     public function updatedCategoriesId($val, $key)
     {
-        $products = Product::where("catagories_id", $this->categories_id[$key])
-                        ->where("is_available", 1)
+        // get all StockDetail and Product for select option in form
+        $this->categories_id[$key] =  StockDetail::pluck('catagories_id');
+
+        $products = Product::whereIn("catagories_id", $this->categories_id[$key])
                         ->whereNull('deleted_at')
                         ->orderByDesc('id')
                         ->select("id", "name")->get();
@@ -133,18 +142,32 @@ class AddNewMaterial extends Component
     // ======= GET PRODUCT DETAILS PRODUCTIDWISE
     public function updatedProductId($val, $key)
     {
+        $stockDetails = StockDetail::where("product_id","=", $this->product_id[$key])->first();
+
+        // === null value check then set default
+        $this->product_id[$key]       =  isset($stockDetails->product->name) ? $stockDetails->product->name : '';
+        $this->unit_id[$key]          =  isset($stockDetails->product->unit_id) ? $stockDetails->product->unit_id : '';
+        $this->brand[$key]            =  isset($stockDetails->brand) ? $stockDetails->brand : '';
+        $this->model[$key]            =  isset($stockDetails->model_no) ? $stockDetails->model_no : '';
+        $this->currentquantity[$key]  =  isset($stockDetails->quantity) ? $stockDetails->quantity : '';
+        $this->product_code[$key]     =  isset($stockDetails->product_code) ? $stockDetails->product_code : "";
+        $this->stock_id[$key]        =  isset($stockDetails->stock_id) ? $stockDetails->stock_id : '';
+
+        $this->product_id[$key] =  StockDetail::pluck('product_id')
+                                                ->whereNull('deleted_at')
+                                                ->contains($val)?$val:null;
+
         $prod = Product::where("id", $this->product_id[$key])
-                        ->where("is_available", 1)
                         ->whereNull('deleted_at')
                         ->orderByDesc('id')
-                        ->select("id", "product_code", "name", 'unit_id', 'brand', 'model_no')
+                        ->select("id", "name", 'unit_id', 'brand', 'model_no')
                         ->first();
         if($prod)
         {
             $this->brand[$key] = $prod->brand;
             $this->model[$key] = $prod->model_no;
             $this->unit_id[$key] = $prod->unit_id;
-            $this->product_code[$key]  = $prod->product_code;
+
 
             $units = Unit::whereNull('deleted_at')->get();
             if($units)
@@ -163,10 +186,10 @@ class AddNewMaterial extends Component
 
             $this->categories_id[$this->formCounts] = [];
             $this->product_id[$this->formCounts] = [];
-            $this->product_code[$this->formCounts] = [];
             $this->brand[$this->formCounts] = [];
             $this->model[$this->formCounts] = [];
             $this->unit_id[$this->formCounts] = [];
+            $this->currentquantity[$this->formCounts] = [];
             $this->loop_products[$this->formCounts] = [];
             $this->loop_units[$this->formCounts] = [];
         } else {

@@ -9,6 +9,7 @@ use App\Models\NewMaterial;
 use App\Models\Product;
 use App\Models\RequestMaterialProduct;
 use App\Models\Unit;
+use Illuminate\Support\Facades\Auth;
 use Livewire\WithFileUploads;
 
 class ViewNewMaterial extends Component
@@ -46,8 +47,17 @@ class ViewNewMaterial extends Component
 
     public function render()
     {
-        $departments = Department::select('dept_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
-        $categories = Catagories::select('catagories_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
+        $departments = Department::select('dept_name', 'id')
+                                    ->whereId(Auth::user()->department_id)
+                                    ->whereNull('deleted_at')
+                                    ->orderByDesc('id')
+                                    ->get();
+
+        // ==== Catagories check in StockDetail table  and return the result to view page.
+        $categories = Catagories::select('catagories_name', 'id')
+                                    ->whereNull('deleted_at')
+                                    ->orderByDesc('id')
+                                    ->get();
 
         return view('livewire.view-new-material', ['departments' => $departments, 'categories'=> $categories]);
     }
@@ -59,8 +69,6 @@ class ViewNewMaterial extends Component
         $this->data = NewMaterial::find(request()->request_new_material) ?? NewMaterial::first();
         $this->materialDoc = NewMaterial::find(request()->request_new_material) ?? NewMaterial::first()->pluck('material_doc');
         $this->materialID = NewMaterial::find(request()->request_new_material)->toArray();
-        $this->product_code = RequestMaterialProduct::where('new_material_id', request()->request_new_material)
-                                ->value('product_code');
 
         $request_material_products = RequestMaterialProduct::with('catagory', 'product', 'unit')
                                     ->where('new_material_id', $this->materialID['id'])
@@ -72,12 +80,14 @@ class ViewNewMaterial extends Component
             $this->requestMaterialProductID[$key+1] = $request_material_product['id'];
             $this->categories_id[$key+1] = $request_material_product['catagories_id'];
             $this->product_id[$key+1] = $request_material_product['product_id'];
+            $this->product_code[$key+1] = $request_material_product['product_code'];
             $this->brand[$key+1] = $request_material_product['brand'];
             $this->model[$key+1] = $request_material_product['model'];
             $this->quantity[$key+1] = $request_material_product['quantity'];
             $this->unit_id[$key+1] = $request_material_product['unit_id'];
 
             $products = Product::where("catagories_id", $this->categories_id[$key+1])
+                                ->where("is_available", 1)
                                 ->whereNull('deleted_at')
                                 ->orderByDesc('id')
                                 ->select("id", "name")->get();
