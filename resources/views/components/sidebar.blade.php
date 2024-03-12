@@ -100,24 +100,23 @@
 
                 <!--  Request New Material Both Clerk/HOD in IT Department  -->
                 @if(Auth::user()->role_id == 3 &&  Auth::user()->department_id != 1)
+
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                    <a class="nav-link menu-link" href="{{ route('request-new-material.index') }}">
                         <b>
                             <i class="ri-honour-line"></i>
-                            <span data-key="t-widgets">Request For Material</span>
+                            <span data-key="t-dashboards">Request For New Material</span>
                         </b>
                     </a>
+                </li>
 
-                    <div class="collapse menu-dropdown" id="sidebarApps">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('request-new-material.index') }}" class="nav-link" data-key="department"><b>New Request List</b></a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('replace-old-material.index') }}" class="nav-link" data-key="department"><b>Replace Product List</b></a>
-                            </li>
-                        </ul>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{ route('dashboard') }}">
+                        <b>
+                            <i class="ri-honour-line"></i>
+                            <span data-key="t-dashboards">Request For Replace Material</span>
+                        </b>
+                    </a>
                 </li>
                 @endif
 

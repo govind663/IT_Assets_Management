@@ -12,7 +12,6 @@ class RequestMaterialProduct extends Model
     protected $fillable = [
         'id',
         'new_material_id',
-        'stock_id',
         'catagories_id',
         'product_id',
         'product_code',
@@ -44,4 +43,10 @@ class RequestMaterialProduct extends Model
     public function unit() {
         return $this->belongsTo(Unit::class , "unit_id");
     }
+
+    // Relationship with new_material_id model.
+    public function material() {
+        return $this->belongsTo(NewMaterial::class,  "new_material_id");
+    }
+
 }

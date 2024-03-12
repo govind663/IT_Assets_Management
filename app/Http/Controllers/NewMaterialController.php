@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\NewMaterial;
+use App\Models\RequestMaterialProduct;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,10 @@ class NewMaterialController extends Controller
 {
     public function index()
     {
-        $newMaterials = NewMaterial::with('department')->whereNull('deleted_at')->orderBy('id', 'desc')->get();
+        $newMaterials = NewMaterial::with('department')
+                                    ->whereNull('deleted_at')
+                                    ->orderBy('id', 'desc')
+                                    ->get();
 
         // === newMaterials status
         $currentMaterialStatus  = NewMaterial::whereNull('deleted_at')
@@ -25,6 +29,9 @@ class NewMaterialController extends Controller
         } else {
             $materialStatus =  "null";
         };
+
+
+        // dd ($requested_products);
         return view('new_request_material.index', ['newMaterials' => $newMaterials, 'materialStatus' => $materialStatus]);
     }
 
