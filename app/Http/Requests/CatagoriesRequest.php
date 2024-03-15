@@ -27,7 +27,7 @@ class CatagoriesRequest extends FormRequest
             ];
         }else{
             $rule = [
-                'catagories_name' => 'required|max:255|unique:catagories',
+                'catagories_name' => 'required|max:255|unique:catagories,deleted_at,NULL',
             ];
         }
         // dd($rule);

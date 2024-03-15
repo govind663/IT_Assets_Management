@@ -27,7 +27,7 @@ class RolesRequest extends FormRequest
             ];
         }else{
             $rule = [
-                'role_name' => 'required|max:255|unique:roles,role_name',
+                'role_name' => 'required|max:255|unique:roles,role_name,deleted_at,NULL',
             ];
         }
         // dd($rule);

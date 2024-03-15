@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignIdFor(Role::class)->index();
             $table->foreignIdFor(Department::class)->index();
             $table->string('email')->unique();
-            $table->unsignedInteger('phone_number')->unique();
+            $table->string('phone_number')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
