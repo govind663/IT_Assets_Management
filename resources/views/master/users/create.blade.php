@@ -187,29 +187,5 @@
     <!-- end main content-->
 @endsection
 @push('scripts')
-<script>
-    $(document).ready(function(){
-        $("#f_name").keypress(function(event){
-            var inputValue = event.charCode;
-            if(!(inputValue >= 65 && inputValue <= 120) && (inputValue != 32 && inputValue != 0)){
-                event.preventDefault();
-            }
-        });
-
-        $("#m_name").keypress(function(event){
-            var inputValue = event.charCode;
-            if(!(inputValue >= 65 && inputValue <= 120) && (inputValue != 32 && inputValue != 0)){
-                event.preventDefault();
-            }
-        });
-
-        $("#l_name").keypress(function(event){
-            var inputValue = event.charCode;
-            if(!(inputValue >= 65 && inputValue <= 120) && (inputValue != 32 && inputValue != 0)){
-                event.preventDefault();
-            }
-        });
-    });
-</script>
 @endpush
 
