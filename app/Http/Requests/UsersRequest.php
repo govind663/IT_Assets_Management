@@ -29,7 +29,7 @@ class UsersRequest extends FormRequest
                 'l_name' => 'required|string',
                 'role_id' =>  'required|integer|exists:roles,id',
                 'department_id' =>  'required|integer|exists:departments,id',
-                'email' => "required|string|email:filter|unique:users,email,$this->id",
+                'email' => "required|string|email:filter|unique:users,email,$this->id,deleted_at,NULL",
                 'phone_number' => "required|min:10",
             ];
         }else{
@@ -39,7 +39,7 @@ class UsersRequest extends FormRequest
                 'l_name' => 'required|string',
                 'role_id' =>  'required|integer|exists:roles,id',
                 'department_id' =>  'required|integer|exists:departments,id',
-                'email' => 'required|string|email:filter|unique:users',
+                'email' => 'required|string|email:filter|unique:users,deleted_at,NULL',
                 'phone_number' => "required|min:10",
                 'password' => 'required|string|min:8|confirmed',
                 'password_confirmation' => 'required',

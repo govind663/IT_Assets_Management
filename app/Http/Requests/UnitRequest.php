@@ -27,7 +27,7 @@ class UnitRequest extends FormRequest
             ];
         }else{
             $rule = [
-                'unit_name' => 'required|max:255|unique:units',
+                'unit_name' => 'required|max:255|unique:units,deleted_at,NULL',
             ];
         }
         // dd($rule);

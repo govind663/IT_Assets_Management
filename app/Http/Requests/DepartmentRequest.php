@@ -29,7 +29,7 @@ class DepartmentRequest extends FormRequest
             ];
         }else{
             $rule = [
-                'dept_name' => 'required|max:255|unique:departments',
+                'dept_name' => 'required|max:255|unique:departments,deleted_at,NULL',
                 'dep_code' => 'required|max:255|unique:departments,deleted_at,NULL',
             ];
         }

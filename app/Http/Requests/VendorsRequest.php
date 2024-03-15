@@ -33,10 +33,10 @@ class VendorsRequest extends FormRequest
             ];
         }else{
             $rule = [
-                'company_name' => 'required|string|max:255|unique:vendors',
+                'company_name' => 'required|string|max:255|unique:vendors,deleted_at,NULL',
                 'company_add' => 'required|string',
                 'company_phone_no' => 'required|string|numeric',
-                'phone' => 'required|string|numeric|unique:vendors',
+                'phone' => 'required|string|numeric|unique:vendors,deleted_at,NULL',
                 'email' => 'required|string|max:255|email:filter|unique:vendors',
                 'gst_no' => 'required|string|max:255',
                 'description' => 'required|string|max:255',

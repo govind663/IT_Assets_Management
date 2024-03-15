@@ -36,7 +36,7 @@ class ProductRequest extends FormRequest
                 'catagories_id' => 'required|exists:App\Models\Catagories,id',
                 'unit_id' => 'required|exists:App\Models\Unit,id',
                 'brand' => 'required|string|max:255',
-                'model_no' => 'required|string|max:255|unique:products',
+                'model_no' => 'required|string|max:255|unique:products,deleted_at,NULL',
                 'description' => 'required|string|max:255',
             ];
         }
