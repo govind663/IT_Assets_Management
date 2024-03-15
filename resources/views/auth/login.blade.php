@@ -102,16 +102,16 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="form-check">
+                                                {{-- <div class="form-check">
                                                     <input type="checkbox" class="form-check-input" name="remember_token" id="auth-remember-check" {{ old('remember') ? 'checked' : '' }} />
                                                     <label class="form-check-label" for="auth-remember-check">Remember me / (माझी आठवण ठेवा)</label>
 
-                                                    {{-- <div class="float-end">
+                                                    <div class="float-end">
                                                         @if (Route::has('password.request'))
                                                              <a  href="{{ route('password.request') }}" class="text-muted"><b>{{ __('Forgot Password ?') }}</b></a>
                                                         @endif
-                                                    </div> --}}
-                                                </div>
+                                                    </div>
+                                                </div> --}}
 
                                                 <div class="mt-4">
                                                     <button class="btn btn-primary w-100" type="submit">Sign In</button>

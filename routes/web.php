@@ -223,4 +223,3 @@ Route::group(['prefix' => 'it_assets_management','middleware'=>['auth', 'prevent
         });
 
 });
-
