@@ -118,7 +118,7 @@
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
                                         <label for="MobileNumberInput" class="form-label"><b>Mobile Number : <span class="text-danger">*</span></b></label>
-                                        <input type="number" id="phone_number" name="phone_number" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control @error('phone_number') is-invalid @enderror" value="{{ $users->phone_number }}" placeholder="Enter Mobile Number" >
+                                        <input type="text" id="phone_number" name="phone_number" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control @error('phone_number') is-invalid @enderror" value="{{ $users->phone_number }}" placeholder="Enter Mobile Number" >
                                         @error('phone_number')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

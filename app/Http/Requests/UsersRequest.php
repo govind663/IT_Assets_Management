@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Password;
 
 class UsersRequest extends FormRequest
 {
@@ -27,9 +26,9 @@ class UsersRequest extends FormRequest
                 'f_name' => 'required|string',
                 'm_name' => 'required|string',
                 'l_name' => 'required|string',
-                'role_id' =>  'required|integer|exists:roles,id',
-                'department_id' =>  'required|integer|exists:departments,id',
-                'email' => "required|string|email:filter|unique:users,email,$this->id,deleted_at,NULL",
+                'role_id' =>  'required',
+                'department_id' =>  'required',
+                'email' => "required|string",
                 'phone_number' => "required|min:10",
             ];
         }else{
@@ -39,14 +38,14 @@ class UsersRequest extends FormRequest
                 'l_name' => 'required|string',
                 'role_id' =>  'required|integer|exists:roles,id',
                 'department_id' =>  'required|integer|exists:departments,id',
-                'email' => 'required|string|email:filter|unique:users,deleted_at,NULL',
-                'phone_number' => "required|min:10",
+                'email' => 'required|string|unique:users,deleted_at,NULL',
+                'phone_number' => "required|min:10|unique:users,deleted_at,NULL",
                 'password' => 'required|string|min:8|confirmed',
                 'password_confirmation' => 'required',
             ];
         }
 
-        // dd($this->id);
+        // dd($rule);
         return $rule;
     }
 
@@ -59,8 +58,13 @@ class UsersRequest extends FormRequest
 
             'role_id.required' => __('Please select a Degination'),
             'department_id.required' => __('Please select a Department'),
+
             'email.required' => __('Email Id is required'),
+            'email.string' => __('The Email must be a  string.'),
+            'email.unique' => __('This Email has already been taken. Please try another one!'),
+
             'phone_number.required' => __('Phone number is required'),
+            'phone_number.unique' => __('This Phone number has already been taken. Please try another one!') ,
 
             'password.required' => __('Password is required'),
             'password.min' => __('The password must be at least 8 digits long'),
