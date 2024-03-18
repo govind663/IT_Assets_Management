@@ -11,7 +11,7 @@ class VendorsController extends Controller
 {
     public function index()
     {
-        $vendors = Vendor::select('id', 'company_name', 'company_add', 'company_phone_no', 'phone', 'email', 'gst_no', 'description', 'status')
+        $vendors = Vendor::select('id', 'company_name', 'company_add', 'company_phone_no', 'person_name', 'phone', 'email', 'gst_no', 'description', 'status')
                            ->whereNull('deleted_at')
                            ->orderBy('id', 'desc')
                            ->get();
@@ -25,13 +25,23 @@ class VendorsController extends Controller
         return view('master.vendors.create');
     }
 
-    public function store(VendorsRequest $request, )
+    public function store(VendorsRequest $request)
     {
-        $data = $request->validated();
-        $data['inserted_by'] =  Auth::user()->id;
-        $data['inserted_at'] =  Carbon::now();
+        $request->validated();
         try {
-            Vendor::create($data);
+            $vendor = new Vendor();
+            $vendor->company_name = $request->company_name;
+            $vendor->company_add = $request->company_add;
+            $vendor->company_phone_no = $request->company_phone_no;
+            $vendor->person_name = $request->person_name;
+            $vendor->phone = $request->phone;
+            $vendor->email = $request->email;
+            $vendor->gst_no = $request->gst_no;
+            $vendor->description = $request->description;
+            $vendor->inserted_by =  Auth::user()->id;
+            $vendor->inserted_at =  Carbon::now();
+            $vendor->save();
+
             return redirect()->route('vendors.index')->with('message','Vendors created successfully');
 
         } catch(\Exception $ex){
@@ -55,12 +65,23 @@ class VendorsController extends Controller
 
     public function update(VendorsRequest $request, $id)
     {
-        $data = $request->validated();
-        $data['modified_by'] =  Auth::user()->id;
-        $data['modified_at'] =  Carbon::now();
+        $request->validated();
+
         try {
-            $catagories= Vendor::findOrFail($id);
-            $catagories->update($data);
+
+            $vendor= Vendor::findOrFail($id);
+            $vendor->company_name = $request->company_name;
+            $vendor->company_add = $request->company_add;
+            $vendor->company_phone_no = $request->company_phone_no;
+            $vendor->person_name = $request->person_name;
+            $vendor->phone = $request->phone;
+            $vendor->email = $request->email;
+            $vendor->gst_no = $request->gst_no;
+            $vendor->description = $request->description;
+            $vendor->modified_by =  Auth::user()->id;
+            $vendor->modified_at =  Carbon::now();
+            $vendor->update();
+
             return redirect()->route('vendors.index')->with('message', 'Vendors updated Successfully!');
 
         } catch(\Exception $ex){
@@ -74,8 +95,8 @@ class VendorsController extends Controller
         $data['deleted_by'] =  Auth::user()->id;
         $data['deleted_at'] =  Carbon::now();
         try {
-            $catagories = Vendor::findOrFail($id);
-            $catagories->update();
+            $vendors = Vendor::findOrFail($id);
+            $vendors->update();
 
             return redirect()->route('vendors.index')->with('message','Vendors Deleted Succeessfully');
         } catch(\Exception $ex){

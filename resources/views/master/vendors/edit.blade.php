@@ -85,8 +85,20 @@
 
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
-                                        <label for="MobileNumberinput" class="form-label"><b>Mobile Number : <span class="text-danger">*</span></b></label>
-                                        <input type="text" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="phone" name="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ $vendors->phone }}" placeholder="Enter Mobile Number" >
+                                        <label for="PersonNameinput" class="form-label"><b>Person Name : <span class="text-danger">*</span></b></label>
+                                        <input type="text" id="person_name" name="person_name" class="form-control @error('person_name') is-invalid @enderror" value="{{ $vendors->person_name }}" placeholder="Enter Person Name" >
+                                        @error('person_name')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="MobileNumberinput" class="form-label"><b>Person Contact Number : <span class="text-danger">*</span></b></label>
+                                        <input type="text" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="phone" name="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ $vendors->phone }}" placeholder="Enter Person Contact Number" >
                                         @error('phone')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -121,7 +133,7 @@
 
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
-                                        <label for="Descriptioninput" class="form-label"><b>Description : <span class="text-danger">*</span></b></label>
+                                        <label for="Descriptioninput" class="form-label"><b>Description : </b></label>
                                         <textarea type="text" id="description" name="description" class="form-control @error('description') is-invalid @enderror" value="{{ $vendors->description }}" placeholder="Enter Description" >{{ $vendors->description }}</textarea>
                                         @error('description')
                                             <span class="invalid-feedback" role="alert">

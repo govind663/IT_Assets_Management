@@ -70,7 +70,8 @@
                                                 <th>Company Name</th>
                                                 <th>Company Address</th>
                                                 <th>Company Mobile No</th>
-                                                <th>Mobile Number</th>
+                                                <th>Person Name</th>
+                                                <th>Person Contact Number</th>
                                                 <th>Email Id</th>
                                                 <th>GST Number</th>
                                                 <th class="text-wrap">Description</th>
@@ -85,6 +86,7 @@
                                                 <td>{{ $value->company_name ?: '' }}</td>
                                                 <td class="text-wrap">{{ $value->company_add ?: '' }}</td>
                                                 <td>{{ $value->company_phone_no ?: '' }}</td>
+                                                <td>{{ $value->person_name ?: '' }}</td>
                                                 <td>{{ $value->phone ?: '' }}</td>
                                                 <td>{{ $value->email ?: '' }}</td>
                                                 <td>{{ $value->gst_no ?: '' }}</td>
