@@ -70,7 +70,14 @@
 
                                 <div class="col-lg-4 col-md-6">
                                     <div class="mb-3">
-                                        <label for="MobileNumberinput" class="form-label"><b>Mobile Number : <span class="text-danger">*</span></b></label>
+                                        <label for="PersonNumberinput" class="form-label"><b>Person Name : <span class="text-danger">*</span></b></label>
+                                        <input readonly type="text" class="form-control" value="{{ $vendors->person_name }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="MobileNumberinput" class="form-label"><b>Person Contact Number : <span class="text-danger">*</span></b></label>
                                         <input readonly type="text" class="form-control" value="{{ $vendors->phone }}">
                                     </div>
                                 </div>
