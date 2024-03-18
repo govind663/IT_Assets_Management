@@ -206,7 +206,7 @@ class AddStock extends Component
         $fieldArray['vendor_id'] = 'required|exists:vendors,id';
         $fieldArray['inward_dt'] = 'required| date';
         $fieldArray['voucher_no'] = 'required|max:255';
-        $fieldArray['work_order_no'] = 'required|max:255';
+        $fieldArray['work_order_no'] = 'required|max:255|unique:stocks,id,deleted_at,NULL';
 
         $messageArray['vendor_id.required'] = 'Vendor name is required';
         $messageArray['inward_dt.required'] = 'Inword Stock Date  is required';

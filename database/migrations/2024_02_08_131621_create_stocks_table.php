@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('invoice_no')->unique()->nullable()->comment('Invoice number or reference code for this stock entry');
             $table->foreignIdFor(Vendor::class)->index()->nullable()->constrained()->onDelete('cascade')->comment('Vendors Company Name List');
             $table->date('inward_dt')->comment('Inward date and time of stock entry');
-            $table->string('work_order_no');
+            $table->string('work_order_no')->unique()->nullable();
             $table->string('voucher_no');
             $table->integer('inserted_by')->nullable();
             $table->timestamp('inserted_at')->nullable();
