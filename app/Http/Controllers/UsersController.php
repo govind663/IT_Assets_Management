@@ -30,7 +30,7 @@ class UsersController extends Controller
     public function create()
     {
         $department = Department::select('dept_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
-        $rols = Role::select('role_name', 'id')->whereNull('deleted_at')->orderByDesc('id')->get();
+        $rols = Role::select('role_name', 'id')->orWhereIn('id', [2, 3])->whereNull('deleted_at')->orderByDesc('id')->get();
 
         return view('master.users.create')->with([ 'rols' => $rols, 'department' => $department ]);
     }
@@ -40,7 +40,7 @@ class UsersController extends Controller
      */
     public function store(UsersRequest $request)
     {
-        $data = $request->validated();
+        $request->validated();
         try {
             $data = new User();
             $data->f_name =  $request->get('f_name');
@@ -91,24 +91,24 @@ class UsersController extends Controller
      */
     public function update(UsersRequest $request, $id)
     {
-        $data = $request->validated($id);
+        // dd($id);
+        $request->validated();
         try {
-            $data = User::findOrFail($id);
-            $data->f_name =  $request->get('f_name');
-            $data->m_name =  $request->get('m_name');
-            $data->l_name =  $request->get('l_name');
-            $data->role_id =  $request->get('role_id');
-            $data->department_id =  $request->get('department_id');
-            $data->phone_number =  $request->get('phone_number');
-            $data->email =  $request->get('email');
-            $data->updated_by =  Auth::user()->id;
-            $data->updated_at =  Carbon::now();
-            $data->update();
+            // == update  user info
+            $user = User::findOrFail($id);
+            $user->f_name =  $request->input('f_name') ? : '';
+            $user->m_name =  $request->input('m_name') ? : '';
+            $user->l_name =  $request->input('l_name') ? : '';
+            $user->role_id =  $request->input('role_id') ? : '';
+            $user->department_id = $request->input('department_id') ? : '';
+            $user->phone_number = $request->input('phone_number') ? : '';
+            $user->email = $request->input('email') ? : '';
+            $user->updated_by = Auth::user()->id;
+            $user->updated_at = Carbon::now();
+            $user->update();
 
             return redirect()->route('users.index')->with('message','Users updated successfully');
-
         } catch(\Exception $ex){
-
             return redirect()->back()->with('error','Something Went Wrong - '.$ex->getMessage());
         }
     }

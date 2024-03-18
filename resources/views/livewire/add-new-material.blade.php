@@ -135,7 +135,7 @@
                             <input type="text" wire:model="product_code.{{$i}}" class="form-control product_code" placeholder="Enter Product Code">
                         </td>
                         <td>
-                            <input type="text" wire:model="brand.{{$i}}" class="form-control brand @if ($errors->has('brand.'.$i)) 'is-invalid' @endif" placeholder="Enter Brand">
+                            <input readonly type="text" wire:model="brand.{{$i}}" class="form-control brand @if ($errors->has('brand.'.$i)) 'is-invalid' @endif" placeholder="Enter Brand">
                             @if ($errors->has('brand.'.$i))
                             <span class="invalid-feedback d-block" role="alert">
                                 <strong>{{ $errors->first('brand.'.$i) }}</strong>
@@ -144,7 +144,7 @@
                         </td>
 
                         <td>
-                            <input type="text" wire:model.defer="model.{{$i}}" class="form-control model @if ($errors->has('model.'.$i)) 'is-invalid' @endif" placeholder="Enter Model">
+                            <input readonly type="text" wire:model.defer="model.{{$i}}" class="form-control model @if ($errors->has('model.'.$i)) 'is-invalid' @endif" placeholder="Enter Model">
                             @if ($errors->has('model.'.$i))
                             <span class="invalid-feedback d-block" role="alert">
                                 <strong>{{ $errors->first('model.'.$i) }}</strong>
@@ -153,12 +153,13 @@
                         </td>
 
                         <td>
-                            <select class="form-control unit_id @if ($errors->has('unit_id.'.$i)) 'is-invalid' @endif" wire:model.defer="unit_id.{{$i}}">
+                            <select disabled class="form-control unit_id @if ($errors->has('unit_id.'.$i)) 'is-invalid' @endif" wire:model.defer="unit_id.{{$i}}">
                                 <option value="">Select Unit</option>
                                 @foreach ($loop_units[$i] as $unit)
-                                <option value="{{ $unit['id'] }}">{{ $unit['unit_name'] }}</option>
+                                    <option value="{{ $unit['id'] }}">{{ $unit['unit_name'] }}</option>
                                 @endforeach
                             </select>
+                            <input readonly type="hidden" wire:model.defer="unit_id.{{$i}}" class="form-control unit_id @if ($errors->has('unit_id.'.$i)) 'is-invalid' @endif" placeholder="Enter Unit">
                             @if ($errors->has('unit_id.'.$i))
                             <span class="invalid-feedback d-block" role="alert">
                                 <strong>{{ $errors->first('unit_id.'.$i) }}</strong>

@@ -194,8 +194,10 @@ class AddStock extends Component
             $fieldArray['warranty_dt.'.$i] = 'required';
             $fieldArray['quantity.'.$i] = 'required';
 
-            $messageArray['categories_id.'.$i . '.required'] = 'Please select any category';
-            $messageArray['product_id.' . $i . '.required'] = 'Please select a product';
+            $messageArray['categories_id.'.$i.'.required'] = __('Category is required');
+            $messageArray['product_id.'.$i.'.required'] = __('Product is required');
+            // $messageArray['categories_id.'.$i . '.required'] = 'Please select any category';
+            // $messageArray['product_id.' . $i . '.required'] = 'Please select a product';
             $messageArray['brand.' . $i . '.required'] = 'Brand is required';
             $messageArray['model.' . $i . '.required'] = "Model is required";
             $messageArray['unit_id.' . $i . '.required'] = 'Unit is required';
@@ -206,8 +208,7 @@ class AddStock extends Component
         $fieldArray['vendor_id'] = 'required|exists:vendors,id';
         $fieldArray['inward_dt'] = 'required| date';
         $fieldArray['voucher_no'] = 'required|max:255';
-        $fieldArray['work_order_no'] = 'required|max:255|unique:stocks,id,deleted_at,NULL';
-
+        $fieldArray['work_order_no'] = 'required|max:255|unique:stocks,work_order_no,NULL,id,deleted_at,NULL';
         $messageArray['vendor_id.required'] = 'Vendor name is required';
         $messageArray['inward_dt.required'] = 'Inword Stock Date  is required';
         $messageArray['inward_dt.date'] = 'Inward Date must be  valid date format';

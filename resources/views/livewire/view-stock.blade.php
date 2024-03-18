@@ -3,7 +3,7 @@
         <div class="col-lg-4 col-md-6">
             <div class="mb-3">
                 <label for="VendorsName" class="form-label"><b>Vendors Name : <span class="text-danger">*</span></b></label>
-                <select class="js-example-basic-single form-control @error('vendor_id') is-invalid @enderror" wire:model.defer="vendor_id" disabled>
+                <select disabled class="form-control @error('vendor_id') is-invalid @enderror" wire:model.defer="vendor_id" disabled>
                     <option value="">Select Vendors Name</option>
                     @foreach ($vendors as $vendor)
                     <option value="{{ $vendor->id   }}" {{ isset($data['vendor_id']) && $data['vendor_id'] ==  $vendor->id ? 'selected' : '' }} >{{ $vendor->company_name }}</option>
@@ -20,7 +20,7 @@
         <div class="col-lg-4 col-md-6">
             <div class="mb-3">
                 <label for="InworDateinput" class="form-label"><b>Inword Stock Date : <span class="text-danger">*</span></b></label>
-                <input type="date" class="form-control  @error('inward_dt') is-invalid @enderror" value="" wire:model.defer="inward_dt" readonly>
+                <input type="text" class="form-control  @error('inward_dt') is-invalid @enderror" value="" wire:model.defer="inward_dt" readonly>
                 @error('inward_dt')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -73,7 +73,7 @@
                     @for ($i=1; $i <= $formCounts; $i++)
                         <tr >
                             <td>
-                                <select class="form-control categories_id @if ($errors->has('categories_id.'.$i)) 'is-invalid' @endif" wire:model="categories_id.{{$i}}" disabled>
+                                <select  class="form-control categories_id @if ($errors->has('categories_id.'.$i)) 'is-invalid' @endif" wire:model="categories_id.{{$i}}" disabled>
                                     <option value="">Select Catagory Name</option>
                                     @foreach ($categories as $value)
                                     <option value="{{ $value->id }}"> {{ $value->catagories_name }}</option>
@@ -128,7 +128,7 @@
                                 @endif
                             </td>
                             <td>
-                                <input type="date" wire:model="warranty_dt.{{$i}}" class="form-control warranty_dt @if ($errors->has('warranty_dt.'.$i)) 'is-invalid' @endif" readonly>
+                                <input type="text" wire:model="warranty_dt.{{$i}}" class="form-control warranty_dt @if ($errors->has('warranty_dt.'.$i)) 'is-invalid' @endif" readonly>
                                 @if ($errors->has('warranty_dt.'.$i))
                                     <span class="invalid-feedback d-block" role="alert">
                                         <strong>{{ $errors->first('warranty_dt.'.$i) }}</strong>
