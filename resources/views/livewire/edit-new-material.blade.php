@@ -98,7 +98,7 @@
                     <tr>
                         <th>Category Name</th>
                         <th>Product Name</th>
-                        <th>Product Code</th>
+                        {{-- <th>Product Code</th> --}}
                         <th>Brand</th>
                         <th>Model</th>
                         <th>Unit</th>
@@ -136,9 +136,9 @@
                             @endif
                         </td>
 
-                        <td>
-                            <input type="text" wire:model="product_code.{{$i}}" class="form-control product_code" placeholder="Enter Product Code">
-                        </td>
+                        {{-- <td> --}}
+                            <input type="hidden" wire:model="product_code.{{$i}}" class="form-control product_code" placeholder="Enter Product Code">
+                        {{-- </td> --}}
 
                         <td>
                             <input readonly type="text" wire:model="brand.{{$i}}" class="form-control brand @if ($errors->has('brand.'.$i)) 'is-invalid' @endif" placeholder="Enter Brand">

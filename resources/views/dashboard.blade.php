@@ -213,18 +213,38 @@
                                             <thead  class="bg-primary text-light">
                                                 <tr>
                                                     <th>Sr. No.</th>
-                                                    <th>Vendor Name</th>
-                                                    <th>Inword Date</th>
-                                                    <th>Work  Order No.</th>
-                                                    <th>Voucher Number</th>
+                                                    <th>Request Id</th>
+                                                    <th>Product Code</th>
+                                                    <th>Name</th>
+                                                    <th>Request Date</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                                @foreach ($newMaterials as $key => $value)
+                                                @php
+                                                    $requested_products = DB::table('request_material_products as t1')
+                                                                            ->select('t1.product_code')
+                                                                            ->where("t1.new_material_id", $value->id)
+                                                                            ->whereNull('t1.deleted_at')
+                                                                            ->orderBy('t1.id', 'desc')
+                                                                            ->get();
+                                                @endphp
+                                                <tr>
+                                                    <td>{{ ++$key }}</td>
+                                                    <td>{{ $value->request_no }}</td>
+                                                    <td>
+                                                        @foreach ($requested_products as $requested_product)
+                                                        <span class="badge bg-primary">
+                                                           {{ $requested_product->product_code }}
+                                                        </span>
+                                                        <br>
+                                                        @endforeach
+                                                    </td>
+                                                    <td>{{ $value->name }}</td>
+                                                    <td>{{ date("d-m-Y", strtotime($value->requested_at)) }}</td>
+
+                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>

@@ -72,11 +72,11 @@ class AllRequestMaterialController extends Controller
                                                 ->where("new_material_id", $material->id)
                                                 ->get();
         }
-        // return $materials['requested_products'];
 
         // ==== ReceiveActionMaterial  Module Start Here=====
         $materials['receiveActions'] = ReceiveActionMaterial::where('is_confirmed', 1)->where('new_material_id',$id)->first();
         // return($receiveActions);
+
         return view('all_request_material.request_material.view', ['materials' => $materials,  'status'=>$status]);
     }
 
@@ -222,10 +222,26 @@ class AllRequestMaterialController extends Controller
         foreach ($materials as $material ) {
 
             $materials['requested_products'] = RequestMaterialProduct::with('catagory','product','unit')
-                                                ->where("new_material_id", $material->id)
+                                                ->select(   'request_material_products.product_id', 'request_material_products.new_material_id', 'request_material_products.catagories_id',
+                                                            'request_material_products.product_code', 'request_material_products.brand', 'request_material_products.model',
+                                                            'request_material_products.unit_id', 'request_material_products.quantity as current_quantity', 't1.quantity as available_quantity'
+                                                        )
+                                                ->leftJoin('stock_details as t1', 't1.product_id' ,  '=', 'request_material_products.product_id')
+                                                ->where("request_material_products.new_material_id", $material->id)
+                                                ->whereNull( "request_material_products.deleted_at" )
+                                                ->whereNull( "t1.deleted_at" )
                                                 ->get();
         }
         // return $materials['requested_products'];
+
+        // ======= check $materials['requested_products'] product id is avilable in stock_details  table or not  and get quantity
+        foreach ($materials['requested_products'] as  $key => $value){
+
+            $materials['available_quantity'][$key] = StockDetail::where('product_id', $value->product_id )
+                                                                  ->whereNull( "deleted_at" )
+                                                                  ->get();
+        }
+        // return $materials['available_quantity'];
 
         // ==== ReceiveActionMaterial  Module Start Here=====
         $materials['receiveActions'] = ReceiveActionMaterial::where('is_confirmed', 1)->where('new_material_id',$id)->first();

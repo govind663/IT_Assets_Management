@@ -111,7 +111,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{ route('dashboard') }}">
+                    <a class="nav-link menu-link" href="{{ route('replace-old-material.index') }}">
                         <b>
                             <i class="ri-honour-line"></i>
                             <span data-key="t-dashboards">Request For Replace Material</span>

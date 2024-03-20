@@ -11,6 +11,7 @@ use App\Models\Unit;
 use Livewire\Component;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Livewire\WithFileUploads;
 
@@ -102,7 +103,7 @@ class AddNewMaterial extends Component
                     'new_material_id' => $newMaterial->id ,
                     'catagories_id' =>  $value,
                     'product_id' => $this->product_id[$key],
-                    'product_code' => $this->product_code[$key],
+                    'product_code' => "PMC_SKU-" . substr(md5(time()), rand(0, 26), 6) .  sprintf("%06d" , DB::table('request_material_products')->max('id') + 1),
                     'brand' =>  $this->brand[$key],
                     'model' =>  $this->model[$key],
                     'unit_id' => $this->unit_id[$key],
@@ -120,7 +121,7 @@ class AddNewMaterial extends Component
     public function updatedCategoriesId($val, $key)
     {
         $products = Product::where("catagories_id", $this->categories_id[$key])
-                        ->where("is_available", 1)
+                        // ->where("is_available", 1)
                         ->whereNull('deleted_at')
                         ->orderByDesc('id')
                         ->select("id", "name")->get();
@@ -134,7 +135,7 @@ class AddNewMaterial extends Component
     public function updatedProductId($val, $key)
     {
         $prod = Product::where("id", $this->product_id[$key])
-                        ->where("is_available", 1)
+                        // ->where("is_available", 1)
                         ->whereNull('deleted_at')
                         ->orderByDesc('id')
                         ->select("id", "product_code", "name", 'unit_id', 'brand', 'model_no')

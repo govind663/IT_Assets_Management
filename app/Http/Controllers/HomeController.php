@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\NewMaterial;
 use App\Models\Product;
 use App\Models\RequestMaterialProduct;
 use App\Models\User;
@@ -50,12 +51,22 @@ class HomeController extends Controller
 
         // total vendors count
         $vendorsCount = Vendor::count();
+
+
+        $newMaterials = NewMaterial::with('department')
+                                    ->whereNull('deleted_at')
+                                    ->orderBy('id', 'desc')
+                                    ->limit(5)
+                                    ->get();
+
+
         return view('dashboard',
         ['total_user' => $total_user,
          'requestMaterialProductsCount' => $requestMaterialProductsCount,
          'stockDetailsWithStockId' => $stockDetailsWithStockId,
          'productCount' => $productCount,
          'vendorsCount' => $vendorsCount,
+         'newMaterials' => $newMaterials,
         ]);
     }
 }

@@ -71,12 +71,12 @@ Request For Material | List
                                             <tr>
                                                 <th>Sr. No.</th>
                                                 <th>Request Id</th>
+                                                <th>Product Code</th>
                                                 <th>Name</th>
                                                 <th>Department</th>
                                                 <th>Mobile No.</th>
                                                 <th>Email Id</th>
                                                 <th>Request Date & Time</th>
-                                                <th>Requested Product's Id</th>
                                                 <th>Material's Document</th>
                                                 <th>Material's Status</th>
                                                 @if($materialStatus == 2)
@@ -90,26 +90,31 @@ Request For Material | List
                                         <tbody>
                                             @foreach ($newMaterials as $key=>$newMaterial)
                                             @php
-                                                 $requested_products = DB::table('request_material_products as t1')
-                                                                            ->select('t1.product_code')
-                                                                            ->where('t1.new_material_id'  , '=', $newMaterial->id)
-                                                                            ->get();
+                                                $requested_products = DB::table('request_material_products as t1')
+                                                                        ->select('t1.product_code')
+                                                                        ->where("t1.new_material_id", $newMaterial->id)
+                                                                        ->whereNull('t1.deleted_at')
+                                                                        ->orderBy('t1.id', 'desc')
+                                                                        ->get();
                                             @endphp
                                             <tr>
+
                                                 <td>{{ ++$key }}</td>
                                                 <td class="text-wrap">{{ $newMaterial->request_no }}</td>
+                                                <td>
+                                                    @foreach ($requested_products as $requested_product)
+                                                    <span class="badge bg-primary mb-2">
+                                                       {{ $requested_product->product_code }}
+                                                    </span>
+                                                    <br>
+                                                    @endforeach
+                                                </td>
                                                 <td class="text-wrap">{{ $newMaterial->name }}</td>
                                                 <td class="text-wrap">{{ $newMaterial->department?->dept_name }}</td>
                                                 <td class="text-wrap">{{ $newMaterial->mobile_no }}</td>
                                                 <td class="text-wrap">{{ $newMaterial->email }}</td>
                                                 <td class="text-wrap">{{ date("d-m-Y H:i A", strtotime($newMaterial->requested_at)) }}</td>
 
-                                                @foreach ($requested_products as $key=>$value)
-                                                <td class="text-wrap">
-                                                    <span class="badge bg-primary text-justify">{{ $value->product_code }}</span>
-                                                </td>
-                                                <br>
-                                                @endforeach
                                                 <td class="text-wrap">
                                                     <a href="{{ asset('/storage/' .$newMaterial->material_doc ) }}" target="_blank" type="button"  class="btn btn-sm btn-primary">
                                                         View Document
@@ -147,6 +152,7 @@ Request For Material | List
                                                             <b><i class="ri-eye-line"></i> View</b>
                                                         </button>
                                                     </a>
+
                                                     @if($newMaterial->status == 0  || $newMaterial->status == 2)
                                                     &nbsp;
                                                     {{-- Edit --}}
@@ -191,3 +197,10 @@ Request For Material | List
     </div>
     <!-- end main content-->
 @endsection
+@push('scripts')
+<script>
+    new DataTable('#example', {
+        responsive: true
+    });
+</script>
+@endpush
