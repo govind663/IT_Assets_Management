@@ -123,12 +123,12 @@ New Request | View
                                 @foreach( $materials['requested_products'] as $key =>$value )
                                 <tr>
                                     <td>{{ ++$key }}</td>
-                                    <td><input type="text" readonly class="form-control"  value="{{ $value->catagory?->catagories_name }}"></td>
-                                    <td><input type="text" readonly class="form-control"  value="{{ $value->product?->name }}"></td>
-                                    <td><input type="text" readonly class="form-control"  value="{{ $value->brand }}"></td>
-                                    <td><input type="text" readonly class="form-control"  value="{{ $value->model }}"></td>
-                                    <td><input type="text" readonly class="form-control"  value="{{ $value->unit?->unit_name }}"></td>
-                                    <td><input type="text" readonly class="form-control"  value="{{ $value->quantity }}"></td>
+                                    <td>{{ $value->catagory?->catagories_name }}</td>
+                                    <td>{{ $value->product?->name }}</td>
+                                    <td>{{ $value->brand }}</td>
+                                    <td>{{ $value->model }}</td>
+                                    <td>{{ $value->unit?->unit_name }}</td>
+                                    <td>{{ $value->quantity }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

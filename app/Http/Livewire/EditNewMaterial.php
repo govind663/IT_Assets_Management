@@ -13,6 +13,7 @@ use Livewire\Component;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Livewire\WithFileUploads;
@@ -103,10 +104,11 @@ class EditNewMaterial extends Component
 
         // === store all stock details  in a variable and then clear it. ===
         RequestMaterialProduct::where('new_material_id', $this->materialID)
-        ->update([
-            'deleted_by' =>  Auth::user()->id,
-            'deleted_at' =>  Carbon::now(),
-        ]);
+        ->delete();
+        // ->update([
+        //     'deleted_by' =>  Auth::user()->id,
+        //     'deleted_at' =>  Carbon::now(),
+        // ]);
 
         // ==== get product
         //  === save product details into RequestMaterialProduct table.
@@ -118,7 +120,7 @@ class EditNewMaterial extends Component
                     'new_material_id' => $this->materialID['id'],
                     'catagories_id' => $this->categories_id[$key],
                     'product_id' =>  $this->product_id[$key],
-                    'product_code' =>  $this->product_code[$key],
+                    'product_code' =>  "PMC_SKU-" . substr(md5(time()), rand(0, 26), 6) .  sprintf("%06d" , DB::table('request_material_products')->max('id') + 1),
                     'brand' =>  $this->brand[$key],
                     'model' =>  $this->model[$key],
                     'unit_id' => $this->unit_id[$key],
@@ -126,7 +128,7 @@ class EditNewMaterial extends Component
                     'modified_by' => Auth::user()->id,
                     'updated_at' => Carbon::now(),
                     ], [
-                        'product_code' => $this->product_code[$key],
+                        'product_code' => "PMC_SKU-" . substr(md5(time()), rand(0, 26), 6) .  sprintf("%06d" , DB::table('request_material_products')->max('id') + 1),
                         'inserted_by' => Auth::user()->id,
                         'created_at' => Carbon::now(),
                     ]);
@@ -168,7 +170,7 @@ class EditNewMaterial extends Component
 
             $products = Product::where("catagories_id", $this->categories_id[$key+1])
                                 ->whereNull('deleted_at')
-                                ->where("is_available", 1)
+                                // ->where("is_available", 1)
                                 ->orderByDesc('id')
                                 ->select("id", "name")->get();
 
@@ -197,7 +199,7 @@ class EditNewMaterial extends Component
     public function updatedCategoriesId($val, $key)
     {
         $products = Product::where("catagories_id", $this->categories_id[$key])
-                        ->where("is_available", 1)
+                        // ->where("is_available", 1)
                         ->whereNull('deleted_at')
                         ->orderByDesc('id')
                         ->select("id", "name")->get();
@@ -212,7 +214,7 @@ class EditNewMaterial extends Component
     public function updatedProductId($val, $key)
     {
         $prod = Product::where("id", $this->product_id[$key])
-                        ->where("is_available", 1)
+                        // ->where("is_available", 1)
                         ->whereNull('deleted_at')
                         ->orderByDesc('id')
                         ->select("id", "product_code", "name", 'unit_id', 'brand', 'model_no')

@@ -17,7 +17,6 @@ class NewMaterialController extends Controller
                                     ->whereNull('deleted_at')
                                     ->orderBy('id', 'desc')
                                     ->get();
-
         // === newMaterials status
         $currentMaterialStatus  = NewMaterial::whereNull('deleted_at')
                                                ->where('user_id', Auth::user()->id)
@@ -30,9 +29,19 @@ class NewMaterialController extends Controller
             $materialStatus =  "null";
         };
 
+        $requested_products = [];
+        //  Checking whether there is any record or not in other table  for this id then push  it to view data array
+        foreach ($newMaterials as $material ) {
+
+            $requested_products = RequestMaterialProduct::with('catagory','product','unit')
+                                                ->where("new_material_id", $material->id)
+                                                ->whereNull('deleted_at')
+                                                ->orderBy('id', 'desc')
+                                                ->get();
+        }
 
         // dd ($requested_products);
-        return view('new_request_material.index', ['newMaterials' => $newMaterials, 'materialStatus' => $materialStatus]);
+        return view('new_request_material.index', ['requested_products' => $requested_products, 'newMaterials' => $newMaterials, 'materialStatus' => $materialStatus]);
     }
 
     public function create()
@@ -42,7 +51,21 @@ class NewMaterialController extends Controller
 
     public function show(string $id)
     {
-        return view('new_request_material.view');
+        $newMaterials = NewMaterial::findOrFail($id)
+                                                ->with('department')
+                                                ->whereNull('deleted_at')
+                                                ->orderBy('id', 'desc')
+                                                ->first();
+
+
+        $requested_products = RequestMaterialProduct::with('catagory','product','unit')
+                                            ->where("new_material_id", $id)
+                                            ->whereNull('deleted_at')
+                                            ->orderBy('id', 'desc')
+                                            ->get();
+
+
+        return view('new_request_material.view', ['requested_products' => $requested_products, 'newMaterials' => $newMaterials]);
     }
 
     public function edit(String $id)
