@@ -108,43 +108,64 @@ New Request | View
                                 <thead class="bg-primary text-light">
                                     <tr>
                                         <th>Sr. No.</th>
-                                        <th>Category Name</th>
-                                        <th>Product Name</th>
+                                        <th>Category <br> Name</th>
+                                        <th class="text-wrap">Product Code</th>
+                                        <th class="text-wrap">Product <br> Name</th>
                                         <th>Brand</th>
                                         <th>Model</th>
                                         <th>Unit</th>
-                                        <th>Quantity Requested</th>
+                                        <th>Quantity <br> Requested</th>
                                         @if($status == 1)
-                                        <th>Quantity Available<br/>(In Stock)</th>
-                                        <th>Quantity Issued</th>
+                                        <th class="text-wrap" >Quantity Available <br>(In Stock)</th>
+                                        <th>Quantity <br> Issued</th>
                                         @endif
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @if ($status == 1 && $materials['new_material']->is_processed_by_clerk == 1 || $materials['new_material']->is_processed_by_it == 1 )
                                     @foreach( $materials['requested_products'] as $key =>$value )
-                                    <tr>
+                                     <tr>
                                         <td>{{ ++$key }}</td>
+
+                                            <input type="hidden" class="form-control" name="product[{{ $key }}]" value="{{ $value->product_id  }}" />
+
                                         <td>{{ $value->catagory?->catagories_name }}</td>
-                                        <td>{{ $value->product?->name }}</td>
+                                        <td class="text-wrap">
+                                            <span class="badge bg-primary">
+                                                {{ $value->product_code }}
+                                            </span>
+                                        </td>
+                                        <td class="text-wrap">{{ $value->product?->name }}</td>
                                         <td>{{ $value->brand }}</td>
                                         <td>{{ $value->model }}</td>
                                         <td>{{ $value->unit?->unit_name }}</td>
-                                        <td>{{ $value->current_quantity }}</td>
-                                        <td><input type="text"  class="form-control"  value="{{ $value->available_quantity }}"></td>
-                                        <td><input type="text"  class="form-control"  value="Enter Quantity Issued" name="quantity_issued" id="quantity_issued"></td>
+                                        <td>
+                                            <input type="text" readonly class="form-control"  value="{{ $value->current_quantity }}" name="current_quantity[{{ $key }}]" id="current_quantity[{{ $key }}]">
+                                        </td>
+                                        <td class="text-wrap">
+                                            <input type="text" readonly  class="form-control"  value="{{ $value->available_quantity }}" name="available_quantity[{{ $key }}]" id="available_quantity[{{ $key }}]">
+                                        </td>
+                                        <td>
+                                            <input type="text" required class="form-control @if ($errors->has('quantity_issued[{{ $key }}]', )) 'is-invalid' @endif"  value="{{ old('quantity_issued.'. $key, $value->quantity_issued ) }}" name="quantity_issued[{{ $key }}]" id="quantity_issued[{{ $key }}]">
+
+                                        </td>
                                     </tr>
                                     @endforeach
                                     @else
                                     @foreach( $materials['requested_products'] as $key =>$value )
                                     <tr>
                                         <td>{{ ++$key }}</td>
-                                        <td><input type="text" readonly class="form-control"  value="{{ $value->catagory?->catagories_name }}"></td>
-                                        <td><input type="text" readonly class="form-control"  value="{{ $value->product?->name }}"></td>
-                                        <td><input type="text" readonly class="form-control"  value="{{ $value->brand }}"></td>
-                                        <td><input type="text" readonly class="form-control"  value="{{ $value->model }}"></td>
-                                        <td><input type="text" readonly class="form-control"  value="{{ $value->unit?->unit_name }}"></td>
-                                        <td><input type="text" readonly class="form-control"  value="{{ $value->current_quantity }}"></td>
+                                        <td>{{ $value->catagory?->catagories_name }}</td>
+                                        <td class="text-wrap">
+                                            <span class="badge bg-primary">
+                                                {{ $value->product_code }}
+                                            </span>
+                                        </td>
+                                        <td class="text-wrap">{{ $value->product?->name }}</td>
+                                        <td>{{ $value->brand }}</td>
+                                        <td>{{ $value->model }}</td>
+                                        <td>{{ $value->unit?->unit_name }}</td>
+                                        <td>{{ $value->current_quantity }}</td>
                                     </tr>
                                     @endforeach
                                     @endif
@@ -155,13 +176,17 @@ New Request | View
 
                         @if($status == 1)
                         <br>
-                        @if (Auth::user()->role_id == '2' )
-                        <h6 class="modal-title text-primary" id="exampleModalgridLabel">Action  Taken by the {{ $materials['new_material']->department?->dept_name }} HOD</h6>
-                        @elseif (Auth::user()->role_id == '3' )
-                        <h6 class="modal-title text-primary" id="exampleModalgridLabel">Action  Taken by the {{ $materials['new_material']->department?->dept_name }} Clerk</h6>
-                        @endif
-
+                        <br>
                         <div class="row g-3">
+                            @if (Auth::user()->role_id == '2' )
+                            <h6 class="page-title-box mb-sm-0 text-primary text-capitalize" id="exampleModalgridLabel">
+                                <b>Action  Taken by the {{ $materials['new_material']->department?->dept_name }} HOD</b>
+                            </h6>
+                            @elseif (Auth::user()->role_id == '3' )
+                            <h6 class="page-title-box mb-sm-0 text-primary text-capitalize" id="exampleModalgridLabel">
+                                <b>Action  Taken by the {{ $materials['new_material']->department?->dept_name }} Clerk</b>
+                            </h6>
+                            @endif
                             <div class="col-md-4 ">
                                 <label for="name" class="form-label"><b> Receiver  Name : </b></label>
                                 <input type="text" class="form-control" readonly id="name" name="name" value="{{ Auth::user()->f_name }}{{ Auth::user()->m_name }}{{ Auth::user()->l_name }}" >
@@ -319,6 +344,8 @@ New Request | View
         </div>
     </div>
 </div>
-@endsection
 
-@livewireScripts
+@endsection
+@push('script')
+
+@endpush
