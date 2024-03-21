@@ -11,9 +11,12 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Illuminate\Support\Facades\DB;
 
 class AllRequestMaterialController extends Controller
 {
+    public $formCounts = 1;
+
     /**
      * Display a listing of the resource.
      *
@@ -253,35 +256,49 @@ class AllRequestMaterialController extends Controller
     // ==== Receive  Material
     public function receiveMaterial(Request $request, $id, $status )
     {
+        // dd($request->input("quantity_issued"));
 
         // ==== only  for department clerk with  status "Approved"
         if (Auth::user()->role_id ==  2 && Auth::user()->department_id == 1 ) {
-            try {
-                $data = new ReceiveActionMaterial();
-                $data->new_material_id = $id;
-                $data->name =  Auth::user()->f_name.' '. Auth::user()->m_name. ' '. Auth::user()->l_name;
-                $data->mobile_no =  Auth::user()->phone_number;
-                $data->department_id = Auth::user()->department_id;
-                $data->gender = Auth::user()->gender;
-                $data->role_id =  Auth::user()->role_id;
-                $data->date_time_of_receive =  Carbon::now();
-                $data->is_confirmed = 1 ;
-                $data->inserted_by =  Auth::user()->id;
-                $data->inserted_at =  Carbon::now();
-                $data->save();
 
-                //  update the status NewMaterial is delivered  to the clerk
-                NewMaterial::where('id' ,$id)->update(['is_processed_by_it'=> 3, 'status'=> 3]);
+            try {
 
                 $totalQuantity = 0;
-                $currentQuantity = $request->input('current_quantity');
-                $actualQuantity = StockDetail::where('product_id', $request->input('product_id'))->value('quantity');
-                $totalQuantity  = $actualQuantity - $currentQuantity;
+                $actualQuantity = $request->input('available_quantity');
+                $issuedQuantity = $request->input('quantity_issued');
+                $product_id = $request->input('product');
+                // dd($product_id);
+
+                $totalQuantity = array_map(function($actualQuantity, $issuedQuantity) {
+                    return $actualQuantity - $issuedQuantity;
+                }, $actualQuantity, $issuedQuantity);
                 // dd($totalQuantity);
-                $update = [
-                    'quantity' => $totalQuantity,
-                ];
-                StockDetail::where([ ['product_code', '=', $request->input("product_code")] ])->update($update);
+
+                foreach($product_id  as $i=>$d) :
+                    foreach( $totalQuantity as $j=>$l):
+                    // === update  stock details table quantity  column
+                    DB::table('stock_details as sd')
+                        ->where('sd.product_id','=', $product_id[$i])
+                        ->update(['sd.quantity'  => $totalQuantity[$j]]);
+                    endforeach;
+                endforeach;
+
+
+                // $data = new ReceiveActionMaterial();
+                // $data->new_material_id = $id;
+                // $data->name =  Auth::user()->f_name.' '. Auth::user()->m_name. ' '. Auth::user()->l_name;
+                // $data->mobile_no =  Auth::user()->phone_number;
+                // $data->department_id = Auth::user()->department_id;
+                // $data->gender = Auth::user()->gender;
+                // $data->role_id =  Auth::user()->role_id;
+                // $data->date_time_of_receive =  Carbon::now();
+                // $data->is_confirmed = 1 ;
+                // $data->inserted_by =  Auth::user()->id;
+                // $data->inserted_at =  Carbon::now();
+                // $data->save();
+
+                //  update the status NewMaterial is delivered  to the clerk
+                // NewMaterial::where('id' ,$id)->update(['is_processed_by_it'=> 3, 'status'=> 3]);
 
                 return  redirect()->route('request-new-material.processslist', $status )->with('message',  'The Material has been successfully received by the departement clerck & added to the product list !');
 
